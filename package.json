@@ -1,0 +1,11 @@
+{
+  "scripts": {
+    "format": "prettier -w ."
+  },
+  "devDependencies": {
+    "prettier": "^2.8.0"
+  },
+  "prettier": {
+    "singleQuote": true
+  }
+}
