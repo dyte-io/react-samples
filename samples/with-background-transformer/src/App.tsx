@@ -17,6 +17,10 @@ function App() {
 
     const authToken = searchParams.get('authToken');
 
+    // pass an empty string when using v2 meetings
+    // for v1 meetings, you would need to pass the correct roomName here
+    const roomName = searchParams.get('roomName') || '';
+
     if (!authToken) {
       alert(
         "An authToken wasn't passed, please pass an authToken in the URL query to join a meeting."
@@ -26,10 +30,8 @@ function App() {
 
     (
       initMeeting({
-        authToken: authToken,
-        // pass an empty string when using v2 meetings
-        // for v1 meetings, you would need to pass the correct roomName here
-        roomName: '',
+        authToken,
+        roomName,
       }) as any
     ).then(async (meeting: any) => {
       window.meeting = meeting;
