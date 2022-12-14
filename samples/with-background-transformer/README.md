@@ -10,12 +10,12 @@ You can set:
 1. A background blur
 2. A backgriund image
 
-With blur:
+<!-- With blur:
 
 ![A screenshot of using background blur](./screenshot-blur.png)
 
 With background image:
 
-![A screenshot of using a background image](./screenshot-image.png)
+![A screenshot of using a background image](./screenshot-image.png) -->
 
 [See source](./src/App.tsx)

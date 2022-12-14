@@ -1,4 +1,4 @@
-# Dyte React Samples
+# Dyte React UI Kit Samples
 
 This repository consists of all the different ways in which you can use Dyte's
 React UI Kit and other packages to its full extent to get the best live audio/video
@@ -10,6 +10,7 @@ Here are the list of available samples at the moment.
 
 1. [Default Meeting UI](./samples/default-meeting-ui/)
 2. [Using Background Transformer to modify your background](./samples/with-background-transformer/)
+3. [Audio Room](./samples/audio-room/)
 
 ## Usage
 

@@ -51,11 +51,12 @@ function App() {
       // 2. To add a background image
       // meeting.self.addVideoMiddleware(
       //   await videoBackgroundTransformer.createStaticBackgroundVideoMiddleware(
-      //     'https://assets.dyte.io/backgrounds/bg_0.jpg'
+      //     'https://assets.dyte.io/backgrounds/bg-dyte-office.jpg'
       //   )
       // );
 
       // We have the following set of images for your immediate use:
+      // https://assets.dyte.io/backgrounds/bg-dyte-office.jpg
       // https://assets.dyte.io/backgrounds/bg_0.jpg
       // https://assets.dyte.io/backgrounds/bg_1.jpg
       // https://assets.dyte.io/backgrounds/bg_2.jpg
