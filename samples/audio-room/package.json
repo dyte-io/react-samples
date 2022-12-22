@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@dytesdk/react-ui-kit": "^1.38.2",
-    "@dytesdk/react-web-core": "^1.1.2",
+    "@dytesdk/react-web-core": "^1.16.0",
     "clsx": "^1.2.1",
     "good-grid": "^0.3.0",
     "react": "^18.2.0",
