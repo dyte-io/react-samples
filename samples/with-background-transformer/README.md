@@ -1,4 +1,4 @@
-# Default Meeting UI Sample
+# With Background Transformer UI Sample
 
 This sample showcases how you can modify your background while in a Dyte video call
 with the [`@dytesdk/video-background-transformer`](https://www.npmjs.com/package/@dytesdk/video-background-transformer) package.
