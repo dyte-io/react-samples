@@ -34,8 +34,8 @@ Make sure you've created your Dyte account at https://dev.dyte.io and have your
    and add a participant to the meeting with the `meetingId` you received in
    previous API call.
 
-Once you're done, you'll get an `authToken`, which you can use in a sample as:
-`http://localhost:5173/?authToken=<your-token>`
+Once you're done, you'll get an `authToken`, which you can use in a sample as
+explained below.
 
 ### Trying out a sample
 
