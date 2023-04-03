@@ -11,6 +11,7 @@ Here are the list of available samples at the moment.
 1. [Default Meeting UI](./samples/default-meeting-ui/)
 2. [Using Background Transformer to modify your background](./samples/with-background-transformer/)
 3. [Audio Room](./samples/audio-room/)
+4. [Facetime](./samples/facetime/)
 
 ## Usage
 
