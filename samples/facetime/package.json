@@ -11,7 +11,6 @@
     "@dytesdk/react-ui-kit": "^1.43.1",
     "@dytesdk/react-web-core": "^1.20.1",
     "clsx": "^1.2.1",
-    "good-grid": "0.3.0-1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.5",
