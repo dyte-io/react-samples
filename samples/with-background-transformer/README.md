@@ -8,7 +8,7 @@ with the [`@dytesdk/video-background-transformer`](https://www.npmjs.com/package
 You can set:
 
 1. A background blur
-2. A backgriund image
+2. A background image
 
 <!-- With blur:
 
