@@ -1,5 +1,9 @@
 {
+  "workspaces": [
+    "samples/*"
+  ],
   "scripts": {
+    "build": "npm run build --workspaces --if-present",
     "format": "prettier -w ."
   },
   "devDependencies": {
