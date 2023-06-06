@@ -1,11 +1,16 @@
 import { useEffect } from 'react';
 import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
 import Meeting from './components/Meeting';
+import { provideDyteDesignSystem } from '@dytesdk/react-ui-kit';
 
 function App() {
   const [meeting, initMeeting] = useDyteClient();
 
   useEffect(() => {
+    provideDyteDesignSystem(document.body, {
+      theme: 'light'
+    });
+
     const searchParams = new URL(window.location.href).searchParams;
 
     const authToken = searchParams.get('authToken');
@@ -31,7 +36,10 @@ function App() {
       },
     }).then((m) => {
       Object.assign(window, { meeting: m });
-      m?.joinRoom();
+
+      if (!window.location.search.includes('showSetupScreen')) {
+        m?.joinRoom();
+      }
     });
   }, []);
 
