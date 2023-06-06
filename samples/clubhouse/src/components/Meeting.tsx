@@ -1,4 +1,4 @@
-import { DyteParticipantsAudio } from '@dytesdk/react-ui-kit';
+import { DyteParticipantsAudio, DyteSetupScreen } from '@dytesdk/react-ui-kit';
 import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
 import User from './User';
 import Requests from './Requests';
@@ -38,8 +38,8 @@ export default function Meeting() {
     }
   }, [status]);
 
-  if (!roomJoined) {
-    return <div className="p-4">Joining the room...</div>;
+  if (!roomJoined && window.location.search.includes('showSetupScreen')) {
+    return <DyteSetupScreen meeting={meeting} size="sm" />;
   }
 
   return (
