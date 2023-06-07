@@ -1,14 +1,14 @@
 import { useEffect } from 'react';
 import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
 import Meeting from './components/Meeting';
-import { provideDyteDesignSystem } from '@dytesdk/react-ui-kit';
+import { DyteSpinner, provideDyteDesignSystem } from '@dytesdk/react-ui-kit';
 
 function App() {
   const [meeting, initMeeting] = useDyteClient();
 
   useEffect(() => {
     provideDyteDesignSystem(document.body, {
-      theme: 'light'
+      theme: 'light',
     });
 
     const searchParams = new URL(window.location.href).searchParams;
@@ -43,9 +43,18 @@ function App() {
     });
   }, []);
 
+  console.log({ meeting });
+
   return (
     <div className="w-full max-w-lg mx-auto h-full bg-gray-100">
-      <DyteProvider value={meeting} fallback={<div>loading...</div>}>
+      <DyteProvider
+        value={meeting}
+        fallback={
+          <div className="w-full h-full flex items-center justify-center">
+            <DyteSpinner className="my-12 mx-auto text-blue-500" size="lg" />
+          </div>
+        }
+      >
         <Meeting />
       </DyteProvider>
     </div>
