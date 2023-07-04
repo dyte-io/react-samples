@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@dytesdk/react-ui-kit": "^1.52.0-staging.6",
-    "@dytesdk/react-web-core": "^1.31.0",
+    "@dytesdk/react-ui-kit": "^1.52.0",
+    "@dytesdk/react-web-core": "^1.32.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-feather": "^2.0.10"
