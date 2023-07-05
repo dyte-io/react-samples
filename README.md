@@ -12,6 +12,7 @@ Here are the list of available samples at the moment.
 2. [Using Background Transformer to modify your background](./samples/with-background-transformer/)
 3. [Audio Room](./samples/audio-room/)
 4. [Facetime](./samples/facetime/)
+5. [Chat](./samples/chat/)
 
 ## Usage
 
