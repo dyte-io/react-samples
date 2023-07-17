@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
 import Meeting from './components/Meeting';
+import { DyteDialogManager, DyteUiProvider } from '@dytesdk/react-ui-kit';
 
 function App() {
   const [meeting, initMeeting] = useDyteClient();
@@ -36,6 +37,7 @@ function App() {
   // `mode="fill"` to the component.
   return (
     <DyteProvider value={meeting} fallback={<></>}>
+      <DyteDialogManager meeting={meeting} />
       <Meeting />
     </DyteProvider>
   );
