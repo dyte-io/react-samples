@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@dytesdk/react-ui-kit": "^1.51.0",
-    "@dytesdk/react-web-core": "^1.30.0",
+    "@dytesdk/react-ui-kit": "^1.53.1",
+    "@dytesdk/react-web-core": "^1.33.3",
     "@dytesdk/video-background-transformer": "^1.1.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
