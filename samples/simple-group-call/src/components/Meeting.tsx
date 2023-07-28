@@ -82,6 +82,7 @@ function UI() {
           return (
             <DyteParticipantTile
               participant={participant}
+              meeting={meeting}
               key={participant.id}
               className={clsx(
                 'absolute transition-all border bg-zinc-100',
