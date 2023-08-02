@@ -1,12 +1,11 @@
 # Default Meeting UI Sample
 
-This sample showcases the simplest way to integrate Dyte's React UI Kit in your app!
+This sample showcases the simplest way to create a Clubhouse clone with Dyte's React UI Kit!
 
 ---
 
-![A screenshot of the DyteMeeting component](./screenshot.png)
+![A screenshot of the clubhouse sample for the speaker](./docs/screenshot-speaker.png)
 
-Just pop in the `<DyteMeeting />` component, and pass the initialised
-`meeting` object to it and you're good to go!
+![A screenshot of the clubhouse sample for the listener](./docs/screenshot-listener.png)
 
 [See source](./src/App.tsx)
