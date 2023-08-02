@@ -29,7 +29,6 @@ function App() {
     initMeeting({
       authToken,
       roomName,
-      // apiBase: 'https://api.staging.dyte.in',
       defaults: {
         video: false,
         audio: false,
