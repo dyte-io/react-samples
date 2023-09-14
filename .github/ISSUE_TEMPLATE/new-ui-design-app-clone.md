@@ -2,7 +2,7 @@
 name: New UI Design/App Clone
 about: Suggest an idea for this Sample App repo
 title: ''
-labels: ''
+labels: 'hacktoberfest2023'
 assignees: ''
 
 ---
