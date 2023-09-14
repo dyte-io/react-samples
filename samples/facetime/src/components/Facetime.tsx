@@ -1,9 +1,11 @@
 import {
   DyteAudioVisualizer,
   DyteAvatar,
+  DyteDialogManager,
   DyteNameTag,
   DyteParticipantTile,
   DyteParticipantsAudio,
+  DyteSetupScreen,
   DyteSimpleGrid,
   provideDyteDesignSystem,
 } from '@dytesdk/react-ui-kit';
@@ -121,7 +123,8 @@ export default function Facetime() {
   if (!roomJoined) {
     return (
       <div className="bg-black text-white w-full h-full flex place-items-center justify-center">
-        <p className="text-2xl">You are not in the meeting.</p>
+        <DyteDialogManager meeting={meeting} />
+        <DyteSetupScreen meeting={meeting} />
       </div>
     );
   }
