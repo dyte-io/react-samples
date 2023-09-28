@@ -15,6 +15,7 @@ import clsx from 'clsx';
 import Draggable from 'react-draggable';
 
 function Grid() {
+  const { meeting } = useDyteMeeting();
   const participants = useDyteSelector((m) => m.participants.active);
 
   return (
@@ -25,6 +26,7 @@ function Grid() {
       {participants.size > 0 && (
         <DyteSimpleGrid
           participants={participants.toArray()}
+          meeting={meeting}
           aspectRatio="1:1"
           gap={18}
         />
@@ -133,6 +135,7 @@ export default function Facetime() {
       <Draggable bounds="parent">
         <DyteParticipantTile
           participant={meeting.self}
+          meeting={meeting}
           key={meeting.self.id}
           className="z-10 absolute bottom-44 right-4 sm:bottom-4 shadow-black shadow-2xl aspect-square w-52 h-auto cursor-move duration-0"
         >

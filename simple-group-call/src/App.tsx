@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
 import Meeting from './components/Meeting';
+import { DyteDialogManager, DyteUiProvider } from '@dytesdk/react-ui-kit';
 
 function App() {
   const [meeting, initMeeting] = useDyteClient();
@@ -9,10 +10,6 @@ function App() {
     const searchParams = new URL(window.location.href).searchParams;
 
     const authToken = searchParams.get('authToken');
-
-    // pass an empty string when using v2 meetings
-    // for v1 meetings, you would need to pass the correct roomName here
-    const roomName = searchParams.get('roomName') || '';
 
     if (!authToken) {
       alert(
@@ -23,7 +20,6 @@ function App() {
 
     initMeeting({
       authToken,
-      roomName,
       defaults: {
         audio: false,
         video: false,
@@ -36,6 +32,7 @@ function App() {
   // `mode="fill"` to the component.
   return (
     <DyteProvider value={meeting} fallback={<></>}>
+      <DyteDialogManager meeting={meeting} />
       <Meeting />
     </DyteProvider>
   );
