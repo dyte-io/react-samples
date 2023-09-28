@@ -1,13 +1,17 @@
 import { useEffect } from 'react';
 import { useDyteClient } from '@dytesdk/react-web-core';
-import { DyteChat, DyteUiProvider, provideDyteDesignSystem } from '@dytesdk/react-ui-kit';
+import {
+  DyteChat,
+  DyteUiProvider,
+  provideDyteDesignSystem,
+} from '@dytesdk/react-ui-kit';
 
 function App() {
   const [meeting, initMeeting] = useDyteClient();
 
   useEffect(() => {
     provideDyteDesignSystem(document.body, {
-      theme: 'light'
+      theme: 'light',
     });
 
     const searchParams = new URL(window.location.href).searchParams;
@@ -33,7 +37,7 @@ function App() {
     });
   }, []);
 
-  if (!meeting) return "Loading...";
+  if (!meeting) return <div>"Loading..."</div>;
 
   return (
     <DyteUiProvider meeting={meeting}>
