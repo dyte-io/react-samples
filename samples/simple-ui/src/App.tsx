@@ -16,6 +16,7 @@ import {
   DyteScreenShareToggle,
   DyteSetupScreen,
   DyteSidebar,
+  DyteSpinner,
   defaultConfig,
   provideDyteDesignSystem,
 } from '@dytesdk/react-ui-kit';
@@ -37,8 +38,12 @@ function Meeting() {
       ...state,
       ...payload,
     }),
-    { meeting: 'joined' },
+    { meeting: 'joined', activeSidebar: false },
   );
+
+  if (!meeting) {
+    return <DyteSpinner />;
+  }
 
   if (!roomJoined) {
     return <DyteSetupScreen meeting={meeting} />;
@@ -49,7 +54,7 @@ function Meeting() {
       className="flex flex-col w-full h-full"
       ref={(el) => {
         el?.addEventListener('dyteStateUpdate', (e: any) => {
-          console.log('state', e.detail);
+          updateStates(e.detail);
         });
       }}
     >
@@ -58,9 +63,9 @@ function Meeting() {
         <DyteMeetingTitle meeting={meeting} />
       </header>
 
-      <main className="flex-1 flex p-2">
-        <DyteGrid meeting={meeting} className="flex-1" config={config} />
-        <DyteSidebar meeting={meeting} className="static" />
+      <main className="flex flex-1 p-2">
+        <DyteGrid meeting={meeting} config={config} />
+        {states.activeSidebar && <DyteSidebar meeting={meeting} states={states} />}
       </main>
 
       <footer className="p-2 flex place-items-center justify-center">
