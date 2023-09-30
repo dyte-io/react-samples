@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
 import Meeting from './components/Meeting';
-import { DyteDialogManager, DyteUiProvider } from '@dytesdk/react-ui-kit';
+import { DyteDialogManager } from '@dytesdk/react-ui-kit';
 
 function App() {
   const [meeting, initMeeting] = useDyteClient();
