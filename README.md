@@ -13,6 +13,7 @@ Here are the list of available samples at the moment.
 3. [Audio Room](./samples/audio-room/)
 4. [Facetime](./samples/facetime/)
 5. [Chat](./samples/chat/)
+6. [Live Auction App](./samples/live-auction/)
 
 ## Usage
 
