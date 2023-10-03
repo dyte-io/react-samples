@@ -1,10 +1,12 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
+import { provideDyteDesignSystem } from '@dytesdk/react-ui-kit';
 import { LoadingScreen } from './pages';
 import { Meeting, SetupScreen } from './pages';
 
 function App() {
+  const meetingEl = useRef<HTMLDivElement>(null);
   const [meeting, initMeeting] = useDyteClient();
   const [roomJoined, setRoomJoined] = useState<boolean>(false);
 
@@ -29,6 +31,28 @@ function App() {
   }, []);
 
   useEffect(() => {
+    if (!meetingEl.current) return;
+    provideDyteDesignSystem(meetingEl.current, {
+      googleFont: 'Poppins',
+      theme: 'light',
+      colors: {
+        danger: '#ffb31c',
+        brand: {
+          300: '#c6a6ff',
+          400: '#9e77e0',
+          500: '#754cba',
+          600: '#4e288f',
+          700: '#2e0773',
+        },
+        text: '#071428',
+        'text-on-brand': '#ffffff',
+        'video-bg': '#E5E7EB',
+      },
+      borderRadius: 'rounded',
+    });
+  }, []);
+
+  useEffect(() => {
     if (!meeting) return;
 
     const roomJoinedListener = () => {
@@ -48,13 +72,14 @@ function App() {
   }, [meeting])
 
   return (
+    <div ref={meetingEl} >
     <DyteProvider value={meeting} fallback={<LoadingScreen />}>
       {
         !roomJoined ? <SetupScreen /> : <Meeting />
       }
     </DyteProvider>
+    </div>
   )
 }
 
 export default App
-// TODO: work on the blog

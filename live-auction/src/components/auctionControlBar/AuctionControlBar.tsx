@@ -32,7 +32,7 @@ const AuctionControlBar = (props: Props) => {
     return (
         <div className="bidding-component">
             <div className="display-bid">
-                <span>{highestBid.user === 'default' ? 'Starting' : 'Highest'} Bid: &ensp; </span>$ {highestBid.bid}
+                <span>{highestBid.user === 'default' ? 'Starting' : 'Highest'} Bid: </span>$ {highestBid.bid}
             </div>
             
             {

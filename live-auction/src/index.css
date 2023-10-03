@@ -4,8 +4,8 @@ html, body {
   padding: 0;
   max-height: 100vh;
   margin: 0;
-  background: black;
-  color: white;
+  background: rgb(255, 255, 255);
+  color: rgb(31, 31, 31);
   display: flex;
   flex-direction: column;
 }

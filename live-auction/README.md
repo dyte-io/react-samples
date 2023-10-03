@@ -1,4 +1,4 @@
-# Facetime UI Sample
+# Live Auction Sample App
 
 This sample showcases how you can build a Live Auction App with Dyte's React UI Kit!
 
