@@ -46,7 +46,7 @@
 
 .setup-information p {
     margin: 10px 0;
-    color: rgb(212, 212, 212);
+    color: rgb(53, 53, 53);
 }
 
 .setup-name {
@@ -56,9 +56,9 @@
     padding: 8px;
     border-radius: 4px;
     font-size: medium;
-    border: solid 1px rgb(50, 50, 50);
-    background: rgb(25, 25, 25);
-    color: rgb(183, 183, 183);
+    border: solid 1px #cfcfd0;
+    background: #E5E7EB;
+    color: rgb(17, 17, 17);
 }
 
 .setup-join {
@@ -68,9 +68,9 @@
     padding: 8px;
     border-radius: 4px;
     font-size: medium;
-    border: solid 1px rgb(51, 78, 255);
-    background: rgb(42, 69, 247);
-    color: rgb(235, 235, 235);
+    border: solid 1px #9e77e0;
+    background: #754cba;
+    color: rgb(255, 255, 255);
     cursor: pointer;
 }
 
