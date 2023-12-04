@@ -24,7 +24,6 @@ const Widget = () => {
 				audio: false,
 				video: false,
 			},
-			apiBase: import.meta.env.VITE_API_BASE,
 		});
 	};
 
