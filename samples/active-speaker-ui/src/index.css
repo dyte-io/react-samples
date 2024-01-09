@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#root {
+	background: rgb(var(--dyte-colors-background-1000));
+}
+
+.sidebar {
+	background: rgb(var(--dyte-colors-background-900));
+}
