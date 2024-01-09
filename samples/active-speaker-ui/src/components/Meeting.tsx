@@ -11,6 +11,8 @@ import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
 import { useThrottle } from '@uidotdev/usehooks';
 import { useEffect, useState } from 'react';
 
+const ACTIVE_SPEAKER_CHANGE_DELAY = 3000;
+
 export default function Meeting() {
 	const { meeting } = useDyteMeeting();
 	const isScreenShareEnabled = useDyteSelector(
@@ -26,7 +28,7 @@ export default function Meeting() {
 	const lastActiveSpeaker = useDyteSelector((meeting) => meeting.participants.lastActiveSpeaker);
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 	const [activeSpeakerInternal, setActiveSpeaker] = useState<any>();
-	const activeSpeaker = useThrottle(activeSpeakerInternal, 3000);
+	const activeSpeaker = useThrottle(activeSpeakerInternal, ACTIVE_SPEAKER_CHANGE_DELAY);
 
 	useEffect(() => {
 		const activeParticipants = meeting.participants.active.toArray();
@@ -54,7 +56,9 @@ export default function Meeting() {
 				</footer>
 			</section>
 			<aside className="w-80 m-4 flex flex-col gap-4">
-				{isScreenShareEnabled && <DyteParticipantTile participant={activeSpeaker} size="md" />}
+				{isScreenShareEnabled && (
+					<DyteParticipantTile participant={activeSpeaker} meeting={meeting} size="md" />
+				)}
 				<DyteChat meeting={meeting} className="sidebar shrink rounded-xl overflow-hidden" />
 			</aside>
 		</main>
