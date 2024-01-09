@@ -15,6 +15,7 @@ const ACTIVE_SPEAKER_CHANGE_DELAY = 3000;
 
 export default function Meeting() {
 	const { meeting } = useDyteMeeting();
+	const joined = useDyteSelector((meeting) => meeting.self.roomJoined);
 	const isScreenShareEnabled = useDyteSelector(
 		(meeting) =>
 			meeting.self.screenShareEnabled || meeting.participants.joined.toArray().some((p) => p.screenShareEnabled),
@@ -38,6 +39,10 @@ export default function Meeting() {
 				meeting.self,
 		);
 	}, [lastActiveSpeaker, meeting.participants.active, meeting.participants.lastActiveSpeaker, meeting.self]);
+
+	if (!joined) {
+		return <main className="flex min-h-screen text-gray-50 items-center justify-center">Meeting ended</main>;
+	}
 
 	return (
 		<main className="flex min-h-screen">

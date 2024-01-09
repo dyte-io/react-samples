@@ -24,7 +24,8 @@ export default function App() {
 		});
 	}, []);
 
-	if (!meeting) return 'Loading...';
+	if (!meeting)
+		return <main className="flex min-h-screen text-gray-50 items-center justify-center">Connecting...</main>;
 
 	return (
 		<DyteProvider value={meeting}>
