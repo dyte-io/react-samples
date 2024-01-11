@@ -2,10 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-#root {
+.bg-1000 {
 	background: rgb(var(--dyte-colors-background-1000));
 }
 
-.sidebar {
+.bg-900 {
 	background: rgb(var(--dyte-colors-background-900));
 }
