@@ -31,9 +31,9 @@ export default function App() {
 	return (
 		<DyteProvider value={meeting}>
 			<DyteParticipantsAudio meeting={meeting} />
+			<DyteDialogManager meeting={meeting} />
+			<DyteNotifications meeting={meeting} />
 			<MeetingProvider>
-				<DyteDialogManager meeting={meeting} />
-				<DyteNotifications meeting={meeting} />
 				<Meeting />
 			</MeetingProvider>
 		</DyteProvider>

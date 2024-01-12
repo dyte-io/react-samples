@@ -15,6 +15,8 @@ import {
 	DytePlugins,
 	DytePolls,
 	DytePluginMain,
+	DyteParticipants,
+	DyteParticipantsToggle,
 } from '@dytesdk/react-ui-kit';
 import { useContext } from 'react';
 import { MeetingContext } from './MeetingContext';
@@ -39,8 +41,11 @@ export default function Meeting() {
 	const showChat = states.sidebar === 'chat' || (
 		!states.activeSidebar && showSpotlight && !['sm', 'md'].includes(breakpoint)
 	);
+
 	const showPolls = states.sidebar === 'polls';
 	const showPlugins = states.sidebar === 'plugins';
+	const showParticipants = states.sidebar === 'participants';
+	const showSidebar = showChat || showPolls || showPlugins || showParticipants;
 
 	if (roomState === 'ended') {
 		return <main className="flex min-h-screen text-gray-50 items-center justify-center">Meeting ended</main>;
@@ -81,7 +86,7 @@ export default function Meeting() {
 					<DyteGrid meeting={meeting} className='h-auto' />
 				)}
 
-				{(showChat || showPolls || showPlugins) && <aside className="flex md:flex-col gap-4 w-80">
+				{(showSidebar) && <aside className="flex md:flex-col gap-4 w-80">
 					{showSpotlight && activeSpeaker && (
 						<div className='hidden md:flex'>
 							<DyteParticipantTile
@@ -94,6 +99,7 @@ export default function Meeting() {
 					{showChat && <DyteChat meeting={meeting} className="sidebar shrink rounded-xl overflow-hidden" />}
 					{showPolls && <DytePolls meeting={meeting} className="sidebar shrink rounded-xl overflow-hidden" />}
 					{showPlugins && <DytePlugins meeting={meeting} className="sidebar shrink rounded-xl overflow-hidden" />}
+					{showParticipants && <DyteParticipants meeting={meeting} className="sidebar shrink rounded-xl overflow-hidden" />}
 				</aside>}
 				{showSpotlight && activeSpeaker && (
 					<div className='flex md:hidden fixed left-1 bottom-1 h-[80px] w-[130px]'>
@@ -119,6 +125,7 @@ export default function Meeting() {
 				<div className='flex basis-1/3 justify-start flex-col md:flex-row md:justify-end'>
 					<DyteChatToggle meeting={meeting}  size={iconSize} />
 					<DytePollsToggle meeting={meeting}  size={iconSize} />
+					<DyteParticipantsToggle meeting={meeting}  size={iconSize} />
 					{!['sm', 'md'].includes(breakpoint) && <DytePluginsToggle meeting={meeting}  size={iconSize} />}
 				</div>
 			</footer>

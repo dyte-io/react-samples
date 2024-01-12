@@ -1,4 +1,4 @@
-import React, { createContext, useEffect, useReducer, useState } from 'react';
+import React, { createContext, useReducer } from 'react';
 import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
 import { useThrottle } from '@uidotdev/usehooks';
 import type { States } from '@dytesdk/ui-kit/dist/types';
@@ -59,31 +59,12 @@ const MeetingProvider = ({ children }: Props) => {
 			meeting.participants.waitlisted.size,
 	);
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const [activeSpeakerInternal, setActiveSpeaker] = useState<any>();
-
+    const activeSpeakerInternal = meeting.participants.active
+		.toArray()
+		.find((participant) =>
+			participant.id === lastActiveSpeaker
+		) ?? meeting.self;
 	const activeSpeaker = useThrottle(activeSpeakerInternal, ACTIVE_SPEAKER_CHANGE_DELAY);
-
-	useEffect(() => {
-		const activeParticipants = meeting.participants.active.toArray();
-		setActiveSpeaker(
-			activeParticipants.find((participant) =>
-				participant.id === lastActiveSpeaker
-			) ?? meeting.self,
-		);
-	}, [lastActiveSpeaker, meeting.participants.active, meeting.self]);
-
-
-	useEffect(() => {
-		if (lastActiveSpeaker) {
-			setActiveSpeaker(lastActiveSpeaker);
-		} else {
-			setActiveSpeaker(meeting.self);
-		}
-	}, [
-		lastActiveSpeaker,
-		meeting.self,
-	]);
 
     return (
 		<MeetingContext.Provider
