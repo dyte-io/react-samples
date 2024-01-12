@@ -1,5 +1,5 @@
 import Meeting from './components/Meeting';
-import { DyteDialogManager, DyteParticipantsAudio, DyteNotifications } from '@dytesdk/react-ui-kit';
+import { DyteParticipantsAudio, DyteNotifications } from '@dytesdk/react-ui-kit';
 import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
 import { useEffect } from 'react';
 import MeetingProvider from './components/MeetingContext';
@@ -20,8 +20,6 @@ export default function App() {
 				audio: false,
 				video: false,
 			},
-		}).then((meeting) => {
-			meeting?.join();
 		});
 	}, []); // don't add dependencies to execute just once
 
@@ -31,9 +29,8 @@ export default function App() {
 	return (
 		<DyteProvider value={meeting}>
 			<DyteParticipantsAudio meeting={meeting} />
-			<DyteDialogManager meeting={meeting} />
-			<DyteNotifications meeting={meeting} />
 			<MeetingProvider>
+				<DyteNotifications meeting={meeting} />
 				<Meeting />
 			</MeetingProvider>
 		</DyteProvider>
