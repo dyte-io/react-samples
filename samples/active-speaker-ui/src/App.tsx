@@ -1,12 +1,12 @@
 import Meeting from './components/Meeting';
-import { DyteDialogManager, DyteParticipantsAudio } from '@dytesdk/react-ui-kit';
+import { DyteDialogManager, DyteParticipantsAudio, DyteNotifications } from '@dytesdk/react-ui-kit';
 import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
 import { useEffect } from 'react';
 
 export default function App() {
 	const [meeting, initMeeting] = useDyteClient();
 	const url = new URL(window.location.href);
-	let queryToken = url.searchParams.get('authToken')!;
+	const queryToken = url.searchParams.get('authToken')!;
 
 	if (!queryToken) {
 		alert('Please add authToken to url query params');
@@ -22,7 +22,7 @@ export default function App() {
 		}).then((meeting) => {
 			meeting?.join();
 		});
-	}, []);
+	}, []); // don't add dependencies to execute just once
 
 	if (!meeting)
 		return <main className="flex min-h-screen text-gray-50 items-center justify-center">Connecting...</main>;
@@ -31,6 +31,7 @@ export default function App() {
 		<DyteProvider value={meeting}>
 			<DyteParticipantsAudio meeting={meeting} />
 			<DyteDialogManager meeting={meeting} />
+			<DyteNotifications meeting={meeting} />
 			<Meeting />
 		</DyteProvider>
 	);
