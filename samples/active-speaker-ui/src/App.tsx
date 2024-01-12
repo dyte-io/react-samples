@@ -2,6 +2,7 @@ import Meeting from './components/Meeting';
 import { DyteDialogManager, DyteParticipantsAudio, DyteNotifications } from '@dytesdk/react-ui-kit';
 import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
 import { useEffect } from 'react';
+import MeetingProvider from './components/MeetingContext';
 
 export default function App() {
 	const [meeting, initMeeting] = useDyteClient();
@@ -32,7 +33,9 @@ export default function App() {
 			<DyteParticipantsAudio meeting={meeting} />
 			<DyteDialogManager meeting={meeting} />
 			<DyteNotifications meeting={meeting} />
-			<Meeting />
+			<MeetingProvider>
+				<Meeting />
+			</MeetingProvider>
 		</DyteProvider>
 	);
 }
