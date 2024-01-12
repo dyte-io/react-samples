@@ -10,7 +10,7 @@
 		"preview": "vite preview"
 	},
 	"dependencies": {
-		"@dytesdk/react-ui-kit": "^1.61.4",
+		"@dytesdk/react-ui-kit": "^1.61.3-staging.20",
 		"@dytesdk/react-web-core": "^1.35.12",
 		"@uidotdev/usehooks": "^2.4.1",
 		"react": "^18.2.0",
