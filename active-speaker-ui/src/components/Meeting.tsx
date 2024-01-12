@@ -1,110 +1,134 @@
-import SidebarOverlay from './SidebarOverlay';
 import {
-	defaultIconPack,
 	DyteCameraToggle,
 	DyteChat,
-	DyteControlbarButton,
 	DyteGrid,
 	DyteLeaveButton,
 	DyteMicToggle,
-	DyteParticipants,
 	DyteParticipantTile,
 	DyteScreenShareToggle,
-	DyteStageToggle,
 	DyteScreenshareView,
 	DyteSettingsToggle,
+	DyteEndedScreen,
+	DyteChatToggle,
+	DytePollsToggle,
+	DytePluginsToggle,
+	DytePlugins,
+	DytePolls,
+	DytePluginMain,
+	DyteParticipants,
+	DyteParticipantsToggle,
 } from '@dytesdk/react-ui-kit';
-import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
-import { useThrottle } from '@uidotdev/usehooks';
-import { useEffect, useState, useCallback } from 'react';
-
-const ACTIVE_SPEAKER_CHANGE_DELAY = 3000;
+import { useContext } from 'react';
+import { MeetingContext } from './MeetingContext';
+import { DyteWaitingScreen } from '@dytesdk/react-ui-kit';
 
 export default function Meeting() {
-	const { meeting } = useDyteMeeting();
-	const joined = useDyteSelector((meeting) => meeting.self.roomJoined);
-	const isScreenShareEnabled = useDyteSelector(
-		(meeting) =>
-			meeting.self.screenShareEnabled || meeting.participants.joined.toArray().some((p) => p.screenShareEnabled),
+	const {
+		meeting,
+		states,
+		updateStates,
+		roomState,
+		isScreenShareEnabled,
+		activeScreenshares,
+		isPluginsEnabled,
+		activeSpeaker,
+		activePlugins,
+		breakpoint,
+		showSpotlight,
+	} = useContext(MeetingContext)!;
+
+	const iconSize = ['sm', 'md'].includes(breakpoint) ? 'sm' : 'md';
+	const showChat = states.sidebar === 'chat' || (
+		!states.activeSidebar && showSpotlight && !['sm', 'md'].includes(breakpoint)
 	);
-	const screenSharingParticipant = useDyteSelector((meeting) => {
-		if (meeting.self.screenShareEnabled) {
-			return meeting.self;
-		}
-		return meeting.participants.joined.toArray().find((p) => p.screenShareEnabled);
-	});
-	const lastActiveSpeaker = useDyteSelector((meeting) => meeting.participants.lastActiveSpeaker);
-	const isOnStage = useDyteSelector((meeting) => meeting.self.stageStatus === 'ON_STAGE');
-	const requestCount = useDyteSelector(
-		(meeting) =>
-			meeting.participants.joined.toArray().filter((p) => p.stageStatus === 'REQUESTED_TO_JOIN_STAGE').length +
-			meeting.participants.waitlisted.size,
-	);
 
-	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const [activeSpeakerInternal, setActiveSpeaker] = useState<any>();
-	const [participantListVisible, setParticipantListVisible] = useState<boolean>(false);
+	const showPolls = states.sidebar === 'polls';
+	const showPlugins = states.sidebar === 'plugins';
+	const showParticipants = states.sidebar === 'participants';
+	const showSidebar = showChat || showPolls || showPlugins || showParticipants;
 
-	const activeSpeaker = useThrottle(activeSpeakerInternal, ACTIVE_SPEAKER_CHANGE_DELAY);
-
-	const toggleParticipantList = useCallback(() => {
-		setParticipantListVisible(!participantListVisible);
-	}, [participantListVisible]);
-
-	useEffect(() => {
-		const activeParticipants = meeting.participants.active.toArray();
-
-		setActiveSpeaker(
-			activeParticipants.find((participant) => participant.id === meeting.participants.lastActiveSpeaker) ??
-				meeting.self,
-		);
-	}, [lastActiveSpeaker, meeting.participants.active, meeting.participants.lastActiveSpeaker, meeting.self]);
-
-	if (!joined) {
+	if (roomState === 'ended') {
 		return <main className="flex min-h-screen text-gray-50 items-center justify-center">Meeting ended</main>;
 	}
 
+	if (roomState === 'init') {
+		return <main className="flex min-h-screen text-gray-50 items-center justify-center">Joining...</main>;
+	}
+
+	if (['left', 'kicked', 'disconnected', 'rejected'].includes(roomState)) {
+		return <main className="flex min-h-screen text-gray-50 items-center justify-center">
+			<DyteEndedScreen meeting={meeting} />
+		</main>;
+	}
+
+	if (roomState === 'waitlisted') {
+		return <main className="flex min-h-screen text-gray-50 items-center justify-center">
+			<DyteWaitingScreen meeting={meeting} />
+		</main>;
+	}
+
 	return (
-		<main className="flex min-h-screen">
-			<section className="flex flex-col grow m-4 gap-4">
-				{isScreenShareEnabled && screenSharingParticipant ? (
-					<DyteScreenshareView meeting={meeting} participant={screenSharingParticipant} />
+		<main className="flex min-h-screen flex-row md:flex-col" ref={(el) => {
+			el?.addEventListener(
+				'dyteStateUpdate',
+				(e) => {
+					if (!(e instanceof CustomEvent)) return;
+					updateStates(e.detail);
+				},
+			);
+		}}>
+			<section className="flex flex-1 grow m-4 gap-4">
+				{ (isScreenShareEnabled && activeScreenshares.length === 1 && !isPluginsEnabled) ? (
+					<DyteScreenshareView className='h-auto' meeting={meeting} participant={activeScreenshares[0]} />
+				) : (isPluginsEnabled && !isScreenShareEnabled && activePlugins.length === 1 ) ? (
+					<DytePluginMain className='h-auto' meeting={meeting} plugin={activePlugins[0]} />
 				) : (
-					<DyteGrid meeting={meeting} />
+					<DyteGrid meeting={meeting} className='h-auto' />
 				)}
-				<footer className="flex justify-center">
-					{isOnStage && <DyteScreenShareToggle meeting={meeting} />}
-					{isOnStage && <DyteMicToggle meeting={meeting} />}
-					{isOnStage && <DyteCameraToggle meeting={meeting} />}
-					<DyteStageToggle meeting={meeting} />
-					<DyteLeaveButton />
-					{isOnStage && <DyteSettingsToggle />}
-					<div className="relative">
-						<DyteControlbarButton
-							icon={defaultIconPack.participants}
-							label="Participants"
-							onClick={toggleParticipantList}
-							className={participantListVisible ? 'text-blue-500' : ''}
-						></DyteControlbarButton>
-						{requestCount !== 0 && (
-							<div className="absolute bg-blue-500 text-white top-0 right-0 rounded-full py-1 px-2 text-xs">
-								{requestCount}
-							</div>
-						)}
+
+				{(showSidebar) && <aside className="flex md:flex-col gap-4 w-80">
+					{showSpotlight && activeSpeaker && (
+						<div className='hidden md:flex'>
+							<DyteParticipantTile
+								participant={activeSpeaker}
+								meeting={meeting}
+								size="md"
+							/>
+						</div>
+					)}
+					{showChat && <DyteChat meeting={meeting} className="sidebar shrink rounded-xl overflow-hidden" />}
+					{showPolls && <DytePolls meeting={meeting} className="sidebar shrink rounded-xl overflow-hidden" />}
+					{showPlugins && <DytePlugins meeting={meeting} className="sidebar shrink rounded-xl overflow-hidden" />}
+					{showParticipants && <DyteParticipants meeting={meeting} className="sidebar shrink rounded-xl overflow-hidden" />}
+				</aside>}
+				{showSpotlight && activeSpeaker && (
+					<div className='flex md:hidden fixed left-1 bottom-1 h-[80px] w-[130px]'>
+						<DyteParticipantTile
+							className='h-[80px] w-[130px]'
+							participant={activeSpeaker}
+							meeting={meeting}
+							size="sm"
+						/>
 					</div>
-				</footer>
-			</section>
-			<aside className="w-80 m-4 flex flex-col gap-4">
-				{isScreenShareEnabled && (
-					<DyteParticipantTile participant={activeSpeaker} meeting={meeting} size="md" />
 				)}
-				<div className="flex relative bg-900 shrink rounded-xl overflow-hidden h-full">
-					<DyteChat meeting={meeting} />
-					<SidebarOverlay show={participantListVisible}>
-						{participantListVisible ? <DyteParticipants meeting={meeting} /> : null}
-					</SidebarOverlay>
+			</section>
+			<footer className="flex gap-2 flex-col-reverse md:flex-row">
+				<div className='flex basis-1/3 justify-end flex-col md:flex-row md:justify-start'>
+					<DyteSettingsToggle size={iconSize} />
 				</div>
-			</aside>
+				<div className='flex basis-1/3 justify-center flex-col md:flex-row'>
+					{!['sm', 'md'].includes(breakpoint) && <DyteScreenShareToggle meeting={meeting} size={iconSize} />}
+					<DyteMicToggle meeting={meeting}  size={iconSize} />
+					<DyteCameraToggle meeting={meeting}  size={iconSize} />
+					<DyteLeaveButton  size={iconSize}/>
+				</div>
+				<div className='flex basis-1/3 justify-start flex-col md:flex-row md:justify-end'>
+					<DyteChatToggle meeting={meeting}  size={iconSize} />
+					<DytePollsToggle meeting={meeting}  size={iconSize} />
+					<DyteParticipantsToggle meeting={meeting}  size={iconSize} />
+					{!['sm', 'md'].includes(breakpoint) && <DytePluginsToggle meeting={meeting}  size={iconSize} />}
+				</div>
+			</footer>
 		</main>
 	);
 }
