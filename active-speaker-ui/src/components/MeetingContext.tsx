@@ -19,7 +19,7 @@ export interface ContextValue {
 	isPluginsEnabled: boolean;
 	activeScreenshares: Peer[];
 	activePlugins: DytePlugin[];
-	activeSpeaker: Peer | undefined;
+	activeSpeaker: string;
 	showSpotlight: boolean;
 	requestCount: number;
 	isOnStage: boolean;
@@ -50,10 +50,11 @@ const MeetingProvider = ({ children }: Props) => {
 					meeting.self.screenShareEnabled ? [meeting.self as Peer] : []
 				),
 	);
-	const activePlugins = useDyteSelector((meeting) => meeting.plugins.active.toArray());
+	const activePlugins = useDyteSelector((meeting) => meeting.plugins.active).toArray();
 	const showSpotlight = activeScreenshares.length > 0 || activePlugins.length > 0;
 
 	const lastActiveSpeaker = useDyteSelector((meeting) => meeting.participants.lastActiveSpeaker);
+	const pinnedUsers = useDyteSelector((meeting) => meeting.participants.pinned).toArray();
 
 	const isOnStage = useDyteSelector((meeting) => meeting.self.stageStatus === 'ON_STAGE');
 	const requestCount = useDyteSelector(
@@ -74,7 +75,7 @@ const MeetingProvider = ({ children }: Props) => {
 				isPluginsEnabled: activePlugins.length > 0,
 				activeScreenshares,
 				activePlugins,
-				activeSpeaker: (meeting.participants.active.get(lastActiveSpeaker) ?? meeting.self) as Peer,
+				activeSpeaker: pinnedUsers.length > 0 ? pinnedUsers[0].id : lastActiveSpeaker ?? meeting.self.id,
 				breakpoint,
 				showSpotlight,
 				requestCount,
