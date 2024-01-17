@@ -1,33 +1,15 @@
 import { useMeetingStore } from '../lib/meeting-store';
+import ActiveSpeaker from './ActiveSpeaker';
 import {
   DyteParticipants,
   DytePlugins,
   DytePolls,
   DyteChat,
-  DyteParticipantTile,
 } from '@dytesdk/react-ui-kit';
-import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
-import clsx from 'clsx';
+import { useDyteMeeting } from '@dytesdk/react-web-core';
 
 export default function Sidebar() {
   const { meeting } = useDyteMeeting();
-
-  const lastActiveSpeaker = useDyteSelector(
-    (m) => m.participants.lastActiveSpeaker
-  );
-
-  const pinnedParticipants = useDyteSelector((m) =>
-    m.participants.pinned.toArray()
-  );
-
-  const activeParticipants = useDyteSelector((m) =>
-    m.participants.active.toArray()
-  );
-
-  const activeSpeaker =
-    pinnedParticipants.at(0) ??
-    meeting.participants.joined.get(lastActiveSpeaker) ??
-    activeParticipants.at(0);
 
   const { states, size, isMobile, isActiveSpeakerMode } = useMeetingStore(
     ({ states, isImmersiveMode, size, isMobile, isActiveSpeakerMode }) => ({
@@ -38,8 +20,6 @@ export default function Sidebar() {
       isActiveSpeakerMode,
     })
   );
-
-  console.log({ activeSpeaker, isActiveSpeakerMode, pinnedParticipants });
 
   let sidebar: JSX.Element;
 
@@ -58,24 +38,9 @@ export default function Sidebar() {
       break;
   }
 
-  console.log({ activeSpeaker });
-
   return (
     <div className="size-full flex flex-col gap-2 p-2">
-      {activeSpeaker && isActiveSpeakerMode && (
-        <DyteParticipantTile
-          participant={activeSpeaker}
-          meeting={meeting}
-          className={clsx(
-            'h-auto',
-            isMobile
-              ? 'absolute bottom-3 left-3 w-36 z-50 aspect-square'
-              : 'w-full aspect-video'
-          )}
-          size={size}
-          states={states}
-        />
-      )}
+      {!isMobile && <ActiveSpeaker className="h-auto w-full aspect-video" />}
 
       <div className="flex-1 rounded-lg overflow-clip bg-zinc-900">
         {sidebar}

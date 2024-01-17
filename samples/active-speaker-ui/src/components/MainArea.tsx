@@ -1,4 +1,5 @@
 import { useMeetingStore } from '../lib/meeting-store';
+import ActiveSpeaker from './ActiveSpeaker';
 import {
   DyteIcon,
   defaultIconPack,
@@ -179,6 +180,7 @@ export default function MainArea() {
   const isActiveView = screenshares.length + activePlugins.length > 0;
 
   const setActiveMode = useMeetingStore((s) => s.setIsActiveSpeakerMode);
+  const isMobile = useMeetingStore((s) => s.isMobile);
 
   useEffect(() => {
     setActiveMode(isActiveView);
@@ -193,6 +195,10 @@ export default function MainArea() {
         />
       ) : (
         <DyteSimpleGrid participants={participants} meeting={meeting} />
+      )}
+
+      {isMobile && (
+        <ActiveSpeaker className="absolute bottom-3 left-3 w-36 z-50 h-auto aspect-square" />
       )}
     </div>
   );
