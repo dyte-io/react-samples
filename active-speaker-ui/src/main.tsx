@@ -1,10 +1,14 @@
-import App from './App.tsx';
+import App from './App';
 import './index.css';
 import { provideDyteDesignSystem } from '@dytesdk/react-ui-kit';
 import ReactDOM from 'react-dom/client';
 
-ReactDOM.createRoot(document.getElementById('root')!).render(<App />);
-
 provideDyteDesignSystem(document.body, {
-	theme: 'dark',
+  theme: 'darkest',
 });
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
+  // NOTE: Not using StrictMode to avoid the double execution of useEffect
+  // while trying out the sample
+  <App />
+);

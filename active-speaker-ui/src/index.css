@@ -2,10 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
-.bg-1000 {
-	background: rgb(var(--dyte-colors-background-1000));
-}
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
 
-.bg-900 {
-	background: rgb(var(--dyte-colors-background-900));
+  body {
+    color: #fff;
+    background: #000;
+  }
+
+  * {
+    border-color: theme(colors.zinc.700);
+  }
 }
