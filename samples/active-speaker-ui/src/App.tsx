@@ -1,38 +1,41 @@
 import Meeting from './components/Meeting';
-import { DyteParticipantsAudio, DyteNotifications } from '@dytesdk/react-ui-kit';
 import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
 import { useEffect } from 'react';
-import MeetingProvider from './components/MeetingContext';
 
-export default function App() {
-	const [meeting, initMeeting] = useDyteClient();
-	const url = new URL(window.location.href);
-	const queryToken = url.searchParams.get('authToken')!;
+function App() {
+  const [meeting, initMeeting] = useDyteClient();
 
-	if (!queryToken) {
-		alert('Please add authToken to url query params');
-	}
+  useEffect(() => {
+    const searchParams = new URLSearchParams(window.location.search);
 
-	useEffect(() => {
-		initMeeting({
-			authToken: queryToken,
-			defaults: {
-				audio: false,
-				video: false,
-			},
-		});
-	}, []); // don't add dependencies to execute just once
+    const authToken = searchParams.get('authToken');
 
-	if (!meeting)
-		return <main className="flex min-h-screen text-gray-50 items-center justify-center">Connecting...</main>;
+    if (!authToken) {
+      alert(
+        "An authToken wasn't passed, please pass an authToken in the URL query to join a meeting."
+      );
+      return;
+    }
 
-	return (
-		<DyteProvider value={meeting}>
-			<DyteParticipantsAudio meeting={meeting} />
-			<MeetingProvider>
-				<DyteNotifications meeting={meeting} />
-				<Meeting />
-			</MeetingProvider>
-		</DyteProvider>
-	);
+    initMeeting({
+      authToken,
+      defaults: {
+        audio: false,
+        video: false,
+      },
+    }).then((meeting) => {
+      Object.assign(window, { meeting });
+    });
+  }, []);
+
+  // By default this component will cover the entire viewport.
+  // To avoid that and to make it fill a parent container, pass the prop:
+  // `mode="fill"` to the component.
+  return (
+    <DyteProvider value={meeting}>
+      <Meeting />
+    </DyteProvider>
+  );
 }
+
+export default App;
