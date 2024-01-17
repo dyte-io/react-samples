@@ -31,7 +31,7 @@ export default function Sidebar() {
       sidebar = <DytePlugins meeting={meeting} />;
       break;
     case 'polls':
-      sidebar = <DytePolls meeting={meeting} />;
+      sidebar = <DytePolls meeting={meeting} className="m-0" />;
       break;
     default:
       sidebar = <DyteChat meeting={meeting} />;
