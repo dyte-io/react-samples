@@ -16,14 +16,18 @@ export default function Sidebar() {
     (m) => m.participants.lastActiveSpeaker
   );
 
-  const pinnedParticipant = useDyteSelector((m) =>
-    m.participants.pinned.toArray().at(0)
+  const pinnedParticipants = useDyteSelector((m) =>
+    m.participants.pinned.toArray()
+  );
+
+  const activeParticipants = useDyteSelector((m) =>
+    m.participants.active.toArray()
   );
 
   const activeSpeaker =
-    pinnedParticipant ?? meeting.participants.joined.get(lastActiveSpeaker);
-
-  let sidebar: JSX.Element;
+    pinnedParticipants.at(0) ??
+    meeting.participants.joined.get(lastActiveSpeaker) ??
+    activeParticipants.at(0);
 
   const { states, size, isMobile, isActiveSpeakerMode } = useMeetingStore(
     ({ states, isImmersiveMode, size, isMobile, isActiveSpeakerMode }) => ({
@@ -34,6 +38,10 @@ export default function Sidebar() {
       isActiveSpeakerMode,
     })
   );
+
+  console.log({ activeSpeaker, isActiveSpeakerMode, pinnedParticipants });
+
+  let sidebar: JSX.Element;
 
   switch (states.sidebar) {
     case 'participants':
@@ -50,14 +58,19 @@ export default function Sidebar() {
       break;
   }
 
+  console.log({ activeSpeaker });
+
   return (
-    <div className="size-full flex flex-col gap-2">
+    <div className="size-full flex flex-col gap-2 p-2">
       {activeSpeaker && isActiveSpeakerMode && (
         <DyteParticipantTile
           participant={activeSpeaker}
+          meeting={meeting}
           className={clsx(
-            'aspect-video h-auto',
-            isMobile ? 'absolute bottom-3 left-3 w-1/3 z-50' : 'w-full'
+            'h-auto',
+            isMobile
+              ? 'absolute bottom-3 left-3 w-36 z-50 aspect-square'
+              : 'w-full aspect-video'
           )}
           size={size}
           states={states}

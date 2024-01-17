@@ -2,8 +2,6 @@ import { useMeetingStore } from '../lib/meeting-store';
 import {
   DyteSettingsToggle,
   DyteScreenShareToggle,
-  DyteControlbarButton,
-  defaultIconPack,
   DyteStageToggle,
   DyteMicToggle,
   DyteCameraToggle,
@@ -18,30 +16,46 @@ import { useDyteMeeting } from '@dytesdk/react-web-core';
 export default function Controlbar() {
   const { meeting } = useDyteMeeting();
   const size = useMeetingStore((s) => s.size);
-  const [isImmersiveMode, toggleImmersiveMode] = useMeetingStore((s) => [
-    s.isImmersiveMode,
-    s.toggleImmersiveMode,
-  ]);
+  const isMobile = useMeetingStore((s) => s.isMobile);
 
   const buttonSize = size === 'lg' ? 'lg' : 'sm';
+
+  const isHost = meeting.self.presetName === 'webinar_presenter';
+
+  if (isMobile) {
+    return (
+      <>
+        <div className="flex flex-col lg:flex-row items-center">
+          {isHost && (
+            <>
+              <DyteParticipantsToggle meeting={meeting} size={buttonSize} />
+              <DytePluginsToggle meeting={meeting} size={buttonSize} />
+            </>
+          )}
+          <DyteChatToggle meeting={meeting} size={buttonSize} />
+          <DytePollsToggle meeting={meeting} size={buttonSize} />
+        </div>
+
+        <div className="flex flex-col lg:flex-row items-center justify-center">
+          <DyteMicToggle meeting={meeting} size={buttonSize} />
+          <DyteCameraToggle meeting={meeting} size={buttonSize} />
+          <DyteScreenShareToggle meeting={meeting} size={buttonSize} />
+        </div>
+
+        <div className="flex flex-col lg:flex-row items-center">
+          <DyteStageToggle meeting={meeting} size={buttonSize} />
+          <DyteLeaveButton size={buttonSize} />
+          <DyteSettingsToggle size={buttonSize} />
+        </div>
+      </>
+    );
+  }
 
   return (
     <>
       <div className="flex flex-col lg:flex-row items-center">
         <DyteSettingsToggle size={buttonSize} />
         <DyteScreenShareToggle meeting={meeting} size={buttonSize} />
-        <div>
-          <DyteControlbarButton
-            icon={
-              isImmersiveMode
-                ? defaultIconPack.full_screen_minimize
-                : defaultIconPack.full_screen_maximize
-            }
-            label="Immersive Mode"
-            onClick={() => toggleImmersiveMode()}
-            size={buttonSize}
-          />
-        </div>
       </div>
 
       <div className="flex flex-col lg:flex-row items-center justify-center">
@@ -52,10 +66,14 @@ export default function Controlbar() {
       </div>
 
       <div className="flex flex-col lg:flex-row items-center justify-end">
-        <DyteParticipantsToggle meeting={meeting} size={buttonSize} />
-        <DytePollsToggle meeting={meeting} size={buttonSize} />
+        {isHost && (
+          <>
+            <DyteParticipantsToggle meeting={meeting} size={buttonSize} />
+            <DytePluginsToggle meeting={meeting} size={buttonSize} />
+          </>
+        )}
         <DyteChatToggle meeting={meeting} size={buttonSize} />
-        <DytePluginsToggle meeting={meeting} size={buttonSize} />
+        <DytePollsToggle meeting={meeting} size={buttonSize} />
       </div>
     </>
   );

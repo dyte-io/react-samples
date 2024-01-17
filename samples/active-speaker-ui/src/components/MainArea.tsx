@@ -7,6 +7,7 @@ import {
   DyteAudioVisualizer,
   DytePluginMain,
   DyteSimpleGrid,
+  DyteButton,
 } from '@dytesdk/react-ui-kit';
 import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
 import type { DyteParticipant, DytePlugin, DyteSelf } from '@dytesdk/web-core';
@@ -27,6 +28,13 @@ function ActiveSpeakerView({
   >();
 
   const showTabBar = screenshares.length + plugins.length > 1;
+
+  const [isImmersiveMode, toggleImmersiveMode] = useMeetingStore((s) => [
+    s.isImmersiveMode,
+    s.toggleImmersiveMode,
+  ]);
+
+  const size = useMeetingStore((s) => s.size);
 
   const onFallback = () => {
     if (screenshares.length > 0) {
@@ -117,17 +125,23 @@ function ActiveSpeakerView({
           )}
         >
           <DytePluginMain meeting={meeting} plugin={plugin} key={plugin.id} />
-          {/* <DyteButton
+          <DyteButton
             size={size}
             variant="secondary"
             kind="icon"
             className="absolute bottom-3 right-3 z-10"
             onClick={() => {
-              setIsImmersiveMode(true);
+              toggleImmersiveMode();
             }}
           >
-            <DyteIcon icon={defaultIconPack.full_screen_maximize} />
-          </DyteButton> */}
+            <DyteIcon
+              icon={
+                isImmersiveMode
+                  ? defaultIconPack.full_screen_minimize
+                  : defaultIconPack.full_screen_maximize
+              }
+            />
+          </DyteButton>
         </div>
       ))}
     </div>
@@ -171,7 +185,7 @@ export default function MainArea() {
   }, [isActiveView]);
 
   return (
-    <div className="flex flex-col w-full h-full max-w-full">
+    <div className="flex flex-col w-full h-full max-w-full p-2">
       {isActiveView ? (
         <ActiveSpeakerView
           screenshares={screenshares}

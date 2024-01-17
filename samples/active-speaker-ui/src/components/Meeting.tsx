@@ -19,20 +19,20 @@ function UI() {
   const isImmersiveMode = useMeetingStore((s) => s.isImmersiveMode);
 
   return (
-    <div className="w-full h-full flex lg:flex-col p-2 gap-2 lg:gap-0">
-      <div className="flex flex-1 h-full gap-2">
+    <div className="w-full h-full flex lg:flex-col">
+      <div className="flex flex-1 h-full">
         <main className="flex-[2]">
           <MainArea />
           <DyteParticipantsAudio meeting={meeting} className="" />
         </main>
         {!isImmersiveMode && (
-          <aside className="flex-1 lg:flex-auto lg:w-full lg:max-w-sm">
+          <aside className="flex-1 lg:flex-auto lg:w-full lg:max-w-sm -ml-2">
             <Sidebar />
           </aside>
         )}
       </div>
 
-      <div className="grid grid-rows-3 lg:grid-rows-1 lg:grid-cols-3 lg:p-1">
+      <div className="grid p-2 pl-0 lg:pl-2 grid-rows-3 lg:grid-rows-1 lg:grid-cols-3 lg:pt-0">
         <Controlbar />
       </div>
     </div>
