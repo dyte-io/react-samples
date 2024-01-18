@@ -1,5 +1,6 @@
 import { useMeetingStore } from '../lib/meeting-store';
 import ActiveSpeaker from './ActiveSpeaker';
+import Grid from './Grid';
 import {
   DyteParticipants,
   DytePlugins,
@@ -11,21 +12,18 @@ import { useDyteMeeting } from '@dytesdk/react-web-core';
 export default function Sidebar() {
   const { meeting } = useDyteMeeting();
 
-  const { states, size, isMobile, isActiveSpeakerMode } = useMeetingStore(
-    ({ states, isImmersiveMode, size, isMobile, isActiveSpeakerMode }) => ({
-      states,
-      isImmersiveMode,
-      size,
-      isMobile,
-      isActiveSpeakerMode,
-    })
-  );
+  const isActiveMode = useMeetingStore((m) => m.isActiveSpeakerMode);
 
-  let sidebar: JSX.Element;
+  const { states, isMobile } = useMeetingStore(({ states, isMobile }) => ({
+    states,
+    isMobile,
+  }));
+
+  let sidebar: JSX.Element | null = null;
 
   switch (states.sidebar) {
     case 'participants':
-      sidebar = <DyteParticipants meeting={meeting} />;
+      sidebar = <DyteParticipants meeting={meeting} className="pt-3" />;
       break;
     case 'plugins':
       sidebar = <DytePlugins meeting={meeting} />;
@@ -33,18 +31,38 @@ export default function Sidebar() {
     case 'polls':
       sidebar = <DytePolls meeting={meeting} className="m-0" />;
       break;
-    default:
+    case 'chat':
       sidebar = <DyteChat meeting={meeting} />;
       break;
   }
 
-  return (
-    <div className="size-full flex flex-col gap-2 p-2">
-      {!isMobile && <ActiveSpeaker className="h-auto w-full aspect-video" />}
+  const isHost = meeting.self.presetName === 'webinar_presenter';
 
-      <div className="flex-1 rounded-lg overflow-clip bg-zinc-900">
-        {sidebar}
+  if (isHost && !sidebar) {
+    return null;
+  }
+
+  if (!isHost && !sidebar && !isActiveMode) {
+    return null;
+  }
+
+  return (
+    <aside className="flex-1 lg:flex-auto lg:w-full lg:max-w-sm -ml-2">
+      <div className="size-full flex flex-col gap-2 p-2">
+        {sidebar ? (
+          <>
+            {!isMobile && (
+              <ActiveSpeaker className="h-auto w-full aspect-video" isSmall />
+            )}
+
+            <div className="flex-1 rounded-lg overflow-clip bg-zinc-900">
+              {sidebar}
+            </div>
+          </>
+        ) : (
+          <Grid />
+        )}
       </div>
-    </div>
+    </aside>
   );
 }
