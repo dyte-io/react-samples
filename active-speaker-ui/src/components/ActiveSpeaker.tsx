@@ -5,7 +5,9 @@ import { useDyteMeeting } from '@dytesdk/react-web-core';
 import { HTMLAttributes } from 'react';
 
 export default function ActiveSpeaker(
-  props: Omit<HTMLAttributes<HTMLDyteParticipantTileElement>, 'style'>
+  props: Omit<HTMLAttributes<HTMLDyteParticipantTileElement>, 'style'> & {
+    isSmall?: true;
+  }
 ) {
   const activeSpeaker = useActiveSpeaker();
   const { meeting } = useDyteMeeting();
@@ -18,7 +20,7 @@ export default function ActiveSpeaker(
     <DyteParticipantTile
       participant={activeSpeaker}
       meeting={meeting}
-      size={size}
+      size={props.isSmall ? 'sm' : size}
       states={states}
       {...props}
     />

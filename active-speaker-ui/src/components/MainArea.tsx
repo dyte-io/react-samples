@@ -13,7 +13,7 @@ import {
 import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
 import type { DyteParticipant, DytePlugin, DyteSelf } from '@dytesdk/web-core';
 import clsx from 'clsx';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 function ActiveSpeakerView({
   screenshares,
@@ -130,7 +130,7 @@ function ActiveSpeakerView({
             size={size}
             variant="secondary"
             kind="icon"
-            className="absolute bottom-3 right-3 z-10"
+            className="absolute bottom-3 right-3 z-40"
             onClick={() => {
               toggleImmersiveMode();
             }}
@@ -198,7 +198,10 @@ export default function MainArea() {
       )}
 
       {isMobile && (
-        <ActiveSpeaker className="absolute bottom-3 left-3 w-36 z-50 h-auto aspect-square" />
+        <ActiveSpeaker
+          className="absolute bottom-3 left-3 w-24 z-50 h-auto aspect-square"
+          isSmall
+        />
       )}
     </div>
   );
