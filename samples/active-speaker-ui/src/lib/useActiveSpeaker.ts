@@ -2,6 +2,7 @@ import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
 
 export function useActiveSpeaker() {
   const { meeting } = useDyteMeeting();
+  const isPinned = useDyteSelector((m) => m.self.isPinned);
 
   const lastActiveSpeaker = useDyteSelector(
     (m) => m.participants.lastActiveSpeaker
@@ -15,10 +16,20 @@ export function useActiveSpeaker() {
     m.participants.active.toArray()
   );
 
-  const activeSpeaker =
-    pinnedParticipants.at(0) ??
-    meeting.participants.joined.get(lastActiveSpeaker) ??
-    activeParticipants.at(0);
+  if (isPinned) {
+    return meeting.self;
+  }
 
-  return activeSpeaker;
+  if (pinnedParticipants.length > 0) {
+    return pinnedParticipants.at(0);
+  }
+
+  if (meeting.self.id === lastActiveSpeaker) {
+    return meeting.self;
+  }
+
+  return (
+    meeting.participants.joined.get(lastActiveSpeaker) ??
+    activeParticipants.at(0)
+  );
 }

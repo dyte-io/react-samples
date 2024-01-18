@@ -23,13 +23,10 @@ function UI() {
       <div className="flex flex-1 h-full">
         <main className="flex-[2]">
           <MainArea />
-          <DyteParticipantsAudio meeting={meeting} className="" />
+          <DyteParticipantsAudio meeting={meeting} />
         </main>
-        {!isImmersiveMode && (
-          <aside className="flex-1 lg:flex-auto lg:w-full lg:max-w-sm -ml-2">
-            <Sidebar />
-          </aside>
-        )}
+
+        {!isImmersiveMode && <Sidebar />}
       </div>
 
       <div className="grid p-2 pl-0 lg:pl-2 grid-rows-3 lg:grid-rows-1 lg:grid-cols-3 lg:pt-0">
@@ -95,7 +92,11 @@ export default function Meeting() {
   return (
     <div className="w-full h-full bg-black" ref={$parent} data-size={size}>
       {children}
-      <DyteDialogManager meeting={meeting} states={states} />
+      <DyteDialogManager
+        size={size === 'lg' ? 'lg' : 'sm'}
+        meeting={meeting}
+        states={states}
+      />
     </div>
   );
 }
