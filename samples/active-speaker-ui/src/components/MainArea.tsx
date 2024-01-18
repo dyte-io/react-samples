@@ -53,9 +53,11 @@ function ActiveSpeakerView({
   useEffect(() => {
     if (!selectedTab) return;
 
+    const id = selectedTab.id;
+
     if (
-      !screenshares.find((s) => selectedTab.id === s.id) ||
-      !plugins.find((p) => selectedTab.id === p.id)
+      !screenshares.find((s) => s.id === id) &&
+      !plugins.find((p) => p.id === id)
     ) {
       onFallback();
     }
