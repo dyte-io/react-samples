@@ -42,7 +42,11 @@ export default function Sidebar() {
     return null;
   }
 
-  if (!isHost && !sidebar && isActiveMode) {
+  if (!isHost && !sidebar && !isActiveMode) {
+    return null;
+  }
+
+  if (!isHost && !sidebar && isMobile) {
     return null;
   }
 
