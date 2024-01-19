@@ -30,6 +30,7 @@ export function useActiveSpeaker() {
 
   return (
     meeting.participants.joined.get(lastActiveSpeaker) ??
-    activeParticipants.at(0)
+    activeParticipants.at(0) ??
+    meeting.self
   );
 }
