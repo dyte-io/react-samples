@@ -15,6 +15,10 @@ import type { DyteParticipant, DytePlugin, DyteSelf } from '@dytesdk/web-core';
 import clsx from 'clsx';
 import { useState, useEffect, useRef } from 'react';
 
+type ActiveTab =
+  | { type: 'plugin'; plugin: DytePlugin }
+  | { type: 'screenshare'; participant: DyteParticipant | DyteSelf };
+
 function ActiveSpeakerView({
   screenshares,
   plugins,
@@ -24,26 +28,69 @@ function ActiveSpeakerView({
 }) {
   const { meeting } = useDyteMeeting();
 
-  const [selectedTab, setSelectedTab] = useState<
-    DyteParticipant | DyteSelf | DytePlugin
-  >();
+  const [selectedTab, setSelectedTab] = useState<ActiveTab>();
+  const pluginsRef = useRef<DytePlugin[]>([]);
+  const screensharesRef = useRef<(DyteParticipant | DyteSelf)[]>([]);
 
   const showTabBar = screenshares.length + plugins.length > 1;
 
-  const [isImmersiveMode, toggleImmersiveMode] = useMeetingStore((s) => [
-    s.isImmersiveMode,
-    s.toggleImmersiveMode,
-  ]);
-
   const size = useMeetingStore((s) => s.size);
+  const isImmersiveMode = useMeetingStore((s) => s.isImmersiveMode);
+  const [states, setStates] = useMeetingStore((s) => [s.states, s.setStates]);
+
+  const activeTab = useDyteSelector((m) => m.meta.selfActiveTab);
+
+  useEffect(() => {
+    if (activeTab) {
+      if (activeTab.type === 'plugin') {
+        const plugin = meeting.plugins.active.get(activeTab.id);
+
+        if (plugin) {
+          setSelectedTab({
+            type: 'plugin',
+            plugin,
+          });
+        }
+      } else {
+        const participant = meeting.participants.joined.get(activeTab.id);
+
+        if (participant) {
+          setSelectedTab({
+            type: 'screenshare',
+            participant,
+          });
+        }
+      }
+    }
+  }, [activeTab]);
 
   const onFallback = () => {
     if (screenshares.length > 0) {
-      setSelectedTab(screenshares.at(0));
+      setSelectedTab({ type: 'screenshare', participant: screenshares[0] });
     } else if (plugins.length > 0) {
-      setSelectedTab(plugins.at(0));
+      setSelectedTab({ type: 'plugin', plugin: plugins[0] });
     }
   };
+
+  useEffect(() => {
+    if (screenshares.length > screensharesRef.current.length) {
+      setActiveTab({
+        type: 'screenshare',
+        participant: screenshares.at(-1)!,
+      });
+    }
+    screensharesRef.current = screenshares;
+  }, [screenshares]);
+
+  useEffect(() => {
+    if (plugins.length > pluginsRef.current.length) {
+      setActiveTab({
+        type: 'plugin',
+        plugin: plugins.at(-1)!,
+      });
+    }
+    pluginsRef.current = plugins;
+  }, [plugins]);
 
   useEffect(() => {
     if (selectedTab) return;
@@ -53,15 +100,33 @@ function ActiveSpeakerView({
   useEffect(() => {
     if (!selectedTab) return;
 
-    const id = selectedTab.id;
+    if (
+      selectedTab.type === 'screenshare' &&
+      !screenshares.find((s) => s.id === selectedTab.participant.id)
+    ) {
+      onFallback();
+    }
 
     if (
-      !screenshares.find((s) => s.id === id) &&
-      !plugins.find((p) => p.id === id)
+      selectedTab.type === 'plugin' &&
+      !plugins.find((p) => p.id === selectedTab.plugin.id)
     ) {
       onFallback();
     }
   }, [screenshares, plugins]);
+
+  const setActiveTab = (tab: ActiveTab) => {
+    if (meeting.self.permissions.canSpotlight) {
+      meeting.meta.setSelfActiveTab(
+        {
+          type: tab.type,
+          id: tab.type === 'plugin' ? tab.plugin.id : tab.participant.id,
+        },
+        0
+      );
+    }
+    setSelectedTab(tab);
+  };
 
   return (
     <div className="size-full flex flex-col gap-2">
@@ -72,11 +137,16 @@ function ActiveSpeakerView({
             {screenshares.map((participant) => (
               <button
                 className={clsx(
-                  'h-11 flex items-center justify-center gap-1.5 bg-zinc-800 p-2 rounded-lg',
-                  selectedTab?.id === participant.id && 'bg-blue-600'
+                  'h-11 flex items-center justify-center gap-1.5 p-2 rounded-lg',
+                  selectedTab?.type === 'screenshare' &&
+                    selectedTab.participant.id === participant.id
+                    ? 'bg-blue-600'
+                    : 'bg-zinc-800'
                 )}
                 key={participant.id}
-                onClick={() => setSelectedTab(participant)}
+                onClick={() =>
+                  setActiveTab({ type: 'screenshare', participant })
+                }
               >
                 <DyteIcon icon={defaultIconPack.share_screen_person} />
                 <span>{participant.name}</span>
@@ -86,11 +156,14 @@ function ActiveSpeakerView({
             {plugins.map((plugin) => (
               <button
                 className={clsx(
-                  'h-11 flex items-center justify-center gap-1.5 bg-zinc-800 p-2 rounded-lg',
-                  selectedTab?.id === plugin.id && 'bg-blue-600'
+                  'h-11 flex items-center justify-center gap-1.5 p-2 rounded-lg',
+                  selectedTab?.type === 'plugin' &&
+                    selectedTab.plugin.id === plugin.id
+                    ? 'bg-blue-600'
+                    : 'bg-zinc-800'
                 )}
                 key={plugin.id}
-                onClick={() => setSelectedTab(plugin)}
+                onClick={() => setActiveTab({ type: 'plugin', plugin })}
               >
                 <img className="h-7 w-7 rounded-md" src={plugin.picture} />
                 <span>{plugin.name}</span>
@@ -100,51 +173,59 @@ function ActiveSpeakerView({
         </div>
       )}
 
-      {selectedTab && 'audioEnabled' in selectedTab && (
-        <DyteScreenshareView
-          meeting={meeting}
-          participant={selectedTab}
-          className="flex-1"
-        >
-          <DyteNameTag
-            participant={selectedTab}
+      {selectedTab?.type === 'screenshare' &&
+        'audioEnabled' in selectedTab.participant && (
+          <DyteScreenshareView
             meeting={meeting}
-            isScreenShare
+            participant={selectedTab.participant}
+            className="flex-1"
           >
-            <DyteAudioVisualizer
-              participant={selectedTab}
+            <DyteNameTag
+              participant={selectedTab.participant}
+              meeting={meeting}
               isScreenShare
-              slot="start"
-            />
-          </DyteNameTag>
-        </DyteScreenshareView>
-      )}
+            >
+              <DyteAudioVisualizer
+                participant={selectedTab.participant}
+                isScreenShare
+                slot="start"
+              />
+            </DyteNameTag>
+          </DyteScreenshareView>
+        )}
 
       {plugins.map((plugin) => (
         <div
           className={clsx(
             'flex-1 relative isolate',
-            selectedTab?.id === plugin.id ? 'block' : 'hidden'
+            selectedTab?.type === 'plugin' &&
+              selectedTab.plugin.id === plugin.id
+              ? 'block'
+              : 'hidden'
           )}
+          key={plugin.id}
         >
-          <DytePluginMain meeting={meeting} plugin={plugin} key={plugin.id} />
-          <DyteButton
-            size={size}
-            variant="secondary"
-            kind="icon"
-            className="absolute bottom-3 right-3 z-40"
-            onClick={() => {
-              toggleImmersiveMode();
-            }}
-          >
-            <DyteIcon
-              icon={
-                isImmersiveMode
-                  ? defaultIconPack.full_screen_minimize
-                  : defaultIconPack.full_screen_maximize
-              }
-            />
-          </DyteButton>
+          <DytePluginMain meeting={meeting} plugin={plugin} />
+
+          {states.activeSidebar && (
+            <DyteButton
+              size={size}
+              variant="secondary"
+              kind="icon"
+              className="absolute bottom-3 right-3 z-40"
+              onClick={() => {
+                setStates({ activeSidebar: false, sidebar: undefined });
+              }}
+            >
+              <DyteIcon
+                icon={
+                  isImmersiveMode
+                    ? defaultIconPack.full_screen_minimize
+                    : defaultIconPack.full_screen_maximize
+                }
+              />
+            </DyteButton>
+          )}
         </div>
       ))}
     </div>
