@@ -73,7 +73,7 @@ export default function Controlbar() {
           <DyteStageToggle
             meeting={meeting}
             size={buttonSize}
-            iconPack={isHost ? undefined : iconPack}
+            iconPack={isHost ? defaultIconPack : iconPack}
           />
           <DyteLeaveButton size={buttonSize} />
           <DyteSettingsToggle size={buttonSize} states={states} />
@@ -97,7 +97,7 @@ export default function Controlbar() {
         <DyteStageToggle
           meeting={meeting}
           size={buttonSize}
-          iconPack={isHost ? undefined : iconPack}
+          iconPack={isHost ? defaultIconPack : iconPack}
         />
         <DyteMicToggle meeting={meeting} size={buttonSize} />
         <DyteCameraToggle meeting={meeting} size={buttonSize} />
