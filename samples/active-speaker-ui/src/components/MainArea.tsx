@@ -1,5 +1,6 @@
 import { useMeetingStore } from '../lib/meeting-store';
 import ActiveSpeaker from './ActiveSpeaker';
+import ScreenShareView from './ScreenShareView';
 import {
   DyteIcon,
   defaultIconPack,
@@ -175,23 +176,7 @@ function ActiveSpeakerView({
 
       {selectedTab?.type === 'screenshare' &&
         'audioEnabled' in selectedTab.participant && (
-          <DyteScreenshareView
-            meeting={meeting}
-            participant={selectedTab.participant}
-            className="flex-1"
-          >
-            <DyteNameTag
-              participant={selectedTab.participant}
-              meeting={meeting}
-              isScreenShare
-            >
-              <DyteAudioVisualizer
-                participant={selectedTab.participant}
-                isScreenShare
-                slot="start"
-              />
-            </DyteNameTag>
-          </DyteScreenshareView>
+          <ScreenShareView participant={selectedTab.participant} />
         )}
 
       {plugins.map((plugin) => (
@@ -217,13 +202,7 @@ function ActiveSpeakerView({
                 setStates({ activeSidebar: false, sidebar: undefined });
               }}
             >
-              <DyteIcon
-                icon={
-                  isImmersiveMode
-                    ? defaultIconPack.full_screen_minimize
-                    : defaultIconPack.full_screen_maximize
-                }
-              />
+              <DyteIcon icon={defaultIconPack.full_screen_maximize} />
             </DyteButton>
           )}
         </div>
