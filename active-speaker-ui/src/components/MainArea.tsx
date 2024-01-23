@@ -243,6 +243,8 @@ export default function MainArea() {
 
   const setActiveMode = useMeetingStore((s) => s.setIsActiveSpeakerMode);
   const isMobile = useMeetingStore((s) => s.isMobile);
+  const isHost = meeting.self.presetName === 'webinar_presenter';
+  const isEmptyStage = participants.length === 0;
 
   useEffect(() => {
     setActiveMode(isActiveView);
@@ -250,7 +252,29 @@ export default function MainArea() {
 
   return (
     <div className="flex flex-col w-full h-full max-w-full p-2">
-      {isActiveView ? (
+      {isEmptyStage ? (
+        <div className="flex box-border h-full content-center items-center justify-center text-center">
+            <div className="center">
+              {isHost && (
+                <div className="flex flex-col items-center">
+                  <p className="text-text-lg bg-background-800 text-text-1000 rounded-lg px-8 py-4">
+                    The stage is empty
+                  </p>
+                  <span className="text-text-md my-4">
+                    You are off stage.
+                  </span>
+                </div>
+              )}
+              {!isHost && (
+                <div className="flex flex-col items-center">
+                  <p className="text-text-lg bg-background-800 text-text-1000 rounded-lg px-8 py-4">
+                    Waiting for the host to join
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
+      ): isActiveView ? (
         <ActiveSpeakerView
           screenshares={screenshares}
           plugins={activePlugins}
