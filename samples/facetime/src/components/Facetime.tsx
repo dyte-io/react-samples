@@ -8,11 +8,10 @@ import {
   provideDyteDesignSystem,
 } from '@dytesdk/react-ui-kit';
 import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
-import { useEffect } from 'react';
-
-import { Mic, Video, X } from 'react-feather';
 import clsx from 'clsx';
+import { useEffect } from 'react';
 import Draggable from 'react-draggable';
+import { Mic, Video, X } from 'react-feather';
 
 function Grid() {
   const { meeting } = useDyteMeeting();
@@ -150,9 +149,7 @@ export default function Facetime() {
         </DyteParticipantTile>
       </Draggable>
 
-      <Draggable bounds="parent">
-        <Controlbar />
-      </Draggable>
+      <Controlbar />
     </div>
   );
 }
