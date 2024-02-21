@@ -24,6 +24,8 @@ function App() {
         audio: false,
         video: false,
       },
+      // do not use this in production
+      baseURI: "preprod.dyte.io"
     }).then((meeting) => {
       Object.assign(window, { meeting });
     });
