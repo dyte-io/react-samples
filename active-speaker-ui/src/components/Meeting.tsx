@@ -5,6 +5,7 @@ import Sidebar from './Sidebar';
 import {
   DyteDialogManager,
   DyteEndedScreen,
+  DyteNotifications,
   DyteParticipantsAudio,
   DyteSetupScreen,
   DyteWaitingScreen,
@@ -21,9 +22,26 @@ function UI() {
   return (
     <div className="w-full h-full flex lg:flex-col">
       <div className="flex flex-1 h-full">
-        <main className="flex-[2]">
+        <main className="flex-[2] relative">
           <MainArea />
           <DyteParticipantsAudio meeting={meeting} />
+          <DyteNotifications
+            meeting={meeting}
+            config={{
+              config: {
+                notification_sounds: {
+                  participant_joined: false,
+                  participant_left: false,
+                  chat: false,
+                },
+                notifications: {
+                  participant_joined: false,
+                  participant_left: false,
+                  chat: false,
+                },
+              },
+            }}
+          />
         </main>
 
         {!isImmersiveMode && <Sidebar />}
