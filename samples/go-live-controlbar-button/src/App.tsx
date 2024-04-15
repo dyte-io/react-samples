@@ -2,6 +2,7 @@ import {
   DyteButton,
   DyteDialog,
   DyteMeeting,
+  generateConfig,
   registerAddons,
 } from '@dytesdk/react-ui-kit';
 import { useDyteClient } from '@dytesdk/react-web-core';
@@ -45,6 +46,14 @@ function App() {
   useEffect(() => {
     if (!meeting) return;
 
+    const { config } = generateConfig(meeting.self.config, meeting);
+
+    if (config.config) {
+      if (!config.config.notifications) config.config.notifications = {};
+      config.config.notifications.participant_joined = false;
+      config.config.notifications.participant_left = false;
+    }
+
     const customButton = new CustomButton({
       label: 'Go Live',
       onClick: () => {
@@ -54,8 +63,8 @@ function App() {
       position: 'center',
     });
 
-    const config = registerAddons([customButton], meeting);
-    setConfig(config);
+    const newConfig = registerAddons([customButton], meeting, config);
+    setConfig(newConfig);
   }, [meeting]);
 
   // By default this component will cover the entire viewport.
@@ -74,8 +83,12 @@ function App() {
       >
         <form
           onSubmit={(e) => {
+            // send request to your server
+            // fetch(YOUR_API, {
+            //   method: "POST",
+            //   body: JSON.stringify({ url: url})
+            // })
             e.preventDefault();
-            alert('The url you entered is ' + url);
           }}
           style={{
             display: 'flex',
