@@ -83,7 +83,7 @@ function App() {
             flexDirection: 'column',
             gap: '1rem',
             padding: '1rem',
-            backgroundColor: 'rgba(0 0 0 / 0.4)',
+            backgroundColor: 'rgba(0, 0, 0, 0.4)',
             borderRadius: '8px',
           }}
         >
@@ -94,7 +94,7 @@ function App() {
             name="rtmpUrl"
             style={{
               width: '100%',
-              backgroundColor: 'rgba(70 70 70 0.3)',
+              backgroundColor: 'rgba(70,70, 70, 0.3)',
               color: '#fff',
             }}
             value={url}
