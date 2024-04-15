@@ -86,7 +86,10 @@ function App() {
             // send request to your server
             // fetch(YOUR_API, {
             //   method: "POST",
-            //   body: JSON.stringify({ url: url})
+            //   body: JSON.stringify({ 
+            //       meetingId: meeting.meta.roomName
+            //       url: url
+            //      })
             // })
             e.preventDefault();
           }}
