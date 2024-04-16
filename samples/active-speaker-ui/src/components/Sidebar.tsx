@@ -6,6 +6,7 @@ import {
   DytePlugins,
   DytePolls,
   DyteChat,
+  DyteSwitch,
 } from '@dytesdk/react-ui-kit';
 import { useDyteMeeting } from '@dytesdk/react-web-core';
 
@@ -13,7 +14,8 @@ export default function Sidebar() {
   const { meeting } = useDyteMeeting();
 
   const isActiveMode = useMeetingStore((m) => m.isActiveSpeakerMode);
-
+  const [chatEnabled, setChatEnabled] = useMeetingStore((m) => [m.chatEnabled, m.setChatEnabled]);
+  
   const { states, isMobile } = useMeetingStore(({ states, isMobile }) => ({
     states,
     isMobile,
@@ -23,7 +25,20 @@ export default function Sidebar() {
 
   switch (states.sidebar) {
     case 'participants':
-      sidebar = <DyteParticipants meeting={meeting} className="pt-3" />;
+    
+      sidebar = <DyteParticipants meeting={meeting} className="pt-3">
+        <div slot='start' className='pt-4 px-4 flex justify-between items-center'>
+          <span className='font-semibold text-md'>Enable Chat</span>
+          <DyteSwitch checked={chatEnabled ?? true} onDyteChange={(e) => {
+            const isEnabled = e.detail;
+            const updateList = meeting.participants.joined.toArray().map((e) => e.id);
+            if(updateList.length > 0) {
+              meeting.participants.updatePermissions(updateList, { chat: { public: { text: isEnabled, files: isEnabled }}})
+            }
+            setChatEnabled(e.detail)
+          }}/>
+        </div>
+      </DyteParticipants>;
       break;
     case 'plugins':
       sidebar = <DytePlugins meeting={meeting} />;

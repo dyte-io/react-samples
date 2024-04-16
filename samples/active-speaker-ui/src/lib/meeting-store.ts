@@ -24,6 +24,9 @@ export interface MeetingStore {
   isMobile: boolean;
   states: States;
   setStates: (states: States) => void;
+
+  chatEnabled?: boolean;
+  setChatEnabled: (v: boolean) => void;
 }
 
 export const useMeetingStore = create<MeetingStore>((set, get) => ({
@@ -57,4 +60,7 @@ export const useMeetingStore = create<MeetingStore>((set, get) => ({
   setStates: (states: States) => {
     set({ states: { ...get().states, ...states } });
   },
+  setChatEnabled: (v: boolean) => {
+    set({ chatEnabled: v })
+  }
 }));

@@ -2,6 +2,7 @@ import Meeting from './components/Meeting';
 import { DyteSpinner } from '@dytesdk/react-ui-kit';
 import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
 import { useEffect } from 'react';
+import { useMeetingStore } from './lib/meeting-store';
 
 function App() {
   const [meeting, initMeeting] = useDyteClient();
@@ -28,6 +29,21 @@ function App() {
       Object.assign(window, { meeting });
     });
   }, []);
+
+  useEffect(() => {
+    if(!meeting || meeting.self.presetName !== "webinar_presenter") return () => {}
+    const onParticipantJoin = ({ id }: { id: string }) => {
+      // If host has disabled chat
+      if(useMeetingStore.getState().chatEnabled === false){
+        // Disable chat for the newly joined participant
+        meeting.participants.updatePermissions([id], { chat: { public: { text: false, files: false }}})
+      }
+    }
+    meeting.participants.joined.on('participantJoined', onParticipantJoin);
+    return () => {
+      meeting.participants.joined.removeListener('participantJoined', onParticipantJoin);
+    }
+  }, [meeting]);
 
   // By default this component will cover the entire viewport.
   // To avoid that and to make it fill a parent container, pass the prop:
