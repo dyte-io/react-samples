@@ -5,6 +5,7 @@ import {
   DyteUIBuilder,
   generateConfig,
   registerAddons,
+  sendNotification,
 } from '@dytesdk/react-ui-kit';
 import { useDyteClient } from '@dytesdk/react-web-core';
 import CustomButton from '@dytesdk/ui-kit-addons/custom-controlbar-button';
@@ -53,6 +54,8 @@ function App() {
       if (!config.config.notifications) config.config.notifications = {};
       config.config.notifications.participant_joined = false;
       config.config.notifications.participant_left = false;
+      config.config.notifications.recording_started = false;
+      config.config.notifications.recording_stopped = false;
     }
 
     const startIcon = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="red" d="M6.343 4.938a1 1 0 0 1 0 1.415a8.003 8.003 0 0 0 0 11.317a1 1 0 1 1-1.415 1.414c-3.906-3.906-3.906-10.24 0-14.146a1 1 0 0 1 1.415 0Zm12.731 0c3.906 3.907 3.906 10.24 0 14.146a1 1 0 0 1-1.414-1.414a8.003 8.003 0 0 0 0-11.317a1 1 0 0 1 1.414-1.415ZM9.31 7.812a1 1 0 0 1 0 1.414a3.92 3.92 0 0 0 0 5.544a1 1 0 1 1-1.414 1.414a5.92 5.92 0 0 1 0-8.372a1 1 0 0 1 1.414 0Zm6.959 0a5.92 5.92 0 0 1 0 8.372a1 1 0 0 1-1.415-1.414a3.92 3.92 0 0 0 0-5.544a1 1 0 0 1 1.415-1.414Zm-4.187 2.77a1.5 1.5 0 1 1 0 3a1.5 1.5 0 0 1 0-3Z"/></svg>';
@@ -77,8 +80,14 @@ function App() {
 
     const onRecordingUpdate = (state: any) => {
       if(state === "RECORDING") {
+        if(meeting.self.presetName === "webinar_admin"){
+          sendNotification({ id: 'live_start', message: 'Re-stream has started' })
+        }
         customButton.update({ label: 'STOP', icon: stopIcon });
       } else if (state === "STOPPING" || state === "IDLE") {
+        if(meeting.self.presetName === "webinar_admin"){
+          sendNotification({ id: 'live_stop', message: 'Re-stream has ended' })
+        }
         customButton.update({ label: 'Go Live', icon: startIcon})
       }
     };
