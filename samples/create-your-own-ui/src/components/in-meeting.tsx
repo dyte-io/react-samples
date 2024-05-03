@@ -2,7 +2,9 @@ import type DyteClient from '@dytesdk/web-core';
 import { UIConfig }  from '@dytesdk/ui-kit/dist/types/types/ui-config';
 import { CustomStates, SetStates } from '../types';
 import { DyteHeader, DyteStage, DyteGrid, DyteNotifications, DyteSidebar, DyteParticipantsAudio, DyteDialogManager, DyteControlbar } from '@dytesdk/react-ui-kit';
-
+import MeetingHeader from './meeting-header';
+import MeetingControlBar from './meeting-control-bar';
+import MeetingSideBar from './meeting-sidebar';
 function InMeeting({
     meeting,
     config,
@@ -24,7 +26,7 @@ function InMeeting({
           }}
         >
           <header>
-            <DyteHeader meeting={meeting} config={config} className='flex justify-between'/>
+            <MeetingHeader meeting={meeting} config={config} states={states} setStates={setStates}/>
           </header>
     
           <main className='flex w-full flex-1' style={{
@@ -34,14 +36,14 @@ function InMeeting({
             <DyteStage className='flex w-full flex-1 p-2'>
               <DyteGrid meeting={meeting} config={config} states={states}/>
               <DyteNotifications meeting={meeting} config={config}  states={states}/>
-              {states.activeSidebar && <DyteSidebar meeting={meeting} config={config} states={states}/>}
+              <MeetingSideBar meeting={meeting} config={config} states={states} setStates={setStates}/>
             </DyteStage>
             <DyteParticipantsAudio meeting={meeting}/>
             <DyteDialogManager meeting={meeting} config={config} states={states}/>
           </main>
     
           <footer className='flex w-full overflow-visible'>
-            <DyteControlbar meeting={meeting} config={config}  states={states} className='flex w-full overflow-visible	justify-between'/>
+            <MeetingControlBar meeting={meeting} config={config} states={states} setStates={setStates} />
           </footer>
           
         </div>
