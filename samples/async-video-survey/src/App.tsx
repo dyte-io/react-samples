@@ -276,7 +276,7 @@ function Recorder() {
 }
 
 export default function App() {
-  const [client, initClient] = useDyteClient();
+  const [meeting, initMeeting] = useDyteClient();
 
   useEffect(() => {
     provideDyteDesignSystem(document.body, {
@@ -293,7 +293,7 @@ export default function App() {
       return;
     }
 
-    initClient({
+    initMeeting({
       authToken,
       // NOTE: remove defaults
       // defaults: {
@@ -308,7 +308,7 @@ export default function App() {
   }, []);
 
   return (
-    <DyteProvider value={client} fallback={<LoadingUI />}>
+    <DyteProvider value={meeting} fallback={<LoadingUI />}>
       <Recorder />
     </DyteProvider>
   );
