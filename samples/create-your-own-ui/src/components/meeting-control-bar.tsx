@@ -21,7 +21,7 @@ function ControlBarWithCustomUI({
         <div id="controlbar-left" className="flex items-center overflow-visible justify-center">
             <DyteFullscreenToggle states={states} targetElement={fullScreenTargetElement}/>
             <DyteSettingsToggle states={states} />
-            <DyteScreenShareToggle states={states} />
+            <DyteScreenShareToggle states={states} meeting={meeting} />
         </div>
         <div id="controlbar-center" className="flex items-center overflow-visible justify-center">
             <DyteMicToggle meeting={meeting} />
