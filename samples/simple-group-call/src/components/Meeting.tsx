@@ -106,7 +106,9 @@ function UI() {
         })}
       </main>
       <footer className="py-2 flex items-center justify-center">
-        <DyteMicToggle meeting={meeting} />
+        <div style={{ opacity: '50%', cursor: 'not-allowed'}}>
+          <DyteMicToggle meeting={meeting} style={{ pointerEvents: 'none'}} />
+        </div>
         <DyteCameraToggle meeting={meeting} />
       </footer>
     </div>
