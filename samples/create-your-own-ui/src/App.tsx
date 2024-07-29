@@ -4,6 +4,8 @@ import {
   useDyteClient,
   useDyteMeeting,
 } from '@dytesdk/react-web-core';
+import DyteVideoBackgroundTransformer from '@dytesdk/video-background-transformer';
+
 import {
   defaultConfig,
   generateConfig,
@@ -72,23 +74,40 @@ function App() {
 
       const authToken = searchParams.get('authToken');
   
-      if (!authToken) {
-        alert(
-          "An authToken wasn't passed, please pass an authToken in the URL query to join a meeting.",
-        );
-        return;
-      }
+      // if (!authToken) {
+      //   alert(
+      //     "An authToken wasn't passed, please pass an authToken in the URL query to join a meeting.",
+      //   );
+      //   return;
+      // }
   
       const meeting = await initMeeting({
-        authToken,
+        authToken: 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdJZCI6ImQ2ZjA0NmI4LWI2MzgtNGNmNy04MDkwLWQ5MzMyNDQ3YWU0OSIsIm1lZXRpbmdJZCI6ImJiYjlkZmI4LWNlODItNDNiOS1iYjk3LWQyYjVhZjRmMmIxZCIsInBhcnRpY2lwYW50SWQiOiJhYWExM2M3YS0xMDQ0LTRkMGItYWUxMy01MzZjNDNiZmQ3YTgiLCJwcmVzZXRJZCI6ImJkM2M0NWE4LTYyOTMtNDgyNC1iMzY2LTIyM2RkMzgwMWU5NCIsImlhdCI6MTcyMjIyNzcyNCwiZXhwIjoxNzMwODY3NzI0fQ.Dx49uzvss-u5mbFbbg9UJ5ju6bdUXXRtIN50IqsUYoyxJStSAZ6i4HAyW4lKzajteA-mJduN-tamSIpDpMAHCnQbqLm4rJ8F-K7Ac0TAGkSVpisRAyMqVJzKAFTxA-jmg1LG_J4X9-2_UFBm974MjuWsrUDD40WxyINMW92e_v0',
         defaults: {
           audio: false,
           video: false,
         },
+        baseURI: 'devel.dyte.io',
         modules: {devTools: {logs: true}}
       });
 
-      // await meeting!.joinRoom();
+      // Add middleware
+      if(meeting){
+        console.log('Adding middleware');
+        await meeting.self.setVideoMiddlewareGlobalConfig({disablePerFrameCanvasRendering: true});
+        console.log('Find me to change pipeline to canvas2dCpu');
+        var transformer = await DyteVideoBackgroundTransformer.init({ meeting, segmentationConfig: {
+          model: 'mlkit', // could be 'meet' | 'bodyPix' - BodyPix is useless.
+          backend: 'wasmSimd',
+          inputResolution: '256x256', // '256x144' for meet
+          pipeline: 'webgl2', // canvas2dCpu webgl2
+          targetFps: 65, // 60 introduces fps drop and unstable fps on Chrome
+          deferInputResizing: true,
+        }, });
+        // await meeting.self.addVideoMiddleware(await transformer.createStaticBackgroundVideoMiddleware('https://assets.dyte.io/backgrounds/bg_3.jpg'));
+        console.log('Find me to enable static background middleware');
+        await meeting.self.addVideoMiddleware(await transformer.createBackgroundBlurVideoMiddleware(50));
+      }
 
     }
 
