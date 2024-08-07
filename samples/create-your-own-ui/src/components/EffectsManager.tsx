@@ -47,7 +47,6 @@ const EffectsManager = ({
       if (meeting?.self.config.viewType === 'CHAT') {
         isChatSDK = true;
       }
-      console.log('Loading:: ', MiddlewareHolder.transformer);
       if (!MiddlewareHolder.transformer) {
         if (
           DyteVideoBackgroundTransformer.isSupported() &&

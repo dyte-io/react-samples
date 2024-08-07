@@ -71,7 +71,7 @@ function App() {
     async function initalizeMeeting(){
       const searchParams = new URL(window.location.href).searchParams;
 
-      const authToken = searchParams.get('authToken') || 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdJZCI6IjJlYmYzMzM5LTJhOGEtNDVhZi1hNDQwLTYxZDM4YjU0NzI1YiIsIm1lZXRpbmdJZCI6ImJiYjRjYWQzLTNlNDctNDNjYy1iODEyLTZkMDU1NDk5OWFiNyIsInBhcnRpY2lwYW50SWQiOiJhYWFlOWZjOC1kMzc1LTQ4MWQtYTAyOS1jYTI1MzdmM2E2OTQiLCJwcmVzZXRJZCI6ImFkNjY4NjlkLTUxZjgtNDg5Yi1iZTRhLTkwZTk3YWM4NTdkMSIsImlhdCI6MTcyMzAwNzUyMywiZXhwIjoxNzMxNjQ3NTIzfQ.DYBTVszc9YzK4r3hH37onwTcK8rh81QSIvKQRdj922665C7DFaNZN4vBcS6mvHoKJUHM7veQP9ot28z8the7EjOsEFYQkw2Oiwzwd_3HIYyhRlMmgB_rY4lPWUGn6vEVxUCBd4XBWRe5iUETSqv9e4CT6WUekuoQ-4uqz2bMr7E';
+      const authToken = searchParams.get('authToken');
   
       if (!authToken) {
         alert(
@@ -86,7 +86,6 @@ function App() {
           audio: false,
           video: false,
         },
-        baseURI: 'devel.dyte.io',
         modules: {devTools: {logs: true}}
       });
 
