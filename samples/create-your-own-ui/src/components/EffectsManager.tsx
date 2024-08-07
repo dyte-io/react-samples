@@ -106,6 +106,7 @@ const EffectsManager = ({
                 >
                   <img
                     alt="None"
+                    className='cursor-pointer'
                     src={getBackgroundImage('icon_none.svg')}
                     onClick={() => {
                       const newEffects = { ...effects };
@@ -121,6 +122,7 @@ const EffectsManager = ({
                 >
                   <img
                     alt="Blur"
+                    className='cursor-pointer'
                     src={getBackgroundImage('icon_blur.svg')}
                     onClick={() => {
                       const newEffects = { ...effects };
@@ -136,7 +138,7 @@ const EffectsManager = ({
                   <div
                     className={`backgroundBox ${
                       effects.video.backgroundImage === u ? 'active' : ''
-                    }`}
+                    } cursor-pointer`}
                     key={u}
                   >
                     <img
