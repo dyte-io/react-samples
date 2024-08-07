@@ -1,17 +1,25 @@
 import type DyteClient from '@dytesdk/web-core';
 import { UIConfig }  from '@dytesdk/ui-kit/dist/types/types/ui-config';
 import { CustomStates, SetStates } from '../types';
-import { DyteHeader, DyteStage, DyteGrid, DyteNotifications, DyteSidebar, DyteParticipantsAudio, DyteDialogManager, DyteControlbar } from '@dytesdk/react-ui-kit';
+import { DyteHeader, DyteStage, DyteGrid, DyteNotifications, DyteSidebar, DyteParticipantsAudio, DyteDialogManager, DyteControlbar, DyteControlbarButton } from '@dytesdk/react-ui-kit';
 import MeetingHeader from './meeting-header';
 import MeetingControlBar from './meeting-control-bar';
 import MeetingSideBar from './meeting-sidebar';
+import CustomDyteGrid from './custom-dyte-grid';
+import EffectsManager from './EffectsManager';
+import { useState } from 'react';
+import ReactionsManager from './ReactionsManager';
 function InMeeting({
     meeting,
     config,
     states,
     setStates,
 }: { meeting: DyteClient, config: UIConfig,  states: CustomStates, setStates: SetStates}) {
-    return (
+  
+  const [effectsDialog, setEffectsDialog] = useState(false);
+  const [reactionsDialog, setReactionsDialog] = useState(false);
+  
+  return (
         <div
           className="flex flex-col w-full h-full"
           ref={(el) => {
@@ -34,7 +42,7 @@ function InMeeting({
             color: '#ffffff',
           }}>
             <DyteStage className='flex w-full flex-1 p-2'>
-              <DyteGrid meeting={meeting} config={config} states={states}/>
+              <CustomDyteGrid meeting={meeting} config={config} states={states} setStates={setStates}/>
               <DyteNotifications meeting={meeting} config={config}  states={states}/>
               <MeetingSideBar meeting={meeting} config={config} states={states} setStates={setStates}/>
             </DyteStage>
@@ -43,8 +51,20 @@ function InMeeting({
           </main>
     
           <footer className='flex w-full overflow-visible'>
-            <MeetingControlBar meeting={meeting} config={config} states={states} setStates={setStates} />
+            <MeetingControlBar meeting={meeting} config={config} states={states} setStates={setStates} setEffectsDialog={setEffectsDialog} setReactionsDialog={setReactionsDialog} />
           </footer>
+
+          <EffectsManager
+                meeting={meeting}
+                isOpen={effectsDialog}
+                onClose={() => setEffectsDialog(false)}
+          />
+
+          <ReactionsManager
+            meeting={meeting}
+            isOpen={reactionsDialog}
+            onClose={() => setReactionsDialog(false)}
+          />
           
         </div>
       );
