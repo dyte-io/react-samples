@@ -151,7 +151,7 @@ function CustomDyteGridScreenshareFocused({
                                             icon={defaultIconPack.share_screen_person}
                                         />
                                         <span>
-                                            {participant.id === meeting?.self.id ? 'you' : participant.name.substring(6)}
+                                            {participant.id === meeting?.self.id ? 'you' : participant.name}
                                         </span>
                                     </div>
                                 </DyteButton>
