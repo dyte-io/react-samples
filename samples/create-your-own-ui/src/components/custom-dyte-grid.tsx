@@ -99,8 +99,8 @@ function CustomDyteGridScreenshareFocused({
     }, [screensharedParticipants]);
 
     return (
-        <div className='w-full'>
-            <div className='participants-holder'>
+        <div className='w-full flex flex-col justify-around'>
+            <div className='flex justify-center'>
             {
                 participants.map(participant => {
                     return (
