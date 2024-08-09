@@ -55,11 +55,13 @@ const EffectsManager = ({
           backgroundTransformerInit.current !== true
         ) {
           backgroundTransformerInit.current = true;
-          const transformer = await DyteVideoBackgroundTransformer.init();
+          const transformer = await DyteVideoBackgroundTransformer.init({
+            meeting,
+          });
           MiddlewareHolder.transformer = transformer;
         } else return;
       }
-      // await meeting.self.setVideoMiddlewareGlobalConfig({ disablePerFrameCanvasRendering: true });
+      await meeting.self.setVideoMiddlewareGlobalConfig({ disablePerFrameCanvasRendering: true });
       if (effects.video.background === 'image') {
         const imageURL = `https://assets.dyte.io/backgrounds/${effects.video.backgroundImage}`;
         MiddlewareHolder.transformer
