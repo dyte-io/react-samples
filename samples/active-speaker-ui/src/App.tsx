@@ -9,7 +9,7 @@ function App() {
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
 
-    const authToken = 'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJvcmdJZCI6ImM0N2U0OGM3LWM4YmMtNGM4MS1iMzNhLTc4NzQ2MmNhNWJiZiIsIm1lZXRpbmdJZCI6ImJiYmViZGQ4LWY1NTUtNGNmZC1hZDMwLTEwNDg3MTk0NDljMSIsInBhcnRpY2lwYW50SWQiOiJhYWE0ZDY2My04Yjc5LTQ5OWQtOWIxYS03M2I5NGM5MmJiMWUiLCJwcmVzZXRJZCI6ImUwZTE1YThhLTE1ZmEtNDUyYS1hOTZhLWZhYjQ2OTQyMjRiOSIsImlhdCI6MTcyMzkwMTU1NywiZXhwIjoxNzMyNTQxNTU3fQ.sV9igzJ3OUsfUlVp-tTKJiai5ucWMkew-qKMXoiY_eXIeHNfqDo5-sCYunhsGvGR6zBJgTahuHrTBny85TQhHhkuW3o8XyYYsEO6akYDqumKiOUsJRkTeyIIaEO9D80sVkwoMxMlZgs4PxF5RhkF5yDlAPJ5hd3C2cqgBbkKJzCJTlYyaZh293SuBBwHD-B2tbv-1NRdGZcX98KQOry1K9Lk4I82VJ37GRSZ1l2WLq3-TVQIamkMch-ax8v8H4NtsX7gYrNMuZ4ZSHsiPn5CNn-LEL3D502KpYdNRz17Fboj-n4IEBwVACHTU97VbdvI--R6WkGv3kZT4Xdd6qN0Hw';
+    const authToken = searchParams.get('authToken');
 
     if (!authToken) {
       alert(
