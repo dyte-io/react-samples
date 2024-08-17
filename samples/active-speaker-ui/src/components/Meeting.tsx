@@ -8,6 +8,7 @@ import {
   DyteNotifications,
   DyteParticipantsAudio,
   DyteSetupScreen,
+  DyteSpinner,
   DyteWaitingScreen,
 } from '@dytesdk/react-ui-kit';
 import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
@@ -100,8 +101,6 @@ export default function Meeting() {
     case 'joined':
       children = <UI />;
       break;
-    case 'disconnected':
-    // TODO: show disconnected screen
     default:
       children = <DyteEndedScreen meeting={meeting} />;
       break;

@@ -5,10 +5,10 @@ import {
   DyteIcon,
   DyteNameTag,
   DyteScreenshareView,
-  defaultIconPack,
 } from '@dytesdk/react-ui-kit';
 import { useDyteMeeting } from '@dytesdk/react-web-core';
 import type { DyteParticipant, DyteSelf } from '@dytesdk/web-core';
+import { iconPack } from '../lib/const';
 
 export default function ScreenShareView({
   participant,
@@ -48,7 +48,7 @@ export default function ScreenShareView({
           onClick={onMaximise}
           className="absolute bottom-3 right-3"
         >
-          <DyteIcon icon={defaultIconPack.full_screen_maximize} />
+          <DyteIcon icon={iconPack.full_screen_maximize} />
         </DyteButton>
       )}
     </DyteScreenshareView>
