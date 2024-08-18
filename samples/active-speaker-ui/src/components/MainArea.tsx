@@ -3,10 +3,6 @@ import ActiveSpeaker from './ActiveSpeaker';
 import ScreenShareView from './ScreenShareView';
 import {
   DyteIcon,
-  defaultIconPack,
-  DyteScreenshareView,
-  DyteNameTag,
-  DyteAudioVisualizer,
   DytePluginMain,
   DyteSimpleGrid,
   DyteButton,
@@ -15,6 +11,7 @@ import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
 import type { DyteParticipant, DytePlugin, DyteSelf } from '@dytesdk/web-core';
 import clsx from 'clsx';
 import { useState, useEffect, useRef } from 'react';
+import HOST_PRESET, { iconPack, saveWhiteboard, WHITEBOARD_ID } from '../lib/const';
 
 type ActiveTab =
   | { type: 'plugin'; plugin: DytePlugin }
@@ -36,10 +33,12 @@ function ActiveSpeakerView({
   const showTabBar = screenshares.length + plugins.length > 1;
 
   const size = useMeetingStore((s) => s.size);
-  const isImmersiveMode = useMeetingStore((s) => s.isImmersiveMode);
+  const whiteboardPlugin = useDyteSelector(m => m.plugins.active.get(WHITEBOARD_ID)) 
   const [states, setStates] = useMeetingStore((s) => [s.states, s.setStates]);
 
   const activeTab = useDyteSelector((m) => m.meta.selfActiveTab);
+  const isHost = meeting.self.presetName === HOST_PRESET;
+  const isDarkMode = useMeetingStore((s) => s.darkMode);
 
   useEffect(() => {
     if (activeTab) {
@@ -129,16 +128,58 @@ function ActiveSpeakerView({
     setSelectedTab(tab);
   };
 
+  const setConfig = () => {
+    const hostId = 
+      isHost
+      ? meeting.self.id
+      : meeting.participants.joined.toArray().find(x => x.presetName === HOST_PRESET)?.id;
+
+    whiteboardPlugin?.sendData({
+      eventName: 'config',
+      data: {
+        eventName: 'config',
+        follow: hostId,
+        role: isHost ? 'editor' : 'viewer',
+        infiniteCanvas: false,
+        darkMode: isDarkMode,
+        exportMode: 'pdf', 
+      }
+    })
+  }
+
+  // NOTE(ishita1805): Set whiteboard config on launch 
+  useEffect(() => {
+    if (!whiteboardPlugin) return;
+    setConfig();
+    whiteboardPlugin.on('ready', setConfig);
+    return () => {
+      whiteboardPlugin.off('ready', setConfig);
+    }
+  }, [whiteboardPlugin])
+
+  // NOTE(ishita1805): Update whiteboard config when dark mode is toggled
+  useEffect(() => {
+    setConfig();
+  }, [isDarkMode])
+
+  // NOTE(ishita1805): Save whiteboard before closing
+  const closePlugin = async (plugin: DytePlugin) => {
+    if (plugin.id === whiteboardPlugin?.id) {
+      await saveWhiteboard(whiteboardPlugin);
+    }
+    plugin.deactivate();
+  }
+  
+
   return (
     <div className="size-full flex flex-col gap-2">
       {showTabBar && (
-        <div className="h-12 flex items-center text-xs overflow-x-auto max-w-full w-full">
-          {/* TODO: handle overflow */}
+        <div className="h-8 flex items-center text-xs overflow-x-auto max-w-full w-full overflow-y-hidden">
           <div className="flex items-center gap-1.5">
             {screenshares.map((participant) => (
               <button
                 className={clsx(
-                  'h-11 flex items-center justify-center gap-1.5 p-2 rounded-lg',
+                  'h-8 !min-w-fit flex items-center justify-center gap-1.5 p-1 rounded-sm',
                   selectedTab?.type === 'screenshare' &&
                     selectedTab.participant.id === participant.id
                     ? 'bg-blue-600'
@@ -149,7 +190,7 @@ function ActiveSpeakerView({
                   setActiveTab({ type: 'screenshare', participant })
                 }
               >
-                <DyteIcon icon={defaultIconPack.share_screen_person} />
+                <DyteIcon size='md' icon={iconPack.share_screen_person} />
                 <span>{participant.name}</span>
               </button>
             ))}
@@ -157,7 +198,7 @@ function ActiveSpeakerView({
             {plugins.map((plugin) => (
               <button
                 className={clsx(
-                  'h-11 flex items-center justify-center gap-1.5 p-2 rounded-lg',
+                  'h-8 flex !min-w-fit  items-center justify-center gap-1.5 p-1 rounded-sm',
                   selectedTab?.type === 'plugin' &&
                     selectedTab.plugin.id === plugin.id
                     ? 'bg-blue-600'
@@ -166,7 +207,7 @@ function ActiveSpeakerView({
                 key={plugin.id}
                 onClick={() => setActiveTab({ type: 'plugin', plugin })}
               >
-                <img className="h-7 w-7 rounded-md" src={plugin.picture} />
+                <img className="h-6 w-6 rounded-sm" src={plugin.picture} />
                 <span>{plugin.name}</span>
               </button>
             ))}
@@ -182,7 +223,7 @@ function ActiveSpeakerView({
       {plugins.map((plugin) => (
         <div
           className={clsx(
-            'flex-1 relative isolate',
+            'flex-1 isolate relative',
             selectedTab?.type === 'plugin' &&
               selectedTab.plugin.id === plugin.id
               ? 'block'
@@ -190,6 +231,16 @@ function ActiveSpeakerView({
           )}
           key={plugin.id}
         >
+          <div className={clsx(
+            'absolute flex row w-full p-1 px-2 rounded-t-lg text-sm rounded-none bg-zinc-900 overflow-hidden items-center justify-between'
+          )}>
+            {plugin.name}
+            <div className={clsx(
+              'cursor-pointer bg-blue-600 rounded-full p-[2px] flex items-center justify-center'
+            )} >
+            <DyteIcon icon={iconPack.dismiss} size='sm' onClick={() => closePlugin(plugin)} />
+            </div>
+          </div>
           <DytePluginMain meeting={meeting} plugin={plugin} />
 
           {states.activeSidebar && (
@@ -202,7 +253,7 @@ function ActiveSpeakerView({
                 setStates({ activeSidebar: false, sidebar: undefined });
               }}
             >
-              <DyteIcon icon={defaultIconPack.full_screen_maximize} />
+              <DyteIcon icon={iconPack.full_screen_maximize} />
             </DyteButton>
           )}
         </div>
@@ -243,7 +294,7 @@ export default function MainArea() {
 
   const setActiveMode = useMeetingStore((s) => s.setIsActiveSpeakerMode);
   const isMobile = useMeetingStore((s) => s.isMobile);
-  const isHost = meeting.self.presetName === 'webinar_presenter';
+  const isHost = meeting.self.presetName === HOST_PRESET;
   const isEmptyStage = participants.length === 0;
 
   useEffect(() => {

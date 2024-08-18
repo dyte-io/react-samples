@@ -10,6 +10,8 @@ interface Dimensions {
 
 export interface MeetingStore {
   isImmersiveMode: boolean;
+  darkMode: boolean;
+  toggleDarkMode: (val: boolean) => void;
   setIsImmersiveMode: (val: boolean) => void;
   toggleImmersiveMode: () => void;
 
@@ -29,6 +31,9 @@ export interface MeetingStore {
 export const useMeetingStore = create<MeetingStore>((set, get) => ({
   isActiveSpeakerMode: false,
   setIsActiveSpeakerMode: (isActiveSpeakerMode) => set({ isActiveSpeakerMode }),
+
+  darkMode: true,
+  toggleDarkMode: (darkMode) => set({ darkMode }),
 
   isImmersiveMode: false,
   setIsImmersiveMode: (isImmersiveMode) => set({ isImmersiveMode }),

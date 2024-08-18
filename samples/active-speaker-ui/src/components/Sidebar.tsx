@@ -1,3 +1,4 @@
+import HOST_PRESET from '../lib/const';
 import { useMeetingStore } from '../lib/meeting-store';
 import ActiveSpeaker from './ActiveSpeaker';
 import Grid from './Grid';
@@ -36,7 +37,7 @@ export default function Sidebar() {
       break;
   }
 
-  const isHost = meeting.self.presetName === 'webinar_presenter';
+  const isHost = meeting.self.presetName === HOST_PRESET;
 
   if (isHost && !sidebar) {
     return null;
