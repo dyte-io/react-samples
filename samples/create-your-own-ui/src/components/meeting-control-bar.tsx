@@ -1,4 +1,4 @@
-import { DyteBreakoutRoomsToggle, DyteCameraToggle, DyteChatToggle, DyteControlbar, DyteControlbarButton, DyteDebuggerToggle, DyteFullscreenToggle, DyteLeaveButton, DyteMicToggle, DyteMoreToggle, DyteMuteAllButton, DyteParticipantsToggle, DytePipToggle, DytePluginsToggle, DytePoll, DytePollsToggle, DyteRecordingToggle, DyteScreenShareToggle, DyteSettingsToggle, DyteStageToggle } from "@dytesdk/react-ui-kit";
+import { DyteBreakoutRoomsToggle, DyteCameraToggle, DyteChatToggle, DyteControlbar, DyteControlbarButton, DyteFullscreenToggle, DyteLeaveButton, DyteMicToggle, DyteMoreToggle, DyteMuteAllButton, DyteParticipantsToggle, DytePipToggle, DytePluginsToggle, DytePoll, DytePollsToggle, DyteRecordingToggle, DyteScreenShareToggle, DyteSettingsToggle, DyteStageToggle } from "@dytesdk/react-ui-kit";
 import { UIConfig, defaultIconPack } from "@dytesdk/ui-kit";
 import DyteClient from "@dytesdk/web-core";
 import { CustomStates, SetStates } from "../types";
@@ -34,7 +34,6 @@ function ControlBarWithCustomUI({
                     <DyteMuteAllButton meeting={meeting} variant="horizontal"/>
                     <DyteBreakoutRoomsToggle meeting={meeting} states={states} variant="horizontal"/>
                     <DyteRecordingToggle meeting={meeting} variant="horizontal"/>
-                    <DyteDebuggerToggle meeting={meeting} states={states} variant="horizontal"/>
                 </div>
             </DyteMoreToggle>
         </div>

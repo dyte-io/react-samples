@@ -31,8 +31,17 @@ function App() {
     ).then(async (meeting: any) => {
       window.meeting = meeting;
 
+      /**
+       * To customise DyteVideoBackgroundTransformer configs, please refer to https://www.npmjs.com/package/@dytesdk/video-background-transformer?activeTab=readme.
+       * 
+      */
       const videoBackgroundTransformer =
-        await DyteVideoBackgroundTransformer.init();
+        await DyteVideoBackgroundTransformer.init({
+          meeting,
+          segmentationConfig: {
+            pipeline: 'canvas2dCpu', // 'webgl2' | 'canvas2dCpu'
+          },
+        });
 
       // The video-background-transformer provides two functionalities
       // 1. Add background blur
