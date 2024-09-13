@@ -55,8 +55,15 @@ const EffectsManager = ({
           backgroundTransformerInit.current !== true
         ) {
           backgroundTransformerInit.current = true;
+          /**
+           * To customise DyteVideoBackgroundTransformer configs, please refer to https://www.npmjs.com/package/@dytesdk/video-background-transformer?activeTab=readme.
+           * 
+          */
           const transformer = await DyteVideoBackgroundTransformer.init({
             meeting,
+            segmentationConfig: {
+              pipeline: 'canvas2dCpu', // 'webgl2' | 'canvas2dCpu'
+            },
           });
           MiddlewareHolder.transformer = transformer;
         } else return;
