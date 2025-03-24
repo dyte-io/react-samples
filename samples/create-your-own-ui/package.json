@@ -8,22 +8,21 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@dytesdk/react-ui-kit": "^2.0.3",
-    "@dytesdk/react-web-core": "^2.0.7",
+    "@dytesdk/react-ui-kit": "^2.4.0-staging.10",
+    "@dytesdk/react-web-core": "^2.5.0-staging.26",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "zustand": "^5.0.3"
   },
   "devDependencies": {
-    "@dytesdk/ui-kit": "^1.66.3",
-    "@dytesdk/web-core": "^1.32.1",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
-    "@vitejs/plugin-react": "^2.2.0",
+    "@vitejs/plugin-react-swc": "^3.8.1",
     "autoprefixer": "^10.4.16",
     "postcss": "^8.4.30",
     "prettier": "^3.0.3",
     "tailwindcss": "^3.3.3",
-    "typescript": "^4.6.4",
-    "vite": "^3.2.3"
+    "typescript": "^5.8.2",
+    "vite": "^6.2.3"
   }
 }
