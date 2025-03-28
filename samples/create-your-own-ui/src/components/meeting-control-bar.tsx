@@ -20,7 +20,7 @@ import {
   DyteStageToggle,
 } from '@dytesdk/react-ui-kit';
 import { defaultIconPack } from '@dytesdk/ui-kit';
-import { useCustomStatesStore, useStatesStore } from '../store';
+import { useStatesStore } from '../store';
 
 function ControlBarPreBuilt() {
   return (
@@ -34,11 +34,6 @@ function ControlBarWithCustomUI() {
   ) as HTMLElement;
 
   const states = useStatesStore((s) => s.states);
-
-  // const [customStates,  setCustomStates] = useCustomStatesStore((s) => [
-  //   s.states,
-  //   s.setCustomStates,
-  // ]);
 
   return (
     <div className="flex w-full py-2 px-3 text-white justify-between">
@@ -79,10 +74,14 @@ function ControlBarWithCustomUI() {
           icon={defaultIconPack.add}
           label="Open Custom Sidebar"
           onClick={(e) => {
+            console.log(states.activeSidebar);
             e.currentTarget.dispatchEvent(
               new CustomEvent('dyteStateUpdate', {
                 detail: {
-                  activeSidebar: !states.activeSidebar,
+                  activeSidebar:
+                    (states.sidebar as any) !== 'warnings'
+                      ? true
+                      : !states.activeSidebar,
                   sidebar: 'warnings',
                 },
                 bubbles: true,

@@ -3,7 +3,6 @@ import {
   DyteGrid,
   DyteNotifications,
   DyteParticipantsAudio,
-  DyteDialogManager,
 } from '@dytesdk/react-ui-kit';
 import MeetingHeader from './meeting-header';
 import MeetingControlBar from './meeting-control-bar';

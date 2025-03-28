@@ -4,7 +4,6 @@ export type CustomSideBarTabs = DyteSidebarSection | 'warnings';
 
 export type CustomStates = {
   activeMediaPreviewModal?: boolean;
-  customSidebar?: CustomSideBarTabs;
 };
 
 export type SetStates = React.Dispatch<React.SetStateAction<CustomStates>>;
