@@ -1,10 +1,10 @@
 import Meeting from './components/Meeting';
-import { DyteSpinner } from '@dytesdk/react-ui-kit';
-import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
+import { RtkSpinner } from '@cloudflare/realtimekit-react-ui';
+import { RealtimeKitProvider, useRealtimeKitClient } from '@cloudflare/realtimekit-react';
 import { useEffect } from 'react';
 
 function App() {
-  const [meeting, initMeeting] = useDyteClient();
+  const [meeting, initMeeting] = useRealtimeKitClient();
 
   useEffect(() => {
     const searchParams = new URLSearchParams(window.location.search);
@@ -33,17 +33,17 @@ function App() {
   // To avoid that and to make it fill a parent container, pass the prop:
   // `mode="fill"` to the component.
   return (
-    <DyteProvider
+    <RealtimeKitProvider
       value={meeting}
       fallback={
         <div className="size-full flex flex-col gap-3 place-items-center justify-center">
-          <DyteSpinner className="w-12 h-12 text-blue-600" />
+          <RtkSpinner className="w-12 h-12 text-blue-600" />
           <p className="text-lg">Joining...</p>
         </div>
       }
     >
       <Meeting />
-    </DyteProvider>
+    </RealtimeKitProvider>
   );
 }
 

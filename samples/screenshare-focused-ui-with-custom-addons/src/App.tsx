@@ -1,21 +1,21 @@
 import { useEffect, useState } from 'react';
 import {
-  DyteProvider,
-  useDyteClient,
-  useDyteMeeting,
-} from '@dytesdk/react-web-core';
+  RealtimeKitProvider,
+  useRealtimeKitClient,
+  useRealtimeKitMeeting,
+} from '@cloudflare/realtimekit-react';
 import './global.css';
 import {
   defaultConfig,
   generateConfig,
-} from '@dytesdk/react-ui-kit';
+} from '@cloudflare/realtimekit-react-ui';
 import { DyteStateListenersUtils } from './dyte-state-listeners';
 import { CustomStates } from './types';
 import { setFullScreenToggleTargetElement } from './utils';
 import CustomDyteMeeting from './components/custom-dyte-meeting';
 
 function Meeting() {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
   const [config, setConfig] = useState(defaultConfig);
   const [states, setStates] = useState<CustomStates>({
     meeting: 'setup',
@@ -65,7 +65,7 @@ function Meeting() {
 }
 
 function App() {
-  const [meeting, initMeeting] = useDyteClient();
+  const [meeting, initMeeting] = useRealtimeKitClient();
 
   useEffect(() => {
     async function initalizeMeeting(){
@@ -102,9 +102,9 @@ function App() {
   // To avoid that and to make it fill a parent container, pass the prop:
   // `mode="fill"` to the component.
   return (
-    <DyteProvider value={meeting}>
+    <RealtimeKitProvider value={meeting}>
       <Meeting/>
-    </DyteProvider>
+    </RealtimeKitProvider>
   );
 }
 

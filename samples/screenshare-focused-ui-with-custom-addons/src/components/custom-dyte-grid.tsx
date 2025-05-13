@@ -1,12 +1,12 @@
-import type DyteClient from '@dytesdk/web-core';
-import { UIConfig }  from '@dytesdk/ui-kit/dist/types/types/ui-config';
+import type DyteClient from '@cloudflare/realtimekit';
+import { UIConfig }  from '@cloudflare/realtimekit-ui/dist/types/types/ui-config';
 import { CustomStates, SetStates } from '../types';
-import { useDyteSelector } from '@dytesdk/react-web-core';
-import { defaultIconPack, DyteAudioVisualizer, DyteAvatar, DyteButton, DyteCameraToggle, DyteControlbarButton, DyteIcon, DyteMicToggle, DyteNameTag, DyteParticipantTile, DyteScreenshareView } from '@dytesdk/react-ui-kit';
+import { useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
+import { defaultIconPack, RtkAudioVisualizer, RtkAvatar, RtkButton, RtkCameraToggle, RtkControlbarButton, RtkIcon, RtkMicToggle, RtkNameTag, RtkParticipantTile, RtkScreenshareView } from '@cloudflare/realtimekit-react-ui';
 
 import './custom-dyte-grid.css';
 import { useEffect, useState } from 'react';
-import { DyteParticipant, DyteSelf } from '@dytesdk/web-core';
+import { RTKParticipant, RTKSelf } from '@cloudflare/realtimekit';
 import CustomParticipantTile from './custom-participant-tile';
 
 function CustomDyteGridScreenshareFocused({
@@ -18,23 +18,23 @@ function CustomDyteGridScreenshareFocused({
     
     const [size] = useState({ height: '120px', width: '120px' });
 
-    const [selectedSharedScreenParticipant, setSelectedSharedScreenParticipant] = useState<DyteSelf | DyteParticipant | null>(null);
+    const [selectedSharedScreenParticipant, setSelectedSharedScreenParticipant] = useState<RTKSelf | RTKParticipant | null>(null);
 
-    const [selectedParticipant, setSelectedParticipant] = useState<DyteSelf | DyteParticipant | null>(meeting.self);
+    const [selectedParticipant, setSelectedParticipant] = useState<RTKSelf | RTKParticipant | null>(meeting.self);
 
     const [handRaisedPeerIds, setHandRaisedPeerIds] = useState<string[]>([]);
 
     const [reactions, setReactions] = useState<{[key: string]: string}>({});
 
-    const activeParticipants = useDyteSelector((meeting) =>
+    const activeParticipants = useRealtimeKitSelector((meeting) =>
         meeting.participants.active.toArray()
     );
 
-    const pinnedParticipants = useDyteSelector((meeting) =>
+    const pinnedParticipants = useRealtimeKitSelector((meeting) =>
         meeting.participants.pinned.toArray()
     );
 
-    const screensharedParticipants = useDyteSelector((meeting) => {
+    const screensharedParticipants = useRealtimeKitSelector((meeting) => {
         const allParticipants = [meeting.self, ...meeting.participants.joined.toArray()];
         return allParticipants.filter((p) => p.screenShareEnabled);
     });
@@ -133,30 +133,30 @@ function CustomDyteGridScreenshareFocused({
                         <div className='mt-10'>Shared&nbsp;screens:</div>
                         {screensharedParticipants.map(participant => {
                             return (
-                            <div
-                            className='mt-2'
-                            key={participant.id}
-                            >
-                                <DyteButton
-                                variant='secondary'
-                                className='bg-[#242424] p-2 h-fit'
-                                type='button'
-                                onClick={() => {
-                                    setSelectedParticipant(null);
-                                    setSelectedSharedScreenParticipant(participant)
-                                }}
+                                <div
+                                className='mt-2'
+                                key={participant.id}
                                 >
-                                    <div className="flex flex-col items-center">
-                                        <DyteIcon
-                                            icon={defaultIconPack.share_screen_person}
-                                        />
-                                        <span>
-                                            {participant.id === meeting?.self.id ? 'you' : participant.name}
-                                        </span>
-                                    </div>
-                                </DyteButton>
-                            </div>
-                            )
+                                    <RtkButton
+                                    variant='secondary'
+                                    className='bg-[#242424] p-2 h-fit'
+                                    type='button'
+                                    onClick={() => {
+                                        setSelectedParticipant(null);
+                                        setSelectedSharedScreenParticipant(participant)
+                                    }}
+                                    >
+                                        <div className="flex flex-col items-center">
+                                            <RtkIcon
+                                                icon={defaultIconPack.share_screen_person}
+                                            />
+                                            <span>
+                                                {participant.id === meeting?.self.id ? 'you' : participant.name}
+                                            </span>
+                                        </div>
+                                    </RtkButton>
+                                </div>
+                            );
                         })
                     }
                     </div>
@@ -164,7 +164,7 @@ function CustomDyteGridScreenshareFocused({
                 {
                     selectedSharedScreenParticipant && (
                         <div className='shared-screen'>
-                            <DyteScreenshareView
+                            <RtkScreenshareView
                                 meeting={meeting}
                                 participant={selectedSharedScreenParticipant}
                                 hideFullScreenButton={false}
@@ -188,7 +188,7 @@ function CustomDyteGridScreenshareFocused({
                 )}
             </div>
         </div>
-      );
+    );
 }
 
 export default CustomDyteGridScreenshareFocused;

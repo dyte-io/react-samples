@@ -1,4 +1,4 @@
-import { useDyteMeeting } from '@dytesdk/react-web-core';
+import { useRealtimeKitMeeting } from '@cloudflare/realtimekit-react';
 import './auctionControlBar.css';
 import { useState } from 'react';
 import Icon from '../icon/Icon';
@@ -18,7 +18,7 @@ interface Props {
 }
 
 const AuctionControlBar = (props: Props) => {
-    const { meeting } = useDyteMeeting();
+    const { meeting } = useRealtimeKitMeeting();
     const [bid, setBid] = useState<string>('');
     const { isHost, item, highestBid, handleNext, handlePrev } = props;
     const placeBid = () => {

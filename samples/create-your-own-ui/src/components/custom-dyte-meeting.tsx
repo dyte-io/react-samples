@@ -1,10 +1,10 @@
 import InMeeting from './in-meeting';
 import {
-  DyteEndedScreen,
-  DyteIdleScreen,
-  DyteSetupScreen,
-  DyteWaitingScreen,
-} from '@dytesdk/react-ui-kit';
+  RtkEndedScreen,
+  RtkIdleScreen,
+  RtkSetupScreen,
+  RtkWaitingScreen,
+} from '@cloudflare/realtimekit-react-ui';
 import { useCustomStatesStore, useStatesStore } from '../store';
 import SetupScreen from './setup-screen';
 
@@ -15,13 +15,13 @@ function CustomDyteMeeting() {
 
   switch (states.meeting) {
     case 'idle':
-      return <DyteIdleScreen />;
+      return <RtkIdleScreen />;
     case 'setup':
       return <SetupScreen />;
     case 'waiting':
-      return <DyteWaitingScreen />;
+      return <RtkWaitingScreen />;
     case 'ended':
-      return <DyteEndedScreen />;
+      return <RtkEndedScreen />;
     case 'joined':
     default:
       return <InMeeting />;

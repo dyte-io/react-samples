@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { DyteMeeting } from '@dytesdk/react-ui-kit';
-import { useDyteClient } from '@dytesdk/react-web-core';
+import { RtkMeeting } from '@cloudflare/realtimekit-react-ui';
+import { useRealtimeKitClient } from '@cloudflare/realtimekit-react';
 
 function App() {
-  const [meeting, initMeeting] = useDyteClient();
+  const [meeting, initMeeting] = useRealtimeKitClient();
 
   useEffect(() => {
     const searchParams = new URL(window.location.href).searchParams;
@@ -25,7 +25,7 @@ function App() {
   // By default this component will cover the entire viewport.
   // To avoid that and to make it fill a parent container, pass the prop:
   // `mode="fill"` to the component.
-  return <DyteMeeting meeting={meeting!} />;
+  return <RtkMeeting meeting={meeting!} />;
 }
 
 export default App;

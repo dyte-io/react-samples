@@ -1,18 +1,18 @@
-import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
+import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
 
 export function useActiveSpeaker() {
-  const { meeting } = useDyteMeeting();
-  const isPinned = useDyteSelector((m) => m.self.isPinned);
+  const { meeting } = useRealtimeKitMeeting();
+  const isPinned = useRealtimeKitSelector((m) => m.self.isPinned);
 
-  const lastActiveSpeaker = useDyteSelector(
+  const lastActiveSpeaker = useRealtimeKitSelector(
     (m) => m.participants.lastActiveSpeaker
   );
 
-  const pinnedParticipants = useDyteSelector((m) =>
+  const pinnedParticipants = useRealtimeKitSelector((m) =>
     m.participants.pinned.toArray()
   );
 
-  const activeParticipants = useDyteSelector((m) =>
+  const activeParticipants = useRealtimeKitSelector((m) =>
     m.participants.active.toArray()
   );
 

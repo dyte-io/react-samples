@@ -1,24 +1,24 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  DyteAudioVisualizer,
-  DyteButton,
-  DyteIcon,
-  DyteSettingsAudio,
-  DyteSwitch,
+  RtkAudioVisualizer,
+  RtkButton,
+  RtkIcon,
+  RtkSettingsAudio,
+  RtkSwitch,
   defaultIconPack,
-} from '@dytesdk/react-ui-kit';
-import { useDyteMeeting } from '@dytesdk/react-web-core';
+} from '@cloudflare/realtimekit-react-ui';
+import { useRealtimeKitMeeting } from '@cloudflare/realtimekit-react';
 interface CurrentDevices {
   audio?: MediaDeviceInfo;
   speaker?: MediaDeviceInfo;
 }
 
 function AudioPreviewPreBuilt() {
-  return <DyteSettingsAudio />;
+  return <RtkSettingsAudio />;
 }
 
 function AudioPreviewWithCustomUI() {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
 
   const [audioDevices, setAudioDevices] = useState<MediaDeviceInfo[]>([]);
   const [speakerDevices, setSpeakerDevices] = useState<MediaDeviceInfo[]>([]);
@@ -97,7 +97,7 @@ function AudioPreviewWithCustomUI() {
                 </option>
               ))}
             </select>
-            <DyteAudioVisualizer participant={meeting?.self} />
+            <RtkAudioVisualizer participant={meeting?.self} />
           </div>
         </div>
       )}
@@ -125,14 +125,14 @@ function AudioPreviewWithCustomUI() {
             </div>
           </div>
         )}
-        <DyteButton
+        <RtkButton
           className="mt-2 bg-[#1F1F1F]"
           onClick={() => testAudio()}
           size="lg"
         >
-          <DyteIcon icon={defaultIconPack.speaker} slot="start" />
+          <RtkIcon icon={defaultIconPack.speaker} slot="start" />
           Test
-        </DyteButton>
+        </RtkButton>
       </div>
     </div>
   );

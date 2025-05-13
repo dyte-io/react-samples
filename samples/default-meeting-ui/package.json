@@ -9,8 +9,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@dytesdk/react-ui-kit": "^2.0.3",
-    "@dytesdk/react-web-core": "^2.0.7",
+    "@cloudflare/realtimekit-react": "^0.5.0-staging.111",
+    "@cloudflare/realtimekit-react-ui": "^1.0.0-staging.14",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },

@@ -1,10 +1,10 @@
 import App from './components/App';
 import './index.css';
-import { provideDyteDesignSystem } from '@dytesdk/react-ui-kit';
+import { provideRtkDesignSystem } from '@cloudflare/realtimekit-react-ui';
 import { createRoot } from 'react-dom/client';
 
 // change theme to light
-provideDyteDesignSystem(document.body, {
+provideRtkDesignSystem(document.body, {
 	theme: 'light',
 	colors: {
 		background: {

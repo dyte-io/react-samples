@@ -1,28 +1,28 @@
 import { useMeetingStore } from '../lib/meeting-store';
 import {
-  DyteSettingsToggle,
-  DyteScreenShareToggle,
-  DyteStageToggle,
-  DyteMicToggle,
-  DyteCameraToggle,
-  DyteParticipantsToggle,
-  DytePollsToggle,
-  DyteChatToggle,
-  DytePluginsToggle,
-  DyteControlbarButton,
-} from '@dytesdk/react-ui-kit';
-import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
+  RtkSettingsToggle,
+  RtkScreenShareToggle,
+  RtkStageToggle,
+  RtkMicToggle,
+  RtkCameraToggle,
+  RtkParticipantsToggle,
+  RtkPollsToggle,
+  RtkChatToggle,
+  RtkPluginsToggle,
+  RtkControlbarButton,
+} from '@cloudflare/realtimekit-react-ui';
+import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
 import HOST_PRESET, { iconPack, saveWhiteboard, WHITEBOARD_ID } from '../lib/const';
 
 export default function Controlbar() {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
   const size = useMeetingStore((s) => s.size);
   const isMobile = useMeetingStore((s) => s.isMobile);
   const states = useMeetingStore((s) => s.states);
   const isDarkMode = useMeetingStore((s) => s.darkMode);
   const toggleDarkMode = useMeetingStore((s) => s.toggleDarkMode);
   const setStates = useMeetingStore((s) => s.setStates);
-  const whiteboardPlugin = useDyteSelector(m => m.plugins.active.get(WHITEBOARD_ID)) 
+  const whiteboardPlugin = useRealtimeKitSelector(m => m.plugins.active.get(WHITEBOARD_ID)) 
 
   const buttonSize = size === 'lg' ? 'lg' : 'sm';
 
@@ -38,9 +38,7 @@ export default function Controlbar() {
   }
 
   const LeaveButton = () => {
-    return (
-      <DyteControlbarButton icon={iconPack.call_end} size={buttonSize} label='Leave' onClick={leaveMeeting}/>
-    )
+    return (<RtkControlbarButton icon={iconPack.call_end} size={buttonSize} label='Leave' onClick={leaveMeeting}/>);
   }
 
 
@@ -50,44 +48,42 @@ export default function Controlbar() {
         <div className="flex flex-col lg:flex-row items-center">
           {isHost && (
             <>
-              <DyteParticipantsToggle
+              <RtkParticipantsToggle
                 meeting={meeting}
                 size={buttonSize}
                 states={states}
               />
-              <DytePluginsToggle
+              <RtkPluginsToggle
                 meeting={meeting}
                 size={buttonSize}
                 states={states}
               />
             </>
           )}
-          <DyteChatToggle meeting={meeting} size={buttonSize} states={states} />
-          <DytePollsToggle
+          <RtkChatToggle meeting={meeting} size={buttonSize} states={states} />
+          <RtkPollsToggle
             meeting={meeting}
             size={buttonSize}
             states={states}
           />
         </div>
-
         <div className="flex flex-col lg:flex-row items-center justify-center">
-          <DyteMicToggle meeting={meeting} size={buttonSize} />
-          <DyteCameraToggle meeting={meeting} size={buttonSize} />
-          <DyteScreenShareToggle
+          <RtkMicToggle meeting={meeting} size={buttonSize} />
+          <RtkCameraToggle meeting={meeting} size={buttonSize} />
+          <RtkScreenShareToggle
             meeting={meeting}
             size={buttonSize}
             states={states}
           />
         </div>
-
         <div className="flex flex-col lg:flex-row items-center justify-end">
-          <DyteStageToggle
+          <RtkStageToggle
             meeting={meeting}
             size={buttonSize}
             iconPack={iconPack}
           />
           <LeaveButton/>
-          <DyteSettingsToggle size={buttonSize} states={states} />
+          <RtkSettingsToggle size={buttonSize} states={states} />
         </div>
       </>
     );
@@ -96,15 +92,15 @@ export default function Controlbar() {
   return (
     <>
       <div className="flex flex-col lg:flex-row items-center">
-        <DyteSettingsToggle size={buttonSize} states={states} />
-        <DyteScreenShareToggle
+        <RtkSettingsToggle size={buttonSize} states={states} />
+        <RtkScreenShareToggle
           meeting={meeting}
           size={buttonSize}
           states={states}
         />
         {
           isHost 
-          && <DyteControlbarButton
+          && <RtkControlbarButton
               icon={isDarkMode ? iconPack.dark : iconPack.light}
               label= {isDarkMode ? 'Dark' : 'Light'}
               onClick={() => {
@@ -113,35 +109,33 @@ export default function Controlbar() {
             />
         }
       </div>
-
       <div className="flex flex-col lg:flex-row items-center justify-center">
-        <DyteStageToggle
+        <RtkStageToggle
           meeting={meeting}
           size={buttonSize}
           iconPack={iconPack}
         />
-        <DyteMicToggle meeting={meeting} size={buttonSize} />
-        <DyteCameraToggle meeting={meeting} size={buttonSize} />
+        <RtkMicToggle meeting={meeting} size={buttonSize} />
+        <RtkCameraToggle meeting={meeting} size={buttonSize} />
         <LeaveButton />
       </div>
-
       <div className="flex flex-col lg:flex-row items-center justify-end">
         {isHost && (
           <>
-            <DyteParticipantsToggle
+            <RtkParticipantsToggle
               meeting={meeting}
               size={buttonSize}
               states={states}
             />
-            <DytePluginsToggle
+            <RtkPluginsToggle
               meeting={meeting}
               size={buttonSize}
               states={states}
             />
           </>
         )}
-        <DyteChatToggle meeting={meeting} size={buttonSize} states={states} />
-        <DytePollsToggle meeting={meeting} size={buttonSize} states={states} />
+        <RtkChatToggle meeting={meeting} size={buttonSize} states={states} />
+        <RtkPollsToggle meeting={meeting} size={buttonSize} states={states} />
       </div>
     </>
   );

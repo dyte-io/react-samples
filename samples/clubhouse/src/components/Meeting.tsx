@@ -1,5 +1,5 @@
-import { DyteParticipantsAudio, DyteSetupScreen } from '@dytesdk/react-ui-kit';
-import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
+import { RtkParticipantsAudio, RtkSetupScreen } from '@cloudflare/realtimekit-react-ui';
+import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
 import User from './User';
 import Requests from './Requests';
 import { useEffect, useState } from 'react';
@@ -10,21 +10,21 @@ import clsx from 'clsx';
 export default function Meeting() {
   const [showRequests, setShowRequests] = useState(true);
 
-  const { meeting } = useDyteMeeting();
-  const audioEnabled = useDyteSelector((m) => m.self.audioEnabled);
-  const roomJoined = useDyteSelector((m) => m.self.roomJoined);
+  const { meeting } = useRealtimeKitMeeting();
+  const audioEnabled = useRealtimeKitSelector((m) => m.self.audioEnabled);
+  const roomJoined = useRealtimeKitSelector((m) => m.self.roomJoined);
 
-  const title = useDyteSelector((m) => m.meta.meetingTitle);
+  const title = useRealtimeKitSelector((m) => m.meta.meetingTitle);
 
-  const status = useDyteSelector((m) => m.self.webinarStageStatus);
+  const status = useRealtimeKitSelector((m) => m.self.webinarStageStatus);
 
-  const onStageParticipants = useDyteSelector((m) =>
+  const onStageParticipants = useRealtimeKitSelector((m) =>
     m.participants.joined
       .toArray()
       .filter((p) => p.webinarStageStatus === 'ON_STAGE')
   );
 
-  const listeners = useDyteSelector((m) =>
+  const listeners = useRealtimeKitSelector((m) =>
     m.participants.joined
       .toArray()
       .filter((p) => p.webinarStageStatus !== 'ON_STAGE')
@@ -39,13 +39,12 @@ export default function Meeting() {
   }, [status]);
 
   if (!roomJoined && window.location.search.includes('showSetupScreen')) {
-    return <DyteSetupScreen meeting={meeting} size="sm" />;
+    return <RtkSetupScreen meeting={meeting} size="sm" />;
   }
 
   return (
     <div className="flex flex-col w-full h-full">
-      <DyteParticipantsAudio meeting={meeting} />
-
+      <RtkParticipantsAudio meeting={meeting} />
       <div className="flex-1 flex flex-col">
         <h1 className="text-lg font-bold p-4">{title}</h1>
 
@@ -139,7 +138,6 @@ export default function Meeting() {
           </div>
         </div>
       </div>
-
       {showRequests && <Requests />}
     </div>
   );

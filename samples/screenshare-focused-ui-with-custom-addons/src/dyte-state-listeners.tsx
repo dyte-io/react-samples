@@ -1,6 +1,6 @@
-import DyteClient from '@dytesdk/web-core';
-import type { PermissionSettings } from '@dytesdk/ui-kit/dist/types/types/props';
-import type { RoomLeftState } from '@dytesdk/ui-kit/dist/types/types/dyte-client';
+import DyteClient from '@cloudflare/realtimekit';
+import type { PermissionSettings } from '@cloudflare/realtimekit-ui/dist/types/types/props';
+import type { RoomLeftState } from '@cloudflare/realtimekit-ui/dist/types/types/rtk-client';
 import { CustomStates } from './types';
 
 export class DyteStateListenersUtils{

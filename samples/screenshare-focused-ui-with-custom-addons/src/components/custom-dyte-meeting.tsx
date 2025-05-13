@@ -1,5 +1,5 @@
-import { UIConfig } from "@dytesdk/ui-kit"
-import DyteClient from "@dytesdk/web-core"
+import { UIConfig } from '@cloudflare/realtimekit-ui'
+import DyteClient from '@cloudflare/realtimekit'
 import { CustomStates, SetStates } from "../types"
 import InMeeting from "./in-meeting"
 import MeetingLoading from "./meeting-loading"

@@ -1,17 +1,17 @@
-import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
+import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
 import {
-  DyteAudioVisualizer,
-  DyteParticipantTile,
-  DyteNameTag,
-  DyteAvatar,
-  DyteMeetingTitle,
-  DyteClock,
-  DyteMicToggle,
-  DyteCameraToggle,
-  DyteParticipantCount,
-  DyteParticipantsAudio,
-  DyteSetupScreen,
-} from '@dytesdk/react-ui-kit';
+  RtkAudioVisualizer,
+  RtkParticipantTile,
+  RtkNameTag,
+  RtkAvatar,
+  RtkMeetingTitle,
+  RtkClock,
+  RtkMicToggle,
+  RtkCameraToggle,
+  RtkParticipantCount,
+  RtkParticipantsAudio,
+  RtkSetupScreen,
+} from '@cloudflare/realtimekit-react-ui';
 import { useMemo, useRef } from 'react';
 import { createGrid } from 'good-grid';
 import { useGridDimensions } from 'good-grid/react';
@@ -21,13 +21,13 @@ function UI() {
   const $grid = useRef<HTMLElement>(null);
   const dimensions = useGridDimensions($grid);
 
-  const { meeting } = useDyteMeeting();
-  const self = useDyteSelector((meeting) => meeting.self);
-  const activeParticipants = useDyteSelector((meeting) =>
+  const { meeting } = useRealtimeKitMeeting();
+  const self = useRealtimeKitSelector((meeting) => meeting.self);
+  const activeParticipants = useRealtimeKitSelector((meeting) =>
     meeting.participants.active.toArray()
   );
 
-  const pinnedParticipants = useDyteSelector((meeting) =>
+  const pinnedParticipants = useRealtimeKitSelector((meeting) =>
     meeting.participants.pinned.toArray()
   );
 
@@ -51,7 +51,7 @@ function UI() {
 
   return (
     <div className="w-full h-full flex flex-col">
-      <DyteParticipantsAudio meeting={meeting} />
+      <RtkParticipantsAudio meeting={meeting} />
       <header className="h-12 flex items-center justify-between px-4 border-b">
         <div className="flex items-center gap-1 md:gap-2">
           <img
@@ -59,17 +59,17 @@ function UI() {
             className="h-6 md:h-7"
           />
           <div className="w-px h-7 mx-1 rotate-[18deg] bg-zinc-200"></div>
-          <DyteMeetingTitle
+          <RtkMeetingTitle
             meeting={meeting}
             className="mx-0 font-medium text-xs md:text-sm font-sans"
           />
         </div>
         <div>
-          <DyteParticipantCount
+          <RtkParticipantCount
             meeting={meeting}
             className="text-xs md:text-sm"
           />
-          <DyteClock meeting={meeting} className="text-xs md:text-sm" />
+          <RtkClock meeting={meeting} className="text-xs md:text-sm" />
         </div>
       </header>
       <main
@@ -80,7 +80,7 @@ function UI() {
           const { top, left } = getPosition(index);
 
           return (
-            <DyteParticipantTile
+            <RtkParticipantTile
               participant={participant}
               meeting={meeting}
               key={participant.id}
@@ -97,29 +97,29 @@ function UI() {
                 left,
               }}
             >
-              <DyteAvatar participant={participant} size="md" />
-              <DyteNameTag participant={participant} meeting={meeting}>
-                <DyteAudioVisualizer participant={participant} slot="start" />
-              </DyteNameTag>
-            </DyteParticipantTile>
+              <RtkAvatar participant={participant} size="md" />
+              <RtkNameTag participant={participant} meeting={meeting}>
+                <RtkAudioVisualizer participant={participant} slot="start" />
+              </RtkNameTag>
+            </RtkParticipantTile>
           );
         })}
       </main>
       <footer className="py-2 flex items-center justify-center">
-        <DyteMicToggle meeting={meeting} />
-        <DyteCameraToggle meeting={meeting} />
+        <RtkMicToggle meeting={meeting} />
+        <RtkCameraToggle meeting={meeting} />
       </footer>
     </div>
   );
 }
 
 export default function Meeting() {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
 
-  const roomJoined = useDyteSelector((meeting) => meeting.self.roomJoined);
+  const roomJoined = useRealtimeKitSelector((meeting) => meeting.self.roomJoined);
 
   if (!roomJoined) {
-    return <DyteSetupScreen meeting={meeting} />;
+    return <RtkSetupScreen meeting={meeting} />;
   }
 
   return <UI />;

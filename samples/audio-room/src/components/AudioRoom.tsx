@@ -1,11 +1,11 @@
-import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
-import { DyteButton, provideDyteDesignSystem } from '@dytesdk/react-ui-kit';
+import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
+import { RtkButton, provideRtkDesignSystem } from '@cloudflare/realtimekit-react-ui';
 import { useEffect } from 'react';
 import Room from './Room';
 
 export default function AudioRoom() {
-  const { meeting } = useDyteMeeting();
-  const roomJoined = useDyteSelector((meeting) => meeting.self.roomJoined);
+  const { meeting } = useRealtimeKitMeeting();
+  const roomJoined = useRealtimeKitSelector((meeting) => meeting.self.roomJoined);
 
   useEffect(() => {
     meeting.self.on('roomLeft', () => {
@@ -13,7 +13,7 @@ export default function AudioRoom() {
       alert("You've left the room");
     });
 
-    provideDyteDesignSystem(document.body, {
+    provideRtkDesignSystem(document.body, {
       theme: 'light',
     });
   }, []);
@@ -27,15 +27,14 @@ export default function AudioRoom() {
         <h1 className="text-3xl font-bold">{meeting.meta.meetingTitle}</h1>
         <h2 className="text-2xl">You will be joining as {meeting.self.name}</h2>
         <p>By default you will join with your mic disabled.</p>
-
-        <DyteButton
+        <RtkButton
           size="lg"
           onClick={() => meeting.joinRoom()}
           kind="wide"
           className="max-w-sm"
         >
           Join audio room
-        </DyteButton>
+        </RtkButton>
       </div>
     );
   }

@@ -1,8 +1,8 @@
-import DyteClient from "@dytesdk/web-core";
+import DyteClient from '@cloudflare/realtimekit';
 import { useEffect, useRef, useState } from "react";
-import { DyteAudioVisualizer, DyteButton, DyteIcon, DyteSettingsAudio, DyteSwitch, defaultIconPack } from "@dytesdk/react-ui-kit";
+import { RtkAudioVisualizer, RtkButton, RtkIcon, RtkSettingsAudio, RtkSwitch, defaultIconPack } from '@cloudflare/realtimekit-react-ui';
 import { CustomStates, SetStates } from "../types";
-import { UIConfig } from "@dytesdk/ui-kit";
+import { UIConfig } from '@cloudflare/realtimekit-ui';
 interface CurrentDevices {
     audio?: MediaDeviceInfo;
     speaker?: MediaDeviceInfo;
@@ -12,7 +12,7 @@ function AudioPreviewPreBuilt({
     meeting, states
 }: { meeting: DyteClient, config: UIConfig, states: CustomStates, setStates: SetStates }
 ){
-    return <DyteSettingsAudio meeting={meeting} states={states}/>
+    return <RtkSettingsAudio meeting={meeting} states={states}/>;
 }
 
 function AudioPreviewWithCustomUI({
@@ -94,7 +94,7 @@ function AudioPreviewWithCustomUI({
                                     </option>
                                 ))}
                             </select>
-                            <DyteAudioVisualizer
+                            <RtkAudioVisualizer
                                 participant={meeting?.self}
                             />
                         </div>
@@ -123,17 +123,17 @@ function AudioPreviewWithCustomUI({
                         </div>
                     </div>
                 )}
-                <DyteButton
+                <RtkButton
                     className="mt-2 bg-[#1F1F1F]"
                     onClick={() => testAudio()}
                     size="lg"
                 >
-                    <DyteIcon icon={defaultIconPack.speaker} slot="start" />
+                    <RtkIcon icon={defaultIconPack.speaker} slot="start" />
                     Test
-                </DyteButton>
+                </RtkButton>
             </div>
         </div>
-    )
+    );
 }
 
 export default AudioPreviewPreBuilt; // uncomment if you want to use prebuilt audio preview

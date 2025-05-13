@@ -1,21 +1,21 @@
 import {
-  DyteAudioVisualizer,
-  DyteAvatar,
-  DyteNameTag,
-  DyteParticipantTile,
-  DyteParticipantsAudio,
-  DyteSimpleGrid,
-  provideDyteDesignSystem,
-} from '@dytesdk/react-ui-kit';
-import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
+  RtkAudioVisualizer,
+  RtkAvatar,
+  RtkNameTag,
+  RtkParticipantTile,
+  RtkParticipantsAudio,
+  RtkSimpleGrid,
+  provideRtkDesignSystem,
+} from '@cloudflare/realtimekit-react-ui';
+import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
 import clsx from 'clsx';
 import { useEffect } from 'react';
 import Draggable from 'react-draggable';
 import { Mic, Video, X } from 'react-feather';
 
 function Grid() {
-  const { meeting } = useDyteMeeting();
-  const participants = useDyteSelector((m) => m.participants.active);
+  const { meeting } = useRealtimeKitMeeting();
+  const participants = useRealtimeKitSelector((m) => m.participants.active);
 
   return (
     <div className="relative flex place-items-center justify-center flex-1 overflow-hidden -m-4">
@@ -23,7 +23,7 @@ function Grid() {
         <p className="text-2xl">People haven't joined yet.</p>
       )}
       {participants.size > 0 && (
-        <DyteSimpleGrid
+        <RtkSimpleGrid
           participants={participants.toArray()}
           meeting={meeting}
           aspectRatio="1:1"
@@ -35,11 +35,11 @@ function Grid() {
 }
 
 function Controlbar() {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
 
-  const participants = useDyteSelector((m) => m.participants.joined);
+  const participants = useRealtimeKitSelector((m) => m.participants.joined);
 
-  const { videoEnabled, audioEnabled } = useDyteSelector((m) => ({
+  const { videoEnabled, audioEnabled } = useRealtimeKitSelector((m) => ({
     videoEnabled: m.self.videoEnabled,
     audioEnabled: m.self.audioEnabled,
   }));
@@ -105,12 +105,12 @@ function Controlbar() {
 }
 
 export default function Facetime() {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
 
-  const roomJoined = useDyteSelector((m) => m.self.roomJoined);
+  const roomJoined = useRealtimeKitSelector((m) => m.self.roomJoined);
 
   useEffect(() => {
-    provideDyteDesignSystem(document.body, {
+    provideRtkDesignSystem(document.body, {
       colors: {
         'video-bg': '#333333',
       },
@@ -127,28 +127,25 @@ export default function Facetime() {
 
   return (
     <div className="h-full w-full p-4 flex flex-col bg-black text-white overflow-hidden">
-      <DyteParticipantsAudio meeting={meeting} />
-
+      <RtkParticipantsAudio meeting={meeting} />
       <Grid />
-
       <Draggable bounds="parent">
-        <DyteParticipantTile
+        <RtkParticipantTile
           participant={meeting.self}
           meeting={meeting}
           key={meeting.self.id}
           className="z-10 absolute bottom-44 right-4 sm:bottom-4 shadow-black shadow-2xl aspect-square w-52 h-auto cursor-move duration-0"
         >
-          <DyteAvatar participant={meeting.self} size="md" />
-          <DyteNameTag participant={meeting.self} size="md">
-            <DyteAudioVisualizer
+          <RtkAvatar participant={meeting.self} size="md" />
+          <RtkNameTag participant={meeting.self} size="md">
+            <RtkAudioVisualizer
               participant={meeting.self}
               size="md"
               slot="start"
             />
-          </DyteNameTag>
-        </DyteParticipantTile>
+          </RtkNameTag>
+        </RtkParticipantTile>
       </Draggable>
-
       <Controlbar />
     </div>
   );

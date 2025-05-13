@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from 'react';
 import Dialog from './Dialog';
-import type DyteClient from '@dytesdk/web-core';
+import type DyteClient from '@cloudflare/realtimekit';
 
 const ReactionsManager = ({
   meeting,

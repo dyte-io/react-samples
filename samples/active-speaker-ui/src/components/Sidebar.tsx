@@ -3,15 +3,15 @@ import { useMeetingStore } from '../lib/meeting-store';
 import ActiveSpeaker from './ActiveSpeaker';
 import Grid from './Grid';
 import {
-  DyteParticipants,
-  DytePlugins,
-  DytePolls,
-  DyteChat,
-} from '@dytesdk/react-ui-kit';
-import { useDyteMeeting } from '@dytesdk/react-web-core';
+  RtkParticipants,
+  RtkPlugins,
+  RtkPolls,
+  RtkChat,
+} from '@cloudflare/realtimekit-react-ui';
+import { useRealtimeKitMeeting } from '@cloudflare/realtimekit-react';
 
 export default function Sidebar() {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
 
   const isActiveMode = useMeetingStore((m) => m.isActiveSpeakerMode);
 
@@ -24,16 +24,16 @@ export default function Sidebar() {
 
   switch (states.sidebar) {
     case 'participants':
-      sidebar = <DyteParticipants meeting={meeting} className="pt-3" />;
+      sidebar = <RtkParticipants meeting={meeting} className="pt-3" />;
       break;
     case 'plugins':
-      sidebar = <DytePlugins meeting={meeting} />;
+      sidebar = <RtkPlugins meeting={meeting} />;
       break;
     case 'polls':
-      sidebar = <DytePolls meeting={meeting} className="m-0" />;
+      sidebar = <RtkPolls meeting={meeting} className="m-0" />;
       break;
     case 'chat':
-      sidebar = <DyteChat meeting={meeting} />;
+      sidebar = <RtkChat meeting={meeting} />;
       break;
   }
 

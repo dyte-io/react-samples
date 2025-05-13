@@ -1,6 +1,6 @@
-import { DyteSidebarSection } from '@dytesdk/ui-kit/dist/types/components/dyte-sidebar/dyte-sidebar';
+import { RtkSidebarSection } from '@cloudflare/realtimekit-ui/dist/types/components/rtk-sidebar/rtk-sidebar';
 
-export type CustomSideBarTabs = DyteSidebarSection | 'warnings';
+export type CustomSideBarTabs = RtkSidebarSection | 'warnings';
 
 export type CustomStates = {
   activeMediaPreviewModal?: boolean;

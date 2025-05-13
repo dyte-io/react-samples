@@ -1,8 +1,8 @@
-import DyteClient from "@dytesdk/web-core";
+import DyteClient from '@cloudflare/realtimekit';
 import { useEffect, useRef, useState } from "react";
-import { DyteAudioVisualizer, DyteButton, DyteIcon, DyteParticipantTile, DyteSettingsVideo, DyteSwitch, defaultIconPack } from "@dytesdk/react-ui-kit";
+import { RtkAudioVisualizer, RtkButton, RtkIcon, RtkParticipantTile, RtkSettingsVideo, RtkSwitch, defaultIconPack } from '@cloudflare/realtimekit-react-ui';
 import { CustomStates, SetStates } from "../types";
-import { UIConfig } from "@dytesdk/ui-kit";
+import { UIConfig } from '@cloudflare/realtimekit-ui';
 interface CurrentDevices {
     video?: MediaDeviceInfo
 }
@@ -11,7 +11,7 @@ function VideoPreviewPreBuilt({
     meeting, states
 }: { meeting: DyteClient, config: UIConfig, states: CustomStates, setStates: SetStates }
 ){
-    return <DyteSettingsVideo meeting={meeting} states={states}/>
+    return <RtkSettingsVideo meeting={meeting} states={states}/>;
 }
 
 function VideoPreviewWithCustomUI({
@@ -55,23 +55,23 @@ function VideoPreviewWithCustomUI({
         <div className="flex flex-col p-4">
             <div>
                 {meeting.self.videoEnabled === true ? (
-                    <DyteParticipantTile
+                    <RtkParticipantTile
                         meeting={meeting}
                         participant={meeting?.self}
                         states={states}
                         isPreview />
                 ) : (
                     <div>
-                        <DyteParticipantTile
+                        <RtkParticipantTile
                             meeting={meeting}
                             participant={meeting?.self}
                         >
                             <div>
-                                <DyteIcon
+                                <RtkIcon
                                     icon={defaultIconPack.video_off} />
                                 <div>Camera Off</div>
                             </div>
-                        </DyteParticipantTile>
+                        </RtkParticipantTile>
                     </div>
                 )}
             </div>

@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
-import { useDyteClient } from '@dytesdk/react-web-core';
+import { useRealtimeKitClient } from '@cloudflare/realtimekit-react';
 import {
-  DyteChat,
-  DyteUiProvider,
-  provideDyteDesignSystem,
-} from '@dytesdk/react-ui-kit';
+  RtkChat,
+  RtkUiProvider,
+  provideRtkDesignSystem,
+} from '@cloudflare/realtimekit-react-ui';
 
 function App() {
-  const [meeting, initMeeting] = useDyteClient();
+  const [meeting, initMeeting] = useRealtimeKitClient();
 
   useEffect(() => {
-    provideDyteDesignSystem(document.body, {
+    provideRtkDesignSystem(document.body, {
       theme: 'light',
     });
 
@@ -40,9 +40,9 @@ function App() {
   if (!meeting) return <div>"Loading..."</div>;
 
   return (
-    <DyteUiProvider meeting={meeting}>
-      <DyteChat />
-    </DyteUiProvider>
+    <RtkUiProvider meeting={meeting}>
+      <RtkChat />
+    </RtkUiProvider>
   );
 }
 

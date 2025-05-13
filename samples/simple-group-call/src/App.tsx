@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
-import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
+import { RealtimeKitProvider, useRealtimeKitClient } from '@cloudflare/realtimekit-react';
 import Meeting from './components/Meeting';
-import { DyteDialogManager } from '@dytesdk/react-ui-kit';
+import { RtkDialogManager } from '@cloudflare/realtimekit-react-ui';
 
 function App() {
-  const [meeting, initMeeting] = useDyteClient();
+  const [meeting, initMeeting] = useRealtimeKitClient();
 
   useEffect(() => {
     const searchParams = new URL(window.location.href).searchParams;
@@ -31,10 +31,10 @@ function App() {
   // To avoid that and to make it fill a parent container, pass the prop:
   // `mode="fill"` to the component.
   return (
-    <DyteProvider value={meeting} fallback={<></>}>
-      <DyteDialogManager meeting={meeting} />
+    <RealtimeKitProvider value={meeting} fallback={<></>}>
+      <RtkDialogManager meeting={meeting} />
       <Meeting />
-    </DyteProvider>
+    </RealtimeKitProvider>
   );
 }
 

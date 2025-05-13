@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
-import { DyteSwitch } from '@dytesdk/react-ui-kit';
+import { RtkSwitch } from '@cloudflare/realtimekit-react-ui';
 import Dialog from './Dialog';
 import { useEffect, useRef, useState } from 'react';
 import { storeSelector, useDyteStore } from '../lib/store';
 import DyteVideoBackgroundTransformer from '@dytesdk/video-background-transformer';
-import type DyteClient from '@dytesdk/web-core';
-import type { VideoMiddleware } from '@dytesdk/web-core';
+import type DyteClient from '@cloudflare/realtimekit';
+import type { VideoMiddleware } from '@cloudflare/realtimekit';
 
 export const getBackgroundImage = (name: string) => `https://assets.dyte.io/backgrounds/${name}`;
 const IMAGE_URLS = [

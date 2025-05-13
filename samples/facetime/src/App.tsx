@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
+import { RealtimeKitProvider, useRealtimeKitClient } from '@cloudflare/realtimekit-react';
 import Facetime from './components/Facetime';
 
 function App() {
-  const [meeting, initMeeting] = useDyteClient();
+  const [meeting, initMeeting] = useRealtimeKitClient();
 
   useEffect(() => {
     const searchParams = new URL(window.location.href).searchParams;
@@ -32,9 +32,9 @@ function App() {
   // To avoid that and to make it fill a parent container, pass the prop:
   // `mode="fill"` to the component.
   return (
-    <DyteProvider value={meeting} fallback={<div>Loading...</div>}>
+    <RealtimeKitProvider value={meeting} fallback={<div>Loading...</div>}>
       <Facetime />
-    </DyteProvider>
+    </RealtimeKitProvider>
   );
 }
 

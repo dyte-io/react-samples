@@ -1,4 +1,4 @@
-import { UIConfig } from "@dytesdk/ui-kit";
+import { UIConfig } from '@cloudflare/realtimekit-ui';
 
 export function setFullScreenToggleTargetElement({config, targetElementId}: { config: UIConfig, targetElementId: string }){
     if (config.root && Array.isArray(config.root['div#controlbar-left'])) {

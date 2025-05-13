@@ -1,14 +1,14 @@
-import { DyteAudioVisualizer, DyteAvatar } from '@dytesdk/react-ui-kit';
-import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
+import { RtkAudioVisualizer, RtkAvatar } from '@cloudflare/realtimekit-react-ui';
+import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
 import clsx from 'clsx';
 
 export default function Stage() {
-  const { meeting } = useDyteMeeting();
-  const activeParticipants = useDyteSelector((meeting) =>
+  const { meeting } = useRealtimeKitMeeting();
+  const activeParticipants = useRealtimeKitSelector((meeting) =>
     meeting.participants.active.toArray()
   );
 
-  const joinedParticipants = useDyteSelector((meeting) =>
+  const joinedParticipants = useRealtimeKitSelector((meeting) =>
     meeting.participants.joined.toArray()
   );
 
@@ -30,9 +30,9 @@ export default function Stage() {
             )}
             key={participant.id}
           >
-            <DyteAvatar participant={participant} size="sm" />
+            <RtkAvatar participant={participant} size="sm" />
             <div className="flex items-center gap-0.5">
-              <DyteAudioVisualizer
+              <RtkAudioVisualizer
                 participant={participant}
                 size="md"
                 className="absolute top-2 left-2"

@@ -1,4 +1,4 @@
-import { getInitialStates, States } from '@dytesdk/ui-kit';
+import { getInitialStates, States } from '@cloudflare/realtimekit-ui';
 import { create } from 'zustand';
 import { CustomStates } from './types';
 

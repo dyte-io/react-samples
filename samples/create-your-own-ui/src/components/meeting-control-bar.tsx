@@ -1,31 +1,29 @@
 import {
-  DyteBreakoutRoomsToggle,
-  DyteCameraToggle,
-  DyteChatToggle,
-  DyteControlbar,
-  DyteControlbarButton,
-  DyteFullscreenToggle,
-  DyteLeaveButton,
-  DyteMicToggle,
-  DyteMoreToggle,
-  DyteMuteAllButton,
-  DyteParticipantsToggle,
-  DytePipToggle,
-  DytePluginsToggle,
-  DytePoll,
-  DytePollsToggle,
-  DyteRecordingToggle,
-  DyteScreenShareToggle,
-  DyteSettingsToggle,
-  DyteStageToggle,
-} from '@dytesdk/react-ui-kit';
-import { defaultIconPack } from '@dytesdk/ui-kit';
+  RtkBreakoutRoomsToggle,
+  RtkCameraToggle,
+  RtkChatToggle,
+  RtkControlbar,
+  RtkControlbarButton,
+  RtkFullscreenToggle,
+  RtkLeaveButton,
+  RtkMicToggle,
+  RtkMoreToggle,
+  RtkMuteAllButton,
+  RtkParticipantsToggle,
+  RtkPipToggle,
+  RtkPluginsToggle,
+  RtkPoll,
+  RtkPollsToggle,
+  RtkRecordingToggle,
+  RtkScreenShareToggle,
+  RtkSettingsToggle,
+  RtkStageToggle,
+} from '@cloudflare/realtimekit-react-ui';
+import { defaultIconPack } from '@cloudflare/realtimekit-ui';
 import { useStatesStore } from '../store';
 
 function ControlBarPreBuilt() {
-  return (
-    <DyteControlbar className="flex w-full overflow-visible	justify-between" />
-  );
+  return (<RtkControlbar className="flex w-full overflow-visible	justify-between" />);
 }
 
 function ControlBarWithCustomUI() {
@@ -41,36 +39,36 @@ function ControlBarWithCustomUI() {
         id="controlbar-left"
         className="flex items-center overflow-visible justify-center"
       >
-        <DyteFullscreenToggle targetElement={fullScreenTargetElement} />
-        <DyteSettingsToggle />
-        <DyteScreenShareToggle />
+        <RtkFullscreenToggle targetElement={fullScreenTargetElement} />
+        <RtkSettingsToggle />
+        <RtkScreenShareToggle />
       </div>
       <div
         id="controlbar-center"
         className="flex items-center overflow-visible justify-center"
       >
-        <DyteMicToggle />
-        <DyteCameraToggle />
-        <DyteStageToggle />
-        <DyteLeaveButton />
-        <DyteMoreToggle>
+        <RtkMicToggle />
+        <RtkCameraToggle />
+        <RtkStageToggle />
+        <RtkLeaveButton />
+        <RtkMoreToggle>
           <div slot="more-elements">
-            <DytePipToggle variant="horizontal" />
-            <DyteMuteAllButton variant="horizontal" />
-            <DyteBreakoutRoomsToggle variant="horizontal" />
-            <DyteRecordingToggle variant="horizontal" />
+            <RtkPipToggle variant="horizontal" />
+            <RtkMuteAllButton variant="horizontal" />
+            <RtkBreakoutRoomsToggle variant="horizontal" />
+            <RtkRecordingToggle variant="horizontal" />
           </div>
-        </DyteMoreToggle>
+        </RtkMoreToggle>
       </div>
       <div
         id="controlbar-right"
         className="flex items-center overflow-visible justify-center"
       >
-        <DyteChatToggle />
-        <DytePollsToggle />
-        <DyteParticipantsToggle />
-        <DytePluginsToggle />
-        <DyteControlbarButton
+        <RtkChatToggle />
+        <RtkPollsToggle />
+        <RtkParticipantsToggle />
+        <RtkPluginsToggle />
+        <RtkControlbarButton
           icon={defaultIconPack.add}
           label="Open Custom Sidebar"
           onClick={(e) => {
