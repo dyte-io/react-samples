@@ -20,9 +20,8 @@ const Dialog: FC<DialogProps> = ({ header, isOpen, children, onClose }) => {
           kind="icon"
           variant="ghost"
           onClick={() => onClose()}
-          iconPack={defaultIconPack}
         >
-          <RtkIcon icon={defaultIconPack.dismiss} iconPack={defaultIconPack} />
+          <RtkIcon icon={defaultIconPack.dismiss} />
         </RtkButton>
         {children}
       </div>

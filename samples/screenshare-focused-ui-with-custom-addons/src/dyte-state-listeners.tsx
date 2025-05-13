@@ -88,14 +88,14 @@ export class DyteStateListenersUtils{
     
     addDyteEventListeners(){
         if (this.meeting.meta.viewType === 'LIVESTREAM') {
-            this.meeting.self.addListener('socketServiceRoomJoined', this.socketServiceRoomJoinedListener);
+            this.meeting.self.addListener('roomJoined', this.socketServiceRoomJoinedListener);
           }
           this.meeting.self.addListener('roomJoined', this.roomJoinedListener);
       
           this.meeting.self.addListener('waitlisted', this.waitlistedListener);
           this.meeting.self.addListener('roomLeft', this.roomLeftListener);
           this.meeting.self.addListener('mediaPermissionUpdate', this.mediaPermissionUpdateListener);
-          this.meeting.self.addListener('joinStageRequestAccepted', this.joinStateAcceptedListener);
+          this.meeting.stage.addListener('stageRequestApproved', this.joinStateAcceptedListener);
       
           if (this.meeting.connectedMeetings.supportsConnectedMeetings) {
             this.meeting.connectedMeetings.once('changingMeeting', this.handleChangingMeeting);

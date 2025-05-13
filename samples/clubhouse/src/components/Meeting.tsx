@@ -16,25 +16,25 @@ export default function Meeting() {
 
   const title = useRealtimeKitSelector((m) => m.meta.meetingTitle);
 
-  const status = useRealtimeKitSelector((m) => m.self.webinarStageStatus);
+  const status = useRealtimeKitSelector((m) => m.stage.status);
 
   const onStageParticipants = useRealtimeKitSelector((m) =>
     m.participants.joined
       .toArray()
-      .filter((p) => p.webinarStageStatus === 'ON_STAGE')
+      .filter((p) => p.stageStatus=== 'ON_STAGE')
   );
 
   const listeners = useRealtimeKitSelector((m) =>
     m.participants.joined
       .toArray()
-      .filter((p) => p.webinarStageStatus !== 'ON_STAGE')
+      .filter((p) => p.stageStatus !== 'ON_STAGE')
   );
 
-  const isSelfListener = meeting.self.webinarStageStatus !== 'ON_STAGE';
+  const isSelfListener = meeting.stage.status !== 'ON_STAGE';
 
   useEffect(() => {
     if (status === 'ACCEPTED_TO_JOIN_STAGE') {
-      meeting.self.joinStage();
+      meeting.stage.join();
     }
   }, [status]);
 
@@ -104,9 +104,9 @@ export default function Meeting() {
                 className="icon-btn"
                 onClick={() => {
                   if (status === 'REQUESTED_TO_JOIN_STAGE') {
-                    meeting.self.withdrawRequestToJoinStage();
+                    meeting.stage.cancelRequestAccess();
                   } else {
-                    meeting.self.requestToJoinStage();
+                    meeting.stage.requestAccess();
                   }
                 }}
               >
