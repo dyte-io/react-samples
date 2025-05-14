@@ -1,7 +1,7 @@
-import { DyteDialog, DyteIcon, defaultIconPack } from "@dytesdk/react-ui-kit";
+import { RtkDialog, RtkIcon, defaultIconPack } from '@cloudflare/realtimekit-react-ui';
 import { useState } from "react";
-import DyteClient from "@dytesdk/web-core";
-import { UIConfig } from "@dytesdk/ui-kit";
+import DyteClient from '@cloudflare/realtimekit';
+import { UIConfig } from '@cloudflare/realtimekit-ui';
 import AudioPreview from "./audio-preview";
 import VideoPreview from "./video-preview";
 import { CustomStates, SetStates } from "../types";
@@ -11,9 +11,9 @@ function MediaPreviewModal({
 }: { open: boolean, config: UIConfig, states: CustomStates, setStates: SetStates, meeting: DyteClient }) {
     const [activeTab, setActiveTab] = useState<'audio' | 'video'>('video');
     return (
-        <DyteDialog
+        <RtkDialog
             open={open}
-            onDyteDialogClose={() => setStates((oldState: CustomStates) => { return {
+            onRtkDialogClose={() => setStates((oldState: CustomStates) => { return {
                 ...oldState,
                 activeMediaPreviewModal: false
             }})}
@@ -31,7 +31,7 @@ function MediaPreviewModal({
                         >
                             Audio
                             <div>
-                                <DyteIcon icon={defaultIconPack.mic_on} />
+                                <RtkIcon icon={defaultIconPack.mic_on} />
                             </div>
                         </button>
                     }
@@ -43,7 +43,7 @@ function MediaPreviewModal({
                         >
                             Video
                             <div>
-                                <DyteIcon icon={defaultIconPack.video_on} />
+                                <RtkIcon icon={defaultIconPack.video_on} />
                             </div>
                         </button>
                     )}
@@ -53,8 +53,8 @@ function MediaPreviewModal({
                     {activeTab === 'video' && <VideoPreview meeting={meeting} config={config} states={states} setStates={setStates} />}
                 </main>
             </div>
-        </DyteDialog>
-    )
+        </RtkDialog>
+    );
 }
 
 export default MediaPreviewModal;

@@ -2,41 +2,41 @@ import { useMeetingStore } from '../lib/meeting-store';
 import ActiveSpeaker from './ActiveSpeaker';
 import ScreenShareView from './ScreenShareView';
 import {
-  DyteIcon,
-  DytePluginMain,
-  DyteSimpleGrid,
-  DyteButton,
-} from '@dytesdk/react-ui-kit';
-import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
-import type { DyteParticipant, DytePlugin, DyteSelf } from '@dytesdk/web-core';
+  RtkIcon,
+  RtkPluginMain,
+  RtkSimpleGrid,
+  RtkButton,
+} from '@cloudflare/realtimekit-react-ui';
+import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
+import type { RTKParticipant, RTKPlugin, RTKSelf } from '@cloudflare/realtimekit';
 import clsx from 'clsx';
 import { useState, useEffect, useRef } from 'react';
 import HOST_PRESET, { iconPack, saveWhiteboard, WHITEBOARD_ID } from '../lib/const';
 
 type ActiveTab =
-  | { type: 'plugin'; plugin: DytePlugin }
-  | { type: 'screenshare'; participant: DyteParticipant | DyteSelf };
+  | { type: 'plugin'; plugin: RTKPlugin }
+  | { type: 'screenshare'; participant: RTKParticipant | RTKSelf };
 
 function ActiveSpeakerView({
   screenshares,
   plugins,
 }: {
-  screenshares: (DyteParticipant | DyteSelf)[];
-  plugins: DytePlugin[];
+  screenshares: (RTKParticipant | RTKSelf)[];
+  plugins: RTKPlugin[];
 }) {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
 
   const [selectedTab, setSelectedTab] = useState<ActiveTab>();
-  const pluginsRef = useRef<DytePlugin[]>([]);
-  const screensharesRef = useRef<(DyteParticipant | DyteSelf)[]>([]);
+  const pluginsRef = useRef<RTKPlugin[]>([]);
+  const screensharesRef = useRef<(RTKParticipant | RTKSelf)[]>([]);
 
   const showTabBar = screenshares.length + plugins.length > 1;
 
   const size = useMeetingStore((s) => s.size);
-  const whiteboardPlugin = useDyteSelector(m => m.plugins.active.get(WHITEBOARD_ID)) 
+  const whiteboardPlugin = useRealtimeKitSelector(m => m.plugins.active.get(WHITEBOARD_ID)) 
   const [states, setStates] = useMeetingStore((s) => [s.states, s.setStates]);
 
-  const activeTab = useDyteSelector((m) => m.meta.selfActiveTab);
+  const activeTab = useRealtimeKitSelector((m) => m.meta.selfActiveTab);
   const isHost = meeting.self.presetName === HOST_PRESET;
   const isDarkMode = useMeetingStore((s) => s.darkMode);
 
@@ -163,7 +163,7 @@ function ActiveSpeakerView({
   }, [isDarkMode])
 
   // NOTE(ishita1805): Save whiteboard before closing
-  const closePlugin = async (plugin: DytePlugin) => {
+  const closePlugin = async (plugin: RTKPlugin) => {
     if (plugin.id === whiteboardPlugin?.id) {
       await saveWhiteboard(whiteboardPlugin);
     }
@@ -190,7 +190,7 @@ function ActiveSpeakerView({
                   setActiveTab({ type: 'screenshare', participant })
                 }
               >
-                <DyteIcon size='md' icon={iconPack.share_screen_person} />
+                <RtkIcon size='md' icon={iconPack.share_screen_person} />
                 <span>{participant.name}</span>
               </button>
             ))}
@@ -214,12 +214,10 @@ function ActiveSpeakerView({
           </div>
         </div>
       )}
-
       {selectedTab?.type === 'screenshare' &&
         'audioEnabled' in selectedTab.participant && (
           <ScreenShareView participant={selectedTab.participant} />
         )}
-
       {plugins.map((plugin) => (
         <div
           className={clsx(
@@ -238,13 +236,13 @@ function ActiveSpeakerView({
             <div className={clsx(
               'cursor-pointer bg-blue-600 rounded-full p-[2px] flex items-center justify-center'
             )} >
-            <DyteIcon icon={iconPack.dismiss} size='sm' onClick={() => closePlugin(plugin)} />
+            <RtkIcon icon={iconPack.dismiss} size='sm' onClick={() => closePlugin(plugin)} />
             </div>
           </div>
-          <DytePluginMain meeting={meeting} plugin={plugin} />
+          <RtkPluginMain meeting={meeting} plugin={plugin} />
 
           {states.activeSidebar && (
-            <DyteButton
+            <RtkButton
               size={size}
               variant="secondary"
               kind="icon"
@@ -253,8 +251,8 @@ function ActiveSpeakerView({
                 setStates({ activeSidebar: false, sidebar: undefined });
               }}
             >
-              <DyteIcon icon={iconPack.full_screen_maximize} />
-            </DyteButton>
+              <RtkIcon icon={iconPack.full_screen_maximize} />
+            </RtkButton>
           )}
         </div>
       ))}
@@ -263,11 +261,11 @@ function ActiveSpeakerView({
 }
 
 export default function MainArea() {
-  const { meeting } = useDyteMeeting();
-  const screenShareEnabled = useDyteSelector((m) => m.self.screenShareEnabled);
-  const stageStatus = useDyteSelector((m) => m.stage.status);
+  const { meeting } = useRealtimeKitMeeting();
+  const screenShareEnabled = useRealtimeKitSelector((m) => m.self.screenShareEnabled);
+  const stageStatus = useRealtimeKitSelector((m) => m.stage.status);
 
-  const activeParticipants = useDyteSelector((m) =>
+  const activeParticipants = useRealtimeKitSelector((m) =>
     m.participants.active.toArray()
   );
 
@@ -276,9 +274,9 @@ export default function MainArea() {
       ? [...activeParticipants, meeting.self]
       : activeParticipants;
 
-  const activePlugins = useDyteSelector((m) => m.plugins.active.toArray());
+  const activePlugins = useRealtimeKitSelector((m) => m.plugins.active.toArray());
 
-  const joinedParticipants = useDyteSelector((m) =>
+  const joinedParticipants = useRealtimeKitSelector((m) =>
     m.participants.joined.toArray()
   );
 
@@ -331,9 +329,8 @@ export default function MainArea() {
           plugins={activePlugins}
         />
       ) : (
-        <DyteSimpleGrid participants={participants} meeting={meeting} />
+        <RtkSimpleGrid participants={participants} meeting={meeting} />
       )}
-
       {isMobile && (
         <ActiveSpeaker
           className="absolute bottom-3 left-3 w-24 z-50 h-auto aspect-square"

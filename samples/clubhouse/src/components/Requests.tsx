@@ -1,13 +1,13 @@
-import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
+import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
 import { Check, X } from 'react-feather';
 
 export default function Requests() {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
 
-  const participants = useDyteSelector((m) => m.participants.joined).toArray();
+  const participants = useRealtimeKitSelector((m) => m.participants.joined).toArray();
 
   const requestedParticipants = participants.filter(
-    (p) => p.webinarStageStatus === 'REQUESTED_TO_JOIN_STAGE'
+    (p) => p.stageStatus === 'REQUESTED_TO_JOIN_STAGE'
   );
 
   if (!meeting.self.permissions.acceptPresentRequests) {
@@ -29,13 +29,13 @@ export default function Requests() {
             <div className="flex gap-2">
               <button
                 className="icon-btn text-red-600"
-                onClick={() => p.rejectRequestToJoinStage()}
+                onClick={() => meeting.stage.denyAccess([p.id])}
               >
                 <X />
               </button>
               <button
                 className="icon-btn text-green-700"
-                onClick={() => p.acceptJoinStageRequest()}
+                onClick={() => meeting.stage.grantAccess([p.id])}
               >
                 <Check />
               </button>

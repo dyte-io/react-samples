@@ -1,25 +1,25 @@
 import { useEffect, useReducer } from 'react';
 import {
-  DyteProvider,
-  useDyteClient,
-  useDyteMeeting,
-  useDyteSelector,
-} from '@dytesdk/react-web-core';
+  RealtimeKitProvider,
+  useRealtimeKitClient,
+  useRealtimeKitMeeting,
+  useRealtimeKitSelector,
+} from '@cloudflare/realtimekit-react';
 import {
-  DyteCameraToggle,
-  DyteChatToggle,
-  DyteGrid,
-  DyteLogo,
-  DyteMeetingTitle,
-  DyteMicToggle,
-  DytePollsToggle,
-  DyteScreenShareToggle,
-  DyteSetupScreen,
-  DyteSidebar,
-  DyteSpinner,
+  RtkCameraToggle,
+  RtkChatToggle,
+  RtkGrid,
+  RtkLogo,
+  RtkMeetingTitle,
+  RtkMicToggle,
+  RtkPollsToggle,
+  RtkScreenShareToggle,
+  RtkSetupScreen,
+  RtkSidebar,
+  RtkSpinner,
   defaultConfig,
-  provideDyteDesignSystem,
-} from '@dytesdk/react-ui-kit';
+  provideRtkDesignSystem,
+} from '@cloudflare/realtimekit-react-ui';
 
 const config = { ...defaultConfig };
 
@@ -30,8 +30,8 @@ if (config.root) {
 }
 
 function Meeting() {
-  const { meeting } = useDyteMeeting();
-  const roomJoined = useDyteSelector((m) => m.self.roomJoined);
+  const { meeting } = useRealtimeKitMeeting();
+  const roomJoined = useRealtimeKitSelector((m) => m.self.roomJoined);
 
   const [states, updateStates] = useReducer(
     (state: any, payload: any) => ({
@@ -42,11 +42,11 @@ function Meeting() {
   );
 
   if (!meeting) {
-    return <DyteSpinner />;
+    return <RtkSpinner />;
   }
 
   if (!roomJoined) {
-    return <DyteSetupScreen meeting={meeting} />;
+    return <RtkSetupScreen meeting={meeting} />;
   }
 
   return (
@@ -59,28 +59,26 @@ function Meeting() {
       }}
     >
       <header className="flex items-center gap-3 h-12 border-b w-full px-2 text-sm">
-        <DyteLogo meeting={meeting} />
-        <DyteMeetingTitle meeting={meeting} />
+        <RtkLogo meeting={meeting} />
+        <RtkMeetingTitle meeting={meeting} />
       </header>
-
       <main className="flex flex-1 p-2">
-        <DyteGrid meeting={meeting} config={config} />
-        {states.activeSidebar && <DyteSidebar meeting={meeting} states={states} />}
+        <RtkGrid meeting={meeting} config={config} />
+        {states.activeSidebar && <RtkSidebar meeting={meeting} states={states} />}
       </main>
-
       <footer className="p-2 flex place-items-center justify-center">
-        <DyteMicToggle meeting={meeting} />
-        <DyteCameraToggle meeting={meeting} />
-        <DyteScreenShareToggle meeting={meeting} />
-        <DyteChatToggle meeting={meeting} />
-        <DytePollsToggle meeting={meeting} />
+        <RtkMicToggle meeting={meeting} />
+        <RtkCameraToggle meeting={meeting} />
+        <RtkScreenShareToggle meeting={meeting} />
+        <RtkChatToggle meeting={meeting} />
+        <RtkPollsToggle meeting={meeting} />
       </footer>
     </div>
   );
 }
 
 function App() {
-  const [meeting, initMeeting] = useDyteClient();
+  const [meeting, initMeeting] = useRealtimeKitClient();
 
   useEffect(() => {
     const searchParams = new URL(window.location.href).searchParams;
@@ -94,7 +92,7 @@ function App() {
       return;
     }
 
-    provideDyteDesignSystem(document.body, {
+    provideRtkDesignSystem(document.body, {
       theme: 'light',
     });
 
@@ -111,9 +109,9 @@ function App() {
   // To avoid that and to make it fill a parent container, pass the prop:
   // `mode="fill"` to the component.
   return (
-    <DyteProvider value={meeting}>
+    <RealtimeKitProvider value={meeting}>
       <Meeting />
-    </DyteProvider>
+    </RealtimeKitProvider>
   );
 }
 

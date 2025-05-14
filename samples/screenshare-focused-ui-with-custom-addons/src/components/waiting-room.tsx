@@ -1,6 +1,6 @@
-import { DyteWaitingScreen } from "@dytesdk/react-ui-kit";
-import { UIConfig } from "@dytesdk/ui-kit";
-import DyteClient from "@dytesdk/web-core";
+import { RtkWaitingScreen } from '@cloudflare/realtimekit-react-ui';
+import { UIConfig } from '@cloudflare/realtimekit-ui';
+import DyteClient from '@cloudflare/realtimekit';
 import { CustomStates, SetStates } from "../types";
 
 function WaitingRoom({
@@ -12,9 +12,9 @@ function WaitingRoom({
             backgroundColor: '#272727',
             color: '#ffffff',
       }}>
-          <DyteWaitingScreen meeting={meeting} config={config}/>
+            <RtkWaitingScreen meeting={meeting} config={config}/>
         </main>
-      );
+    );
 }
 
 export default WaitingRoom;

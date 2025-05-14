@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
 import './setupScreen.css'
-import { useDyteMeeting } from '@dytesdk/react-web-core';
+import { useRealtimeKitMeeting } from '@cloudflare/realtimekit-react';
 import {
-  DyteAudioVisualizer,
-  DyteAvatar,
-  DyteCameraToggle,
-  DyteMicToggle,
-  DyteNameTag,
-  DyteParticipantTile,
-} from '@dytesdk/react-ui-kit';
+  RtkAudioVisualizer,
+  RtkAvatar,
+  RtkCameraToggle,
+  RtkMicToggle,
+  RtkNameTag,
+  RtkParticipantTile,
+} from '@cloudflare/realtimekit-react-ui';
 
 const SetupScreen = () => {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
   const [isHost, setIsHost] = useState<boolean>(false);
   const [name, setName] = useState<string>('');
 
@@ -35,17 +35,17 @@ const SetupScreen = () => {
     <div className='setup-screen'>
       <div className="setup-media">
         <div className="video-container">
-          <DyteParticipantTile meeting={meeting} participant={meeting.self}>
-            <DyteAvatar size="md" participant={meeting.self}/>
-            <DyteNameTag meeting={meeting} participant={meeting.self}>
-              <DyteAudioVisualizer size='sm' slot="start" participant={meeting.self} />
-            </DyteNameTag>
+          <RtkParticipantTile meeting={meeting} participant={meeting.self}>
+            <RtkAvatar size="md" participant={meeting.self}/>
+            <RtkNameTag meeting={meeting} participant={meeting.self}>
+              <RtkAudioVisualizer size='sm' slot="start" participant={meeting.self} />
+            </RtkNameTag>
             <div className='setup-media-controls'>
-              <DyteMicToggle size="sm" meeting={meeting}/>
+              <RtkMicToggle size="sm" meeting={meeting}/>
               &ensp;
-              <DyteCameraToggle size="sm" meeting={meeting}/>
+              <RtkCameraToggle size="sm" meeting={meeting}/>
             </div>
-          </DyteParticipantTile>
+          </RtkParticipantTile>
         </div>
       </div>
       <div className="setup-information">
@@ -61,7 +61,7 @@ const SetupScreen = () => {
         </div>
       </div>
     </div>
-  )
+  );
 }
 
 export default SetupScreen

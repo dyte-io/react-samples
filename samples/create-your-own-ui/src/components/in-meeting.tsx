@@ -1,9 +1,9 @@
 import {
-  DyteStage,
-  DyteGrid,
-  DyteNotifications,
-  DyteParticipantsAudio,
-} from '@dytesdk/react-ui-kit';
+  RtkStage,
+  RtkGrid,
+  RtkNotifications,
+  RtkParticipantsAudio,
+} from '@cloudflare/realtimekit-react-ui';
 import MeetingHeader from './meeting-header';
 import MeetingControlBar from './meeting-control-bar';
 import MeetingSideBar from './meeting-sidebar';
@@ -14,16 +14,14 @@ function InMeeting() {
       <header>
         <MeetingHeader />
       </header>
-
       <main className="flex w-full flex-1">
-        <DyteStage className="flex w-full flex-1 p-2">
-          <DyteGrid />
-          <DyteNotifications />
+        <RtkStage className="flex w-full flex-1 p-2">
+          <RtkGrid />
+          <RtkNotifications />
           <MeetingSideBar />
-        </DyteStage>
-        <DyteParticipantsAudio />
+        </RtkStage>
+        <RtkParticipantsAudio />
       </main>
-
       <footer className="flex w-full overflow-visible">
         <MeetingControlBar />
       </footer>

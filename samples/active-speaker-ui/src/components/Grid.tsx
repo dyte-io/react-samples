@@ -1,19 +1,19 @@
 import { useMeetingStore } from '../lib/meeting-store';
 import {
-  DyteGrid,
-  DyteSimpleGrid,
-  DyteSpotlightGrid,
-} from '@dytesdk/react-ui-kit';
-import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
+  RtkGrid,
+  RtkSimpleGrid,
+  RtkSpotlightGrid,
+} from '@cloudflare/realtimekit-react-ui';
+import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
 
 export default function Grid() {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
 
   const size = useMeetingStore((s) => s.size);
-  const stageStatus = useDyteSelector((m) => m.stage.status);
-  const isPinned = useDyteSelector((m) => m.self.isPinned);
+  const stageStatus = useRealtimeKitSelector((m) => m.stage.status);
+  const isPinned = useRealtimeKitSelector((m) => m.self.isPinned);
 
-  const activeParticipants = useDyteSelector((m) =>
+  const activeParticipants = useRealtimeKitSelector((m) =>
     m.participants.active.toArray()
   );
 
@@ -22,14 +22,14 @@ export default function Grid() {
       ? [...activeParticipants, meeting.self]
       : activeParticipants;
 
-  const pinned = useDyteSelector((m) => m.participants.pinned.toArray());
+  const pinned = useRealtimeKitSelector((m) => m.participants.pinned.toArray());
 
   const pinnedParticipants =
     isPinned && stageStatus === 'ON_STAGE' ? [...pinned, meeting.self] : pinned;
 
   if (pinnedParticipants.length > 0) {
     return (
-      <DyteSpotlightGrid
+      <RtkSpotlightGrid
         participants={participants}
         pinnedParticipants={pinnedParticipants}
         meeting={meeting}
@@ -38,7 +38,5 @@ export default function Grid() {
     );
   }
 
-  return (
-    <DyteSimpleGrid participants={participants} meeting={meeting} size={size} />
-  );
+  return (<RtkSimpleGrid participants={participants} meeting={meeting} size={size} />);
 }

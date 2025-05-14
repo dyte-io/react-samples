@@ -2,7 +2,7 @@ import { createMeeting } from '../server';
 import ChatPopup from './ChatPopup';
 import Form from './Form';
 import WidgetLauncher from './WidgetLauncher';
-import { useDyteClient } from '@dytesdk/react-web-core';
+import { useRealtimeKitClient } from '@cloudflare/realtimekit-react';
 import { useState } from 'react';
 
 const STEP = {
@@ -13,7 +13,7 @@ const STEP = {
 const Widget = () => {
 	const [step, setStep] = useState(STEP.FORM);
 	const [popupVisible, setPopupVisible] = useState(false);
-	const [meeting, initMeeting] = useDyteClient();
+	const [meeting, initMeeting] = useRealtimeKitClient();
 
 	const onSubmit = async ({ name, email }: { name: string; email: string }) => {
 		setStep(STEP.CHAT);

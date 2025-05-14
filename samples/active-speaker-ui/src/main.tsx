@@ -1,9 +1,9 @@
 import App from './App';
 import './index.css';
-import { provideDyteDesignSystem } from '@dytesdk/react-ui-kit';
+import { provideRtkDesignSystem } from '@cloudflare/realtimekit-react-ui';
 import ReactDOM from 'react-dom/client';
 
-provideDyteDesignSystem(document.body, {
+provideRtkDesignSystem(document.body, {
   theme: 'darkest',
 });
 

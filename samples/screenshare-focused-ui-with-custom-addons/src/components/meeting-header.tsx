@@ -1,13 +1,13 @@
-import { DyteClock, DyteGridPagination, DyteHeader, DyteLivestreamIndicator, DyteLogo, DyteMeetingTitle, DyteParticipantCount, DyteRecordingIndicator, DyteViewerCount } from "@dytesdk/react-ui-kit";
-import { UIConfig } from "@dytesdk/ui-kit";
-import DyteClient from "@dytesdk/web-core";
+import { RtkClock, RtkGridPagination, RtkHeader, RtkLivestreamIndicator, RtkLogo, RtkMeetingTitle, RtkParticipantCount, RtkRecordingIndicator, RtkViewerCount } from '@cloudflare/realtimekit-react-ui';
+import { UIConfig } from '@cloudflare/realtimekit-ui';
+import DyteClient from '@cloudflare/realtimekit';
 import { CustomStates, SetStates } from "../types";
 
 function HeaderPreBuilt({
     meeting, states, config, setStates,
 }: { meeting: DyteClient, config: UIConfig, states: CustomStates, setStates: SetStates }
 ){
-    return <DyteHeader meeting={meeting} config={config} className='flex justify-between'/>;
+    return <RtkHeader meeting={meeting} config={config} className='flex justify-between'/>;
 }
 
 function HeaderWithCustomUI({
@@ -15,22 +15,24 @@ function HeaderWithCustomUI({
 }: { meeting: DyteClient, config: UIConfig, states: CustomStates, setStates: SetStates }
 ){
     
-    return <div className='flex justify-between bg-black text-white'>
-        <div id="header-left" className="flex items-center h-[48px]">
-            <DyteLogo meeting={meeting} />
-            <DyteRecordingIndicator meeting={meeting}/>
-            <DyteLivestreamIndicator meeting={meeting}/>
+    return (
+        <div className='flex justify-between bg-black text-white'>
+            <div id="header-left" className="flex items-center h-[48px]">
+                <RtkLogo meeting={meeting} />
+                <RtkRecordingIndicator meeting={meeting}/>
+                <RtkLivestreamIndicator meeting={meeting}/>
+            </div>
+            <div id="header-center" className="flex items-center h-[48px]">
+                <RtkMeetingTitle meeting={meeting}/>
+            </div>
+            <div id="header-right" className="flex items-center h-[48px]">
+                <RtkGridPagination meeting={meeting} states={states}/>
+                <RtkParticipantCount meeting={meeting}/>
+                <RtkViewerCount meeting={meeting} />
+                <RtkClock meeting={meeting} />
+            </div>
         </div>
-        <div id="header-center" className="flex items-center h-[48px]">
-            <DyteMeetingTitle meeting={meeting}/>
-        </div>
-        <div id="header-right" className="flex items-center h-[48px]">
-            <DyteGridPagination meeting={meeting} states={states}/>
-            <DyteParticipantCount meeting={meeting}/>
-            <DyteViewerCount meeting={meeting} />
-            <DyteClock meeting={meeting} />
-        </div>
-    </div>
+    );
 }
 
 export default HeaderPreBuilt; // uncomment if you want the pre built Dyte header

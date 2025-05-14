@@ -1,35 +1,35 @@
 import {
-  DyteClock,
-  DyteGridPagination,
-  DyteHeader,
-  DyteLivestreamIndicator,
-  DyteLogo,
-  DyteMeetingTitle,
-  DyteParticipantCount,
-  DyteRecordingIndicator,
-  DyteViewerCount,
-} from '@dytesdk/react-ui-kit';
+  RtkClock,
+  RtkGridPagination,
+  RtkHeader,
+  RtkLivestreamIndicator,
+  RtkLogo,
+  RtkMeetingTitle,
+  RtkParticipantCount,
+  RtkRecordingIndicator,
+  RtkViewerCount,
+} from '@cloudflare/realtimekit-react-ui';
 
 function HeaderPreBuilt() {
-  return <DyteHeader className="flex justify-between bg-black" />;
+  return <RtkHeader className="flex justify-between bg-black" />;
 }
 
 function HeaderWithCustomUI() {
   return (
     <div className="flex justify-between bg-black text-white">
       <div id="header-left" className="flex items-center h-[48px]">
-        <DyteLogo />
-        <DyteRecordingIndicator />
-        <DyteLivestreamIndicator />
+        <RtkLogo />
+        <RtkRecordingIndicator />
+        <RtkLivestreamIndicator />
       </div>
       <div id="header-center" className="flex items-center h-[48px]">
-        <DyteMeetingTitle />
+        <RtkMeetingTitle />
       </div>
       <div id="header-right" className="flex items-center h-[48px]">
-        <DyteGridPagination />
-        <DyteParticipantCount />
-        <DyteViewerCount />
-        <DyteClock />
+        <RtkGridPagination />
+        <RtkParticipantCount />
+        <RtkViewerCount />
+        <RtkClock />
       </div>
     </div>
   );

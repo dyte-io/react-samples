@@ -1,15 +1,15 @@
 import { useEffect } from 'react';
 import {
-  DyteProvider,
-  useDyteClient,
-  useDyteMeeting,
-} from '@dytesdk/react-web-core';
-import { DyteDialogManager, DyteUiProvider } from '@dytesdk/react-ui-kit';
+  RealtimeKitProvider,
+  useRealtimeKitClient,
+  useRealtimeKitMeeting,
+} from '@cloudflare/realtimekit-react';
+import { RtkDialogManager, RtkUiProvider } from '@cloudflare/realtimekit-react-ui';
 import CustomDyteMeeting from './components/custom-dyte-meeting';
 import { useStatesStore } from './store';
 
 function Meeting() {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
 
   useEffect(() => {
     if (meeting) {
@@ -28,7 +28,7 @@ function Meeting() {
 }
 
 function App() {
-  const [meeting, initMeeting] = useDyteClient();
+  const [meeting, initMeeting] = useRealtimeKitClient();
   const setStates = useStatesStore((s) => s.setStates);
 
   useEffect(() => {
@@ -62,19 +62,19 @@ function App() {
   // To avoid that and to make it fill a parent container, pass the prop:
   // `mode="fill"` to the component.
   return (
-    <DyteProvider value={meeting}>
-      <DyteUiProvider
+    <RealtimeKitProvider value={meeting}>
+      <RtkUiProvider
         meeting={meeting}
-        onDyteStatesUpdate={(e) => {
+        onRtkStatesUpdate={(e) => {
           setStates(e.detail);
         }}
         showSetupScreen
         style={{ height: '100%', width: '100%', display: 'block' }}
       >
         <Meeting />
-        <DyteDialogManager />
-      </DyteUiProvider>
-    </DyteProvider>
+        <RtkDialogManager />
+      </RtkUiProvider>
+    </RealtimeKitProvider>
   );
 }
 

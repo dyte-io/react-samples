@@ -1,4 +1,4 @@
-import { DyteButton, DyteIcon, defaultIconPack } from '@dytesdk/react-ui-kit';
+import { RtkButton, RtkIcon, defaultIconPack } from '@cloudflare/realtimekit-react-ui';
 import { FC, ReactNode } from 'react';
 
 type DialogProps = {
@@ -15,15 +15,14 @@ const Dialog: FC<DialogProps> = ({ header, isOpen, children, onClose }) => {
         {/* <header>
           <h2>Effects</h2>
         </header> */}
-        <DyteButton
+        <RtkButton
           id="dismiss-btn"
           kind="icon"
           variant="ghost"
           onClick={() => onClose()}
-          iconPack={defaultIconPack}
         >
-          <DyteIcon icon={defaultIconPack.dismiss} iconPack={defaultIconPack} />
-        </DyteButton>
+          <RtkIcon icon={defaultIconPack.dismiss} />
+        </RtkButton>
         {children}
       </div>
     </div>

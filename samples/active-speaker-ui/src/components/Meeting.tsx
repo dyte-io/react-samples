@@ -3,20 +3,20 @@ import Controlbar from './Controlbar';
 import MainArea from './MainArea';
 import Sidebar from './Sidebar';
 import {
-  DyteDialogManager,
-  DyteEndedScreen,
-  DyteNotifications,
-  DyteParticipantsAudio,
-  DyteSetupScreen,
-  DyteSpinner,
-  DyteWaitingScreen,
-} from '@dytesdk/react-ui-kit';
-import { useDyteMeeting, useDyteSelector } from '@dytesdk/react-web-core';
-import { type States } from '@dytesdk/ui-kit';
+  RtkDialogManager,
+  RtkEndedScreen,
+  RtkNotifications,
+  RtkParticipantsAudio,
+  RtkSetupScreen,
+  RtkSpinner,
+  RtkWaitingScreen,
+} from '@cloudflare/realtimekit-react-ui';
+import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
+import { type States } from '@cloudflare/realtimekit-ui';
 import { useEffect, useRef } from 'react';
 
 function UI() {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
 
   const isImmersiveMode = useMeetingStore((s) => s.isImmersiveMode);
 
@@ -25,8 +25,8 @@ function UI() {
       <div className="flex flex-1 h-full">
         <main className="flex-[2] relative">
           <MainArea />
-          <DyteParticipantsAudio meeting={meeting} />
-          <DyteNotifications
+          <RtkParticipantsAudio meeting={meeting} />
+          <RtkNotifications
             meeting={meeting}
             config={{
               config: {
@@ -47,7 +47,6 @@ function UI() {
 
         {!isImmersiveMode && <Sidebar />}
       </div>
-
       <div className="grid p-2 pl-0 lg:pl-2 grid-rows-3 lg:grid-rows-1 lg:grid-cols-3 lg:pt-0">
         <Controlbar />
       </div>
@@ -57,8 +56,8 @@ function UI() {
 
 export default function Meeting() {
   const $parent = useRef<HTMLDivElement>(null);
-  const roomState = useDyteSelector((m) => m.self.roomState);
-  const { meeting } = useDyteMeeting();
+  const roomState = useRealtimeKitSelector((m) => m.self.roomState);
+  const { meeting } = useRealtimeKitMeeting();
 
   const setDimensions = useMeetingStore((s) => s.setDimensions);
   const size = useMeetingStore((s) => s.size);
@@ -71,7 +70,7 @@ export default function Meeting() {
       setStates(e.detail);
     };
 
-    $parent.current!.addEventListener('dyteStateUpdate', onStateUpdate as any);
+    $parent.current!.addEventListener('rtkStateUpdate', onStateUpdate as any);
 
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
@@ -83,7 +82,7 @@ export default function Meeting() {
     return () => {
       observer.disconnect();
       $parent.current!.removeEventListener(
-        'dyteStateUpdate',
+        'rtkStateUpdate',
         onStateUpdate as any
       );
     };
@@ -93,23 +92,23 @@ export default function Meeting() {
 
   switch (roomState) {
     case 'init':
-      children = <DyteSetupScreen meeting={meeting} />;
+      children = <RtkSetupScreen meeting={meeting} />;
       break;
     case 'waitlisted':
-      children = <DyteWaitingScreen meeting={meeting} />;
+      children = <RtkWaitingScreen meeting={meeting} />;
       break;
     case 'joined':
       children = <UI />;
       break;
     default:
-      children = <DyteEndedScreen meeting={meeting} />;
+      children = <RtkEndedScreen meeting={meeting} />;
       break;
   }
 
   return (
     <div className="w-full h-full bg-black" ref={$parent} data-size={size}>
       {children}
-      <DyteDialogManager
+      <RtkDialogManager
         size={size === 'lg' ? 'lg' : 'sm'}
         meeting={meeting}
         states={states}

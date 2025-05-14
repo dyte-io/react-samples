@@ -2,9 +2,9 @@ import ReactDOM from 'react-dom/client';
 import App from './App';
 import './index.css';
 
-import { provideDyteDesignSystem } from '@dytesdk/react-ui-kit';
+import { provideRtkDesignSystem } from '@cloudflare/realtimekit-react-ui';
 
-provideDyteDesignSystem(document.body, {
+provideRtkDesignSystem(document.body, {
   theme: 'light',
   googleFont: 'Inter',
   colors: {

@@ -1,13 +1,13 @@
 import {
-  DyteChat,
-  DyteParticipants,
-  DytePlugins,
-  DytePolls,
-  DyteSidebar,
-  DyteSidebarUi,
-} from '@dytesdk/react-ui-kit';
+  RtkChat,
+  RtkParticipants,
+  RtkPlugins,
+  RtkPolls,
+  RtkSidebar,
+  RtkSidebarUi,
+} from '@cloudflare/realtimekit-react-ui';
 import { useState } from 'react';
-import { DyteSidebarView } from '@dytesdk/ui-kit/dist/types/components/dyte-sidebar-ui/dyte-sidebar-ui';
+import { RtkSidebarView } from '@cloudflare/realtimekit-ui/dist/types/components/rtk-sidebar-ui/rtk-sidebar-ui';
 import { useCustomStatesStore, useStatesStore } from '../store';
 
 function SidebarPreBuilt() {
@@ -17,7 +17,7 @@ function SidebarPreBuilt() {
     return null;
   }
 
-  return <DyteSidebar />;
+  return <RtkSidebar />;
 }
 
 const tabs = [
@@ -30,7 +30,7 @@ const tabs = [
 
 function SidebarWithCustomUI() {
   const states = useStatesStore((s) => s.states);
-  const [view] = useState<DyteSidebarView>('sidebar');
+  const [view] = useState<RtkSidebarView>('sidebar');
 
   if (!states.activeSidebar || !states.sidebar) {
     return null;
@@ -39,24 +39,24 @@ function SidebarWithCustomUI() {
   const currentTab: typeof states.sidear | 'warnings' = states.sidebar;
 
   return (
-    <DyteSidebarUi
+    <RtkSidebarUi
       tabs={tabs}
       currentTab={currentTab}
       view={view}
       className="w-96 max-w-full rounded-xl"
     >
-      {currentTab === 'chat' && <DyteChat slot="chat" />}
-      {currentTab === 'polls' && <DytePolls slot="polls" />}
+      {currentTab === 'chat' && <RtkChat slot="chat" />}
+      {currentTab === 'polls' && <RtkPolls slot="polls" />}
       {currentTab === 'participants' && (
-        <DyteParticipants slot="participants" />
+        <RtkParticipants slot="participants" />
       )}
-      {currentTab === 'plugins' && <DytePlugins slot="plugins" />}
+      {currentTab === 'plugins' && <RtkPlugins slot="plugins" />}
       {currentTab === 'warnings' && (
         <div slot="warnings" className="flex justify-center items-center">
           <div>Do not cheat in the exam</div>
         </div>
       )}
-    </DyteSidebarUi>
+    </RtkSidebarUi>
   );
 }
 

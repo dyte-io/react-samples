@@ -1,19 +1,19 @@
-import { DyteDialog, DyteIcon, defaultIconPack } from '@dytesdk/react-ui-kit';
+import { RtkDialog, RtkIcon, defaultIconPack } from '@cloudflare/realtimekit-react-ui';
 import { useState } from 'react';
 import AudioPreview from './audio-preview';
 import VideoPreview from './video-preview';
 import { useCustomStatesStore } from '../store';
-import { useDyteMeeting } from '@dytesdk/react-web-core';
+import { useRealtimeKitMeeting } from '@cloudflare/realtimekit-react';
 
 function MediaPreviewModal({ open }: { open: boolean }) {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
   const [activeTab, setActiveTab] = useState<'audio' | 'video'>('video');
   const setCustomStates = useCustomStatesStore((s) => s.setCustomStates);
 
   return (
-    <DyteDialog
+    <RtkDialog
       open={open}
-      onDyteDialogClose={() => {
+      onRtkDialogClose={() => {
         setCustomStates({ activeMediaPreviewModal: false });
       }}
     >
@@ -30,7 +30,7 @@ function MediaPreviewModal({ open }: { open: boolean }) {
             >
               Audio
               <div>
-                <DyteIcon icon={defaultIconPack.mic_on} />
+                <RtkIcon icon={defaultIconPack.mic_on} />
               </div>
             </button>
           )}
@@ -42,7 +42,7 @@ function MediaPreviewModal({ open }: { open: boolean }) {
             >
               Video
               <div>
-                <DyteIcon icon={defaultIconPack.video_on} />
+                <RtkIcon icon={defaultIconPack.video_on} />
               </div>
             </button>
           )}
@@ -52,7 +52,7 @@ function MediaPreviewModal({ open }: { open: boolean }) {
           {activeTab === 'video' && <VideoPreview />}
         </main>
       </div>
-    </DyteDialog>
+    </RtkDialog>
   );
 }
 

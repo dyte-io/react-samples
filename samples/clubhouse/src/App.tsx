@@ -1,13 +1,13 @@
 import { useEffect } from 'react';
-import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
+import { RealtimeKitProvider, useRealtimeKitClient } from '@cloudflare/realtimekit-react';
 import Meeting from './components/Meeting';
-import { provideDyteDesignSystem } from '@dytesdk/react-ui-kit';
+import { provideRtkDesignSystem } from '@cloudflare/realtimekit-react-ui';
 
 function App() {
-  const [meeting, initMeeting] = useDyteClient();
+  const [meeting, initMeeting] = useRealtimeKitClient();
 
   useEffect(() => {
-    provideDyteDesignSystem(document.body, {
+    provideRtkDesignSystem(document.body, {
       theme: 'light'
     });
 
@@ -39,9 +39,9 @@ function App() {
 
   return (
     <div className="w-full max-w-lg mx-auto h-full bg-gray-100">
-      <DyteProvider value={meeting} fallback={<div>loading...</div>}>
+      <RealtimeKitProvider value={meeting} fallback={<div>loading...</div>}>
         <Meeting />
-      </DyteProvider>
+      </RealtimeKitProvider>
     </div>
   );
 }

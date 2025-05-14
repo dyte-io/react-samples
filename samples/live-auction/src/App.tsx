@@ -1,13 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from 'react';
-import { DyteProvider, useDyteClient } from '@dytesdk/react-web-core';
-import { provideDyteDesignSystem } from '@dytesdk/react-ui-kit';
+import { RealtimeKitProvider, useRealtimeKitClient } from '@cloudflare/realtimekit-react';
+import { provideRtkDesignSystem } from '@cloudflare/realtimekit-react-ui';
 import { LoadingScreen } from './pages';
 import { Meeting, SetupScreen } from './pages';
 
 function App() {
   const meetingEl = useRef<HTMLDivElement>(null);
-  const [meeting, initMeeting] = useDyteClient();
+  const [meeting, initMeeting] = useRealtimeKitClient();
   const [roomJoined, setRoomJoined] = useState<boolean>(false);
 
   useEffect(() => {
@@ -32,7 +32,7 @@ function App() {
 
   useEffect(() => {
     if (!meetingEl.current) return;
-    provideDyteDesignSystem(meetingEl.current, {
+    provideRtkDesignSystem(meetingEl.current, {
       googleFont: 'Poppins',
       theme: 'light',
       colors: {
@@ -73,13 +73,13 @@ function App() {
 
   return (
     <div ref={meetingEl} >
-    <DyteProvider value={meeting} fallback={<LoadingScreen />}>
-      {
-        !roomJoined ? <SetupScreen /> : <Meeting />
-      }
-    </DyteProvider>
+      <RealtimeKitProvider value={meeting} fallback={<LoadingScreen />}>
+        {
+          !roomJoined ? <SetupScreen /> : <Meeting />
+        }
+      </RealtimeKitProvider>
     </div>
-  )
+  );
 }
 
 export default App

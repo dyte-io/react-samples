@@ -1,6 +1,6 @@
-import { DyteEndedScreen } from "@dytesdk/react-ui-kit";
-import { UIConfig } from "@dytesdk/ui-kit";
-import DyteClient from "@dytesdk/web-core";
+import { RtkEndedScreen } from '@cloudflare/realtimekit-react-ui';
+import { UIConfig } from '@cloudflare/realtimekit-ui';
+import DyteClient from '@cloudflare/realtimekit';
 import { CustomStates, SetStates } from "../types";
 
 function MeetingOver({
@@ -9,10 +9,10 @@ function MeetingOver({
   states,
 }: { meeting: DyteClient, config: UIConfig,  states: CustomStates, setStates: SetStates}) {
     return (
-        <main className='flex w-full h-full justify-center items-center'>
-          <DyteEndedScreen meeting={meeting} config={config} states={states} />
-        </main>
-      );
+      <main className='flex w-full h-full justify-center items-center'>
+        <RtkEndedScreen meeting={meeting} config={config} states={states} />
+      </main>
+    );
 }
 
 export default MeetingOver;

@@ -1,10 +1,10 @@
-import { DyteChat, DyteParticipants, DytePlugins, DytePolls, DyteSidebar, DyteSidebarUi } from "@dytesdk/react-ui-kit";
-import { UIConfig } from "@dytesdk/ui-kit";
-import DyteClient from "@dytesdk/web-core";
+import { RtkChat, RtkParticipants, RtkPlugins, RtkPolls, RtkSidebar, RtkSidebarUi } from '@cloudflare/realtimekit-react-ui';
+import { UIConfig } from '@cloudflare/realtimekit-ui';
+import DyteClient from '@cloudflare/realtimekit';
 import { CustomSideBarTabs, CustomStates, SetStates } from "../types";
 import { useEffect, useState } from "react";
-import { DyteSidebarView } from "@dytesdk/ui-kit/dist/types/components/dyte-sidebar-ui/dyte-sidebar-ui";
-import { DyteSidebarSection } from "@dytesdk/ui-kit/dist/types/components/dyte-sidebar/dyte-sidebar";
+import { RtkSidebarView } from '@cloudflare/realtimekit-ui/dist/types/components/rtk-sidebar-ui/rtk-sidebar-ui';
+import { RtkSidebarSection } from '@cloudflare/realtimekit-ui/dist/types/components/rtk-sidebar/rtk-sidebar';
 
 function SidebarPreBuilt({
     meeting, states, config, setStates,
@@ -13,7 +13,7 @@ function SidebarPreBuilt({
     if(!states.activeSidebar){
         return null;
     }
-    return <DyteSidebar meeting={meeting} config={config} states={states}/>;
+    return <RtkSidebar meeting={meeting} config={config} states={states}/>;
 }
 
 function SidebarWithCustomUI({
@@ -27,7 +27,7 @@ function SidebarWithCustomUI({
         { id: 'plugins', name: 'plugins' },
         { id: 'warnings', name: 'warnings' }
     ]);
-    const [view, setView] = useState<DyteSidebarView>('sidebar');
+    const [view, setView] = useState<RtkSidebarView>('sidebar');
 
     if(!states.activeSidebar || (!states.sidebar && !states.customSidebar)){
         return null;
@@ -36,39 +36,40 @@ function SidebarWithCustomUI({
     const currentTab = states.sidebar || states.customSidebar;
 
     return (
-    <DyteSidebarUi
-        tabs={tabs}
-        currentTab={currentTab}
-        view={view}
-        onTabChange={(e) => {
-            setStates((oldState) => {
-                return {
-                    ...oldState,
-                    activeSidebar: true,
-                    customSidebar: e.detail,
-                    sidebar: e.detail,
-                }
-            });
-        }}
-        className="w-80 "
-        onSidebarClose={() => {
-            setStates((oldState) => {
-                return {
-                    ...oldState,
-                    activeSidebar: false,
-                    sidebar: null,
-                    customSidebar: null,
-                }
-            });
-        }}>
-        {currentTab === 'chat' && <DyteChat meeting={meeting} config={config} slot="chat" /> }
-        {currentTab === 'polls' && <DytePolls meeting={meeting} config={config} slot="polls" /> }
-        {currentTab === 'participants' && <DyteParticipants meeting={meeting} config={config} states={states} slot="participants" /> }
-        {currentTab === 'plugins' && <DytePlugins meeting={meeting} config={config} slot="plugins" /> }
-        {currentTab === 'warnings' && <div slot="warnings" className="flex justify-center items-center">
-            <div>Do not cheat in the exam</div>
-        </div> }
-    </DyteSidebarUi>);
+        <RtkSidebarUi
+            tabs={tabs}
+            currentTab={currentTab}
+            view={view}
+            onTabChange={(e) => {
+                setStates((oldState) => {
+                    return {
+                        ...oldState,
+                        activeSidebar: true,
+                        customSidebar: e.detail,
+                        sidebar: e.detail,
+                    }
+                });
+            }}
+            className="w-80 "
+            onSidebarClose={() => {
+                setStates((oldState) => {
+                    return {
+                        ...oldState,
+                        activeSidebar: false,
+                        sidebar: null,
+                        customSidebar: null,
+                    }
+                });
+            }}>
+            {currentTab === 'chat' && <RtkChat meeting={meeting} config={config} slot="chat" /> }
+            {currentTab === 'polls' && <RtkPolls meeting={meeting} config={config} slot="polls" /> }
+            {currentTab === 'participants' && <RtkParticipants meeting={meeting} config={config} states={states} slot="participants" /> }
+            {currentTab === 'plugins' && <RtkPlugins meeting={meeting} config={config} slot="plugins" /> }
+            {currentTab === 'warnings' && <div slot="warnings" className="flex justify-center items-center">
+                <div>Do not cheat in the exam</div>
+            </div> }
+        </RtkSidebarUi>
+    );
 
 }
 

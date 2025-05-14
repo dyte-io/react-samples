@@ -1,22 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 import {
-  DyteIcon,
-  DyteParticipantTile,
-  DyteSettingsVideo,
+  RtkIcon,
+  RtkParticipantTile,
+  RtkSettingsVideo,
   defaultIconPack,
-} from '@dytesdk/react-ui-kit';
-import { useDyteMeeting } from '@dytesdk/react-web-core';
+} from '@cloudflare/realtimekit-react-ui';
+import { useRealtimeKitMeeting } from '@cloudflare/realtimekit-react';
 
 interface CurrentDevices {
   video?: MediaDeviceInfo;
 }
 
 function VideoPreviewPreBuilt() {
-  return <DyteSettingsVideo />;
+  return <RtkSettingsVideo />;
 }
 
 function VideoPreviewWithCustomUI() {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
 
   const [videoDevices, setVideoDevices] = useState<MediaDeviceInfo[]>([]);
   const [currentDevices, setCurrentDevices] = useState<CurrentDevices>({});
@@ -55,15 +55,15 @@ function VideoPreviewWithCustomUI() {
     <div className="flex flex-col p-4">
       <div>
         {meeting.self.videoEnabled === true ? (
-          <DyteParticipantTile participant={meeting?.self} isPreview />
+          <RtkParticipantTile participant={meeting?.self} isPreview />
         ) : (
           <div>
-            <DyteParticipantTile participant={meeting?.self}>
+            <RtkParticipantTile participant={meeting?.self}>
               <div>
-                <DyteIcon icon={defaultIconPack.video_off} />
+                <RtkIcon icon={defaultIconPack.video_off} />
                 <div>Camera Off</div>
               </div>
-            </DyteParticipantTile>
+            </RtkParticipantTile>
           </div>
         )}
       </div>

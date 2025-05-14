@@ -8,16 +8,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@dytesdk/react-ui-kit": "^2.0.3",
-    "@dytesdk/react-web-core": "^2.0.7",
+    "@cloudflare/realtimekit": "^0.2.0",
+    "@cloudflare/realtimekit-react": "^0.2.0",
+    "@cloudflare/realtimekit-react-ui": "^0.1.0",
+    "@cloudflare/realtimekit-ui": "^0.1.0",
     "@dytesdk/video-background-transformer": "^2.0.3",
-    "zustand": "^3.5.6",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "zustand": "^3.5.6"
   },
   "devDependencies": {
-    "@dytesdk/ui-kit": "^2.0.0",
-    "@dytesdk/web-core": "^2.0.0",
     "@types/react": "^18.0.24",
     "@types/react-dom": "^18.0.8",
     "@vitejs/plugin-react": "^2.2.0",

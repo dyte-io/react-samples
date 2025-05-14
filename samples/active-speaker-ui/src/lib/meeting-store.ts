@@ -1,4 +1,4 @@
-import { type States } from '@dytesdk/ui-kit';
+import { type States } from '@cloudflare/realtimekit-ui';
 import { create } from 'zustand';
 
 type Size = 'sm' | 'md' | 'lg';

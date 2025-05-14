@@ -1,5 +1,5 @@
-import { DyteAvatar, DyteAudioVisualizer } from '@dytesdk/react-ui-kit';
-import type { DyteParticipant, DyteSelf } from '@dytesdk/web-core';
+import { RtkAvatar, RtkAudioVisualizer } from '@cloudflare/realtimekit-react-ui';
+import type { RTKParticipant, RTKSelf } from '@cloudflare/realtimekit';
 import { StarIcon } from './icons';
 import clsx from 'clsx';
 
@@ -7,13 +7,13 @@ export default function User({
   participant,
   size,
 }: {
-  participant: DyteParticipant | DyteSelf;
+  participant: RTKParticipant | RTKSelf;
   size?: 'sm';
 }) {
   return (
     <div className="flex flex-col items-center gap-2">
       <div className="relative">
-        <DyteAvatar
+        <RtkAvatar
           participant={participant}
           size="sm"
           className={clsx(
@@ -22,12 +22,12 @@ export default function User({
           )}
         />
         <div className="absolute -bottom-2 -right-1 bg-white rounded-full p-1 scale-[80%]">
-          <DyteAudioVisualizer participant={participant} size="sm" />
+          <RtkAudioVisualizer participant={participant} size="sm" />
         </div>
       </div>
       <div className="text-xs font-medium flex items-center gap-0.5 flex-wrap">
         {participant.presetName === 'webinar_presenter' &&
-          participant.webinarStageStatus === 'ON_STAGE' && (
+          participant.stageStatus === 'ON_STAGE' && (
             <StarIcon className="h-4 w-4 text-green-600" />
           )}
         {participant.name}

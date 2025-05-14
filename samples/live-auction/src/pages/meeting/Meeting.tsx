@@ -3,18 +3,18 @@
 import { useEffect, useState } from 'react'
 import './meeting.css'
 import {
-  DyteCameraToggle,
-  DyteChatToggle,
-  DyteGrid,
-  DyteHeader,
-  DyteLeaveButton,
-  DyteMicToggle,
-  DyteNotifications,
-  DyteParticipantsAudio,
-  DyteSidebar,
+  RtkCameraToggle,
+  RtkChatToggle,
+  RtkGrid,
+  RtkHeader,
+  RtkLeaveButton,
+  RtkMicToggle,
+  RtkNotifications,
+  RtkParticipantsAudio,
+  RtkSidebar,
   sendNotification,
-} from '@dytesdk/react-ui-kit'
-import { useDyteMeeting } from '@dytesdk/react-web-core';
+} from '@cloudflare/realtimekit-react-ui'
+import { useRealtimeKitMeeting } from '@cloudflare/realtimekit-react';
 import { AuctionControlBar, Icon } from '../../components';
 import { bidItems } from '../../constants';
 
@@ -24,7 +24,7 @@ interface Bid {
 }
 
 const Meeting = () => {
-  const { meeting } = useDyteMeeting();
+  const { meeting } = useRealtimeKitMeeting();
 
   const [item, setItem] = useState(0);
   const [isHost, setIsHost] = useState<boolean>(false);
@@ -131,10 +131,9 @@ const Meeting = () => {
 
   return (
     <div className='meeting-container'>
-      <DyteParticipantsAudio meeting={meeting} />
-      <DyteNotifications meeting={meeting} />
-
-      <DyteHeader meeting={meeting} size='lg'>
+      <RtkParticipantsAudio meeting={meeting} />
+      <RtkNotifications meeting={meeting} />
+      <RtkHeader meeting={meeting} size='lg'>
         <div className="meeting-header">
           {
             auctionStarted && (
@@ -144,8 +143,7 @@ const Meeting = () => {
             )
           }
         </div>
-      </DyteHeader>
-
+      </RtkHeader>
       <div className='meeting-grid'>
         {
           auctionStarted && (
@@ -164,15 +162,14 @@ const Meeting = () => {
           </div>
           )
         }
-        <DyteGrid layout='column' meeting={meeting} style={{ height: '100%' }}/>
-        {activeSidebar && <DyteSidebar meeting={meeting} />}
+        <RtkGrid layout='column' meeting={meeting} style={{ height: '100%' }}/>
+        {activeSidebar && <RtkSidebar meeting={meeting} />}
       </div>
-
       <div className='meeting-controlbar'>
-        <DyteMicToggle size='md' meeting={meeting} />
-        <DyteCameraToggle size='md'  meeting={meeting} />
-        <DyteLeaveButton size='md' />
-        <DyteChatToggle size='md' meeting={meeting} />
+        <RtkMicToggle size='md' meeting={meeting} />
+        <RtkCameraToggle size='md'  meeting={meeting} />
+        <RtkLeaveButton size='md' />
+        <RtkChatToggle size='md' meeting={meeting} />
         {
           isHost && (
             <button className='auction-toggle-button' onClick={toggleAuction}>
@@ -183,7 +180,7 @@ const Meeting = () => {
         }
       </div>
     </div>
-  )
+  );
 }
 
 export default Meeting
