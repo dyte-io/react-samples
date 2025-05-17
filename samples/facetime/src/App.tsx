@@ -23,7 +23,7 @@ function App() {
         video: false,
         audio: false,
       },
-    }).then((m) => m?.joinRoom());
+    }).then((m) => m?.join());
   }, []);
 
   Object.assign(window, { meeting });

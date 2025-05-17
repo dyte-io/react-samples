@@ -15,7 +15,7 @@ import { Mic, Video, X } from 'react-feather';
 
 function Grid() {
   const { meeting } = useRealtimeKitMeeting();
-  const participants = useRealtimeKitSelector((m) => m.participants.active);
+  const participants = useRealtimeKitSelector((m) => m.participants.videoSubscribed);
 
   return (
     <div className="relative flex place-items-center justify-center flex-1 overflow-hidden -m-4">
@@ -61,7 +61,7 @@ function Controlbar() {
   };
 
   const leaveMeeting = () => {
-    meeting.leaveRoom();
+    meeting.leave();
   };
 
   return (

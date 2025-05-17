@@ -266,7 +266,7 @@ export default function MainArea() {
   const stageStatus = useRealtimeKitSelector((m) => m.stage.status);
 
   const activeParticipants = useRealtimeKitSelector((m) =>
-    m.participants.active.toArray()
+    m.participants.videoSubscribed.toArray()
   );
 
   const participants =

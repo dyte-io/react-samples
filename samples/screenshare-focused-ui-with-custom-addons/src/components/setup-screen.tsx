@@ -17,7 +17,7 @@ export function SetupScreenPreBuilt({
             backgroundColor: '#272727',
             color: '#ffffff',
         }} ref={(el) => {
-          el?.addEventListener('dyteStateUpdate', (e) => {
+          el?.addEventListener('rtkStateUpdate', (e) => {
             const { detail: newStateUpdate } = e as unknown as { detail: CustomStates };
             console.log('dyteStateUpdateSetup:: ', newStateUpdate);
             setStates((oldState: CustomStates) => { return {
@@ -49,7 +49,7 @@ export function CustomSetupScreenWithPrebuiltMediaPreviewModal({
 
     return (
         <main ref={(el) => {
-            el?.addEventListener('dyteStateUpdate', (e) => {
+            el?.addEventListener('rtkStateUpdate', (e) => {
               const { detail: newStateUpdate } = e as unknown as { detail: CustomStates };
               console.log('dyteStateUpdateSetup:: ', newStateUpdate);
               setStates((oldState: CustomStates) => { return {

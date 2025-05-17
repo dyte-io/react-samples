@@ -27,7 +27,7 @@ function CustomDyteGridScreenshareFocused({
     const [reactions, setReactions] = useState<{[key: string]: string}>({});
 
     const activeParticipants = useRealtimeKitSelector((meeting) =>
-        meeting.participants.active.toArray()
+        meeting.participants.videoSubscribed.toArray()
     );
 
     const pinnedParticipants = useRealtimeKitSelector((meeting) =>

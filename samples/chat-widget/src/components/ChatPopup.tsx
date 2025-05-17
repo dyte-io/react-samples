@@ -13,7 +13,7 @@ const ChatPopup = ({ meeting }: { meeting: RtkMeeting }) => {
 		if (channel) return;
 		const createChannel = async () => {
 			if (!meeting.self.roomJoined) {
-				await meeting.joinRoom();
+				await meeting.join();
 			}
 			const memberIds = meeting.participants.all.toArray().map((p) => p.userId);
 			const createdChannel = await meeting.chat.createChannel(meeting.meta.meetingTitle, memberIds);
