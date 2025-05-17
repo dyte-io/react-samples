@@ -302,7 +302,7 @@ export default function App() {
     }).then((meeting) => {
       Object.assign(window, { meeting });
       // automatically join room
-      meeting?.joinRoom();
+      meeting?.join();
     });
   }, []);
 

@@ -53,7 +53,7 @@ function Meeting() {
     <div
       className="flex flex-col w-full h-full"
       ref={(el) => {
-        el?.addEventListener('dyteStateUpdate', (e: any) => {
+        el?.addEventListener('rtkStateUpdate', (e: any) => {
           updateStates(e.detail);
         });
       }}
@@ -102,7 +102,7 @@ function App() {
         audio: false,
         video: false,
       },
-    }).then((m) => m?.joinRoom());
+    }).then((m) => m?.join());
   }, []);
 
   // By default this component will cover the entire viewport.

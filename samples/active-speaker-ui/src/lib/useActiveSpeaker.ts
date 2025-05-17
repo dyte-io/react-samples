@@ -13,7 +13,7 @@ export function useActiveSpeaker() {
   );
 
   const activeParticipants = useRealtimeKitSelector((m) =>
-    m.participants.active.toArray()
+    m.participants.videoSubscribed.toArray()
   );
 
   if (isPinned) {
