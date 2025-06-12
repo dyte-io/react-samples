@@ -92,12 +92,12 @@ const Meeting = () => {
         }
     }
 
-    document.body.addEventListener('dyteStateUpdate', handleDyteStateUpdate);
+    document.body.addEventListener('rtkStateUpdate', handleDyteStateUpdate);
 
     return () => {
-      document.body.removeEventListener('dyteStateUpdate', handleDyteStateUpdate);
+      document.body.removeEventListener('rtkStateUpdate', handleDyteStateUpdate);
       meeting.participants.removeListener('broadcastedMessage', handleBroadcastedMessage);
-    }
+    };
   }, [meeting])
 
   useEffect(() => {

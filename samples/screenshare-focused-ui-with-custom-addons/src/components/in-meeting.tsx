@@ -23,7 +23,7 @@ function InMeeting({
     <div
       className="flex flex-col w-full h-full"
       ref={(el) => {
-        el?.addEventListener('dyteStateUpdate', (e) => {
+        el?.addEventListener('rtkStateUpdate', (e) => {
           const { detail: newStateUpdate } = e as unknown as { detail: CustomStates };
           console.log('dyteStateUpdateSetup:: ', newStateUpdate);
           setStates((oldState: CustomStates) => { return {
