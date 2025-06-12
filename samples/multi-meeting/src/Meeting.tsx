@@ -6,6 +6,7 @@ import {
   useRealtimeKitSelector,
 } from '@cloudflare/realtimekit-react';
 import {
+  RtkMeeting,
   RtkCameraToggle,
   RtkChatToggle,
   RtkGrid,
@@ -29,7 +30,7 @@ if (config.root) {
   ).children;
 }
 
-export function Meeting({ authToken }: { authToken: string }) {
+export function Meeting({ authToken, showSetupScreen }: { authToken: string, showSetupScreen?: boolean }) {
   const [meeting, initMeeting] = useRealtimeKitClient();
 
   useEffect(() => {
@@ -57,12 +58,12 @@ export function Meeting({ authToken }: { authToken: string }) {
 
   return (
     <RealtimeKitProvider value={meeting}>
-      <RtkMeeting />
+        <SimpleMeeting showSetupScreen={showSetupScreen} />
     </RealtimeKitProvider>
   );
 }
 
-export function RtkMeeting() {
+export function SimpleMeeting({showSetupScreen}: {showSetupScreen?: boolean}) {
   const { meeting } = useRealtimeKitMeeting();
   const roomJoined = useRealtimeKitSelector((m) => m.self.roomJoined);
 
@@ -91,21 +92,7 @@ export function RtkMeeting() {
         });
       }}
     >
-      <header className="flex items-center gap-3 h-12 border-b w-full px-2 text-sm">
-        <RtkLogo meeting={meeting} />
-        <RtkMeetingTitle meeting={meeting} />
-      </header>
-      <main className="flex flex-1 p-2">
-        <RtkGrid meeting={meeting} config={config} />
-        {states.activeSidebar && <RtkSidebar meeting={meeting} states={states} />}
-      </main>
-      <footer className="p-2 flex place-items-center justify-center">
-        <RtkMicToggle meeting={meeting} />
-        <RtkCameraToggle meeting={meeting} />
-        <RtkScreenShareToggle meeting={meeting} />
-        <RtkChatToggle meeting={meeting} />
-        <RtkPollsToggle meeting={meeting} />
-      </footer>
+      <RtkMeeting meeting={meeting} showSetupScreen={!!showSetupScreen}/>
     </div>
   );
 }
