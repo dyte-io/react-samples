@@ -26,7 +26,7 @@ find "$SAMPLES_DIR" -mindepth 1 -maxdepth 1 -type d | while read sample_dir_path
         echo "Found $source_dist_path for sample: $sample_name"
         echo "Moving $source_dist_path to $destination_sample_path"
         # Move the samples/sample_name/dist directory to dist/sample_name
-        mv "$source_dist_path" "$destination_sample_path"
+        cp -r "$source_dist_path" "$destination_sample_path"
     else
         echo "No dist directory found in $sample_dir_path (for sample $sample_name). Skipping."
     fi

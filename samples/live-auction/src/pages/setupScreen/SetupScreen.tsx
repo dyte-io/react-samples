@@ -52,7 +52,7 @@ const SetupScreen = () => {
         <div className="setup-content">
           <h2>Welcome! {name}</h2>
           <p>{isHost ? 'You are joining as a Host' : 'You are joining as a bidder'}</p>
-          <input disabled={!meeting.self.permissions.canEditDisplayName ?? false} className='setup-name' value={name} onChange={(e) => {
+          <input disabled={!meeting.self.permissions.canEditDisplayName} className='setup-name' value={name} onChange={(e) => {
             setName(e.target.value)
           }} />
           <button className='setup-join' onClick={joinMeeting}>
