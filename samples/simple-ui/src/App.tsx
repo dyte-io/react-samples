@@ -53,7 +53,7 @@ function Meeting() {
     <div
       className="flex flex-col w-full h-full"
       ref={(el) => {
-        el?.addEventListener('dyteStateUpdate', (e: any) => {
+        el?.addEventListener('rtkStateUpdate', (e: any) => {
           updateStates(e.detail);
         });
       }}
