@@ -24,8 +24,8 @@ import {
 const config = { ...defaultConfig };
 
 if (config.root) {
-  config.root['dyte-participant-tile'] = (
-    config.root['dyte-participant-tile'] as any
+  config.root['rtk-participant-tile'] = (
+    config.root['rtk-participant-tile'] as any
   ).children;
 }
 
