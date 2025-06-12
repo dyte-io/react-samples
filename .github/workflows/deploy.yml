@@ -22,3 +22,4 @@ jobs:
                   apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
                   accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
                   wranglerVersion: "4.19.1"
+                  command: pages deploy ./dist
