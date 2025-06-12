@@ -1,36 +1,16 @@
-import { useEffect, useReducer } from 'react';
+import { useEffect } from 'react';
 import {
   RealtimeKitProvider,
   useRealtimeKitClient,
-  useRealtimeKitMeeting,
-  useRealtimeKitSelector,
 } from '@cloudflare/realtimekit-react';
 import {
   RtkMeeting,
-  RtkCameraToggle,
-  RtkChatToggle,
-  RtkGrid,
-  RtkLogo,
-  RtkMeetingTitle,
-  RtkMicToggle,
-  RtkPollsToggle,
-  RtkScreenShareToggle,
-  RtkSetupScreen,
-  RtkSidebar,
-  RtkSpinner,
-  defaultConfig,
   provideRtkDesignSystem,
 } from '@cloudflare/realtimekit-react-ui';
 
-const config = { ...defaultConfig };
-
-if (config.root) {
-  config.root['rtk-participant-tile'] = (
-    config.root['rtk-participant-tile'] as any
-  ).children;
-}
-
-export function Meeting({ authToken, showSetupScreen }: { authToken: string, showSetupScreen?: boolean }) {
+export function Meeting(
+    { authToken, showSetupScreen, baseURI }: { authToken: string, showSetupScreen?: boolean, baseURI?: string }
+) {
   const [meeting, initMeeting] = useRealtimeKitClient();
 
   useEffect(() => {
@@ -51,34 +31,16 @@ export function Meeting({ authToken, showSetupScreen }: { authToken: string, sho
         audio: false,
         video: false,
       },
-      baseURI: 'devel.dyte.io',
+      baseURI,
     })
     /*.then((m) => m?.joinRoom())*/;
   }, [initMeeting, authToken]);
 
   return (
-    <RealtimeKitProvider value={meeting}>
-      <SimpleMeeting showSetupScreen={showSetupScreen} />
-    </RealtimeKitProvider>
-  );
-}
-
-export function SimpleMeeting({showSetupScreen}: {showSetupScreen?: boolean}) {
-  const { meeting } = useRealtimeKitMeeting();
-  const roomJoined = useRealtimeKitSelector((m) => m.self.roomJoined);
-
-  if (!meeting) {
-    return <RtkSpinner />;
-  }
-
-  if (!roomJoined) {
-    return <RtkSetupScreen meeting={meeting} />;
-  }
-  return (
-    <div
-      className="flex flex-col w-full h-full"
-    >
-      <RtkMeeting meeting={meeting} showSetupScreen={!!showSetupScreen}/>
+    <div className="flex flex-col w-full h-full">
+        <RealtimeKitProvider value={meeting}>
+            <RtkMeeting className="relative" showSetupScreen={showSetupScreen} meeting={meeting} />
+        </RealtimeKitProvider>
     </div>
   );
 }

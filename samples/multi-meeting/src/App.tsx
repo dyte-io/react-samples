@@ -9,6 +9,7 @@ function App() {
   const autoInitializeMeeting2 = url.searchParams.get('autoInitializeMeeting2');
   const showSetupScreen1 = url.searchParams.get('showSetupScreen1') !== 'false';
   const showSetupScreen2 = url.searchParams.get('showSetupScreen2') !== 'false';
+  const baseURI = url.searchParams.get('baseURI') || 'dyte.io';
 
   const [authToken1, setAuthToken1] = useState(urlAuthToken1 || '');
   const [authToken2, setAuthToken2] = useState(urlAuthToken2 || '');
@@ -41,7 +42,7 @@ function App() {
           </button>
         </div>
       ) : (
-        <Meeting showSetupScreen={showSetupScreen1} authToken={authToken1} />
+        <Meeting baseURI={baseURI} showSetupScreen={showSetupScreen1} authToken={authToken1} />
       )}
       </div>
       <div className="border-2 border-black w-1/2">
@@ -64,7 +65,7 @@ function App() {
           </button>
         </div>
       ) : (
-        <Meeting showSetupScreen={showSetupScreen2} authToken={authToken2} />
+        <Meeting baseURI={baseURI} showSetupScreen={showSetupScreen2} authToken={authToken2} />
       )}
       </div>
     </div>
