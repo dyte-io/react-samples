@@ -7,15 +7,13 @@ function App() {
   const urlAuthToken2 = url.searchParams.get('authToken2');
   const autoInitializeMeeting1 = url.searchParams.get('autoInitializeMeeting1');
   const autoInitializeMeeting2 = url.searchParams.get('autoInitializeMeeting2');
-  const urlShowSetupScreen1 = url.searchParams.get('showSetupScreen1');
-  const urlShowSetupScreen2 = url.searchParams.get('showSetupScreen2');
+  const showSetupScreen1 = url.searchParams.get('showSetupScreen1') !== 'false';
+  const showSetupScreen2 = url.searchParams.get('showSetupScreen2') !== 'false';
 
   const [authToken1, setAuthToken1] = useState(urlAuthToken1 || '');
   const [authToken2, setAuthToken2] = useState(urlAuthToken2 || '');
   const [initializeMeeting1, setInitializeMeeting1] = useState(autoInitializeMeeting1 === 'true');
   const [initializeMeeting2, setInitializeMeeting2] = useState(autoInitializeMeeting2 === 'true');
-  const [showSetupScreen1, setShowSetupScreen1] = useState(urlShowSetupScreen1 === 'true');
-  const [showSetupScreen2, setShowSetupScreen2] = useState(urlShowSetupScreen2 === 'true');
 
   // By default this component will cover the entire viewport.
   // To avoid that and to make it fill a parent container, pass the prop:
@@ -43,7 +41,7 @@ function App() {
           </button>
         </div>
       ) : (
-        <Meeting authToken={authToken1} />
+        <Meeting showSetupScreen={showSetupScreen1} authToken={authToken1} />
       )}
       </div>
       <div className="border-2 border-black w-1/2">
@@ -66,7 +64,7 @@ function App() {
           </button>
         </div>
       ) : (
-        <Meeting showSetupScreen authToken={authToken2} />
+        <Meeting showSetupScreen={showSetupScreen2} authToken={authToken2} />
       )}
       </div>
     </div>

@@ -58,7 +58,7 @@ export function Meeting({ authToken, showSetupScreen }: { authToken: string, sho
 
   return (
     <RealtimeKitProvider value={meeting}>
-        <SimpleMeeting showSetupScreen={showSetupScreen} />
+      <SimpleMeeting showSetupScreen={showSetupScreen} />
     </RealtimeKitProvider>
   );
 }
@@ -67,14 +67,6 @@ export function SimpleMeeting({showSetupScreen}: {showSetupScreen?: boolean}) {
   const { meeting } = useRealtimeKitMeeting();
   const roomJoined = useRealtimeKitSelector((m) => m.self.roomJoined);
 
-  const [states, updateStates] = useReducer(
-    (state: any, payload: any) => ({
-      ...state,
-      ...payload,
-    }),
-    { meeting: 'joined', activeSidebar: false },
-  );
-
   if (!meeting) {
     return <RtkSpinner />;
   }
@@ -82,15 +74,9 @@ export function SimpleMeeting({showSetupScreen}: {showSetupScreen?: boolean}) {
   if (!roomJoined) {
     return <RtkSetupScreen meeting={meeting} />;
   }
-
   return (
     <div
       className="flex flex-col w-full h-full"
-      ref={(el) => {
-        el?.addEventListener('dyteStateUpdate', (e: any) => {
-          updateStates(e.detail);
-        });
-      }}
     >
       <RtkMeeting meeting={meeting} showSetupScreen={!!showSetupScreen}/>
     </div>
