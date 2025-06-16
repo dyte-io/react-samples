@@ -24,7 +24,7 @@ function UI() {
   const { meeting } = useRealtimeKitMeeting();
   const self = useRealtimeKitSelector((meeting) => meeting.self);
   const activeParticipants = useRealtimeKitSelector((meeting) =>
-    meeting.participants.active.toArray()
+    meeting.participants.videoSubscribed.toArray()
   );
 
   const pinnedParticipants = useRealtimeKitSelector((meeting) =>

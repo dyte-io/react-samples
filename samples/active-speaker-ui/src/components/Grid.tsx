@@ -14,7 +14,7 @@ export default function Grid() {
   const isPinned = useRealtimeKitSelector((m) => m.self.isPinned);
 
   const activeParticipants = useRealtimeKitSelector((m) =>
-    m.participants.active.toArray()
+    m.participants.videoSubscribed.toArray()
   );
 
   const participants =

@@ -32,7 +32,7 @@ function App() {
       Object.assign(window, { meeting: m });
 
       if (!window.location.search.includes('showSetupScreen')) {
-        m?.joinRoom();
+        m?.join();
       }
     });
   }, []);

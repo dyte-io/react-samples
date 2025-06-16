@@ -5,7 +5,7 @@ import clsx from 'clsx';
 export default function Stage() {
   const { meeting } = useRealtimeKitMeeting();
   const activeParticipants = useRealtimeKitSelector((meeting) =>
-    meeting.participants.active.toArray()
+    meeting.participants.videoSubscribed.toArray()
   );
 
   const joinedParticipants = useRealtimeKitSelector((meeting) =>
