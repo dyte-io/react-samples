@@ -74,7 +74,7 @@ function ControlBarWithCustomUI() {
           onClick={(e) => {
             console.log(states.activeSidebar);
             e.currentTarget.dispatchEvent(
-              new CustomEvent('dyteStateUpdate', {
+              new CustomEvent('rtkStateUpdate', {
                 detail: {
                   activeSidebar:
                     (states.sidebar as any) !== 'warnings'

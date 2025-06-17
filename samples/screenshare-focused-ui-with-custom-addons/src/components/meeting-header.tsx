@@ -1,18 +1,18 @@
 import { RtkClock, RtkGridPagination, RtkHeader, RtkLivestreamIndicator, RtkLogo, RtkMeetingTitle, RtkParticipantCount, RtkRecordingIndicator, RtkViewerCount } from '@cloudflare/realtimekit-react-ui';
 import { UIConfig } from '@cloudflare/realtimekit-ui';
-import DyteClient from '@cloudflare/realtimekit';
+import RealtimeKitClient from '@cloudflare/realtimekit';
 import { CustomStates, SetStates } from "../types";
 
 function HeaderPreBuilt({
     meeting, states, config, setStates,
-}: { meeting: DyteClient, config: UIConfig, states: CustomStates, setStates: SetStates }
+}: { meeting: RealtimeKitClient, config: UIConfig, states: CustomStates, setStates: SetStates }
 ){
     return <RtkHeader meeting={meeting} config={config} className='flex justify-between'/>;
 }
 
 function HeaderWithCustomUI({
     meeting, states, config,
-}: { meeting: DyteClient, config: UIConfig, states: CustomStates, setStates: SetStates }
+}: { meeting: RealtimeKitClient, config: UIConfig, states: CustomStates, setStates: SetStates }
 ){
     
     return (
@@ -35,5 +35,5 @@ function HeaderWithCustomUI({
     );
 }
 
-export default HeaderPreBuilt; // uncomment if you want the pre built Dyte header
+export default HeaderPreBuilt; // uncomment if you want the pre built RealtimeKit header
 // export default HeaderWithCustomUI; // uncomment if yoi want custom UI

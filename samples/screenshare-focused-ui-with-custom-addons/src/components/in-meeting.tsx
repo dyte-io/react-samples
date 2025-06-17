@@ -1,11 +1,11 @@
-import type DyteClient from '@cloudflare/realtimekit';
+import type RealtimeKitClient from '@cloudflare/realtimekit';
 import { UIConfig }  from '@cloudflare/realtimekit-ui/dist/types/types/ui-config';
 import { CustomStates, SetStates } from '../types';
 import { RtkHeader, RtkStage, RtkGrid, RtkNotifications, RtkSidebar, RtkParticipantsAudio, RtkDialogManager, RtkControlbar, RtkControlbarButton } from '@cloudflare/realtimekit-react-ui';
 import MeetingHeader from './meeting-header';
 import MeetingControlBar from './meeting-control-bar';
 import MeetingSideBar from './meeting-sidebar';
-import CustomDyteGrid from './custom-dyte-grid';
+import CustomRtkGrid from './custom-rtk-grid';
 import EffectsManager from './EffectsManager';
 import { useState } from 'react';
 import ReactionsManager from './ReactionsManager';
@@ -14,7 +14,7 @@ function InMeeting({
     config,
     states,
     setStates,
-}: { meeting: DyteClient, config: UIConfig,  states: CustomStates, setStates: SetStates}) {
+}: { meeting: RealtimeKitClient, config: UIConfig,  states: CustomStates, setStates: SetStates}) {
   
   const [effectsDialog, setEffectsDialog] = useState(false);
   const [reactionsDialog, setReactionsDialog] = useState(false);
@@ -25,7 +25,7 @@ function InMeeting({
       ref={(el) => {
         el?.addEventListener('rtkStateUpdate', (e) => {
           const { detail: newStateUpdate } = e as unknown as { detail: CustomStates };
-          console.log('dyteStateUpdateSetup:: ', newStateUpdate);
+          console.log('rtkStateUpdateSetup:: ', newStateUpdate);
           setStates((oldState: CustomStates) => { return {
             ...oldState,
             ...newStateUpdate,

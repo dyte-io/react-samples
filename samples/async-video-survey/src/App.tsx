@@ -20,7 +20,7 @@ function LoadingUI() {
   return (
     <div className="w-full h-full flex flex-col gap-4 place-items-center justify-center">
       <RtkSpinner className="w-14 h-14 text-blue-500" />
-      <p className="text-xl font-semibold">Starting Dyte Video Survey</p>
+      <p className="text-xl font-semibold">Starting RealtimeKit Video Survey</p>
     </div>
   );
 }

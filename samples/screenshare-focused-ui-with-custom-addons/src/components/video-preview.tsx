@@ -1,4 +1,4 @@
-import DyteClient from '@cloudflare/realtimekit';
+import RealtimeKitClient from '@cloudflare/realtimekit';
 import { useEffect, useRef, useState } from "react";
 import { RtkAudioVisualizer, RtkButton, RtkIcon, RtkParticipantTile, RtkSettingsVideo, RtkSwitch, defaultIconPack } from '@cloudflare/realtimekit-react-ui';
 import { CustomStates, SetStates } from "../types";
@@ -9,14 +9,14 @@ interface CurrentDevices {
 
 function VideoPreviewPreBuilt({
     meeting, states
-}: { meeting: DyteClient, config: UIConfig, states: CustomStates, setStates: SetStates }
+}: { meeting: RealtimeKitClient, config: UIConfig, states: CustomStates, setStates: SetStates }
 ){
     return <RtkSettingsVideo meeting={meeting} states={states}/>;
 }
 
 function VideoPreviewWithCustomUI({
     meeting, states, setStates
-}: { meeting: DyteClient, config: UIConfig, states: CustomStates,  setStates: SetStates }
+}: { meeting: RealtimeKitClient, config: UIConfig, states: CustomStates,  setStates: SetStates }
 ) {
     const [videoDevices, setVideoDevices] = useState<MediaDeviceInfo[]>([]);
     const [currentDevices, setCurrentDevices] = useState<CurrentDevices>({});

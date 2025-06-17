@@ -1,20 +1,20 @@
-import type DyteClient from '@cloudflare/realtimekit';
+import type RealtimeKitClient from '@cloudflare/realtimekit';
 import { UIConfig }  from '@cloudflare/realtimekit-ui/dist/types/types/ui-config';
 import { CustomStates, SetStates } from '../types';
 import { useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
 import { defaultIconPack, RtkAudioVisualizer, RtkAvatar, RtkButton, RtkCameraToggle, RtkControlbarButton, RtkIcon, RtkMicToggle, RtkNameTag, RtkParticipantTile, RtkScreenshareView } from '@cloudflare/realtimekit-react-ui';
 
-import './custom-dyte-grid.css';
+import './custom-Rtk-grid.css';
 import { useEffect, useState } from 'react';
 import { RTKParticipant, RTKSelf } from '@cloudflare/realtimekit';
 import CustomParticipantTile from './custom-participant-tile';
 
-function CustomDyteGridScreenshareFocused({
+function CustomRtkGridScreenshareFocused({
     meeting,
     config,
     states,
     setStates,
-}: { meeting: DyteClient, config: UIConfig,  states: CustomStates, setStates: SetStates}) {
+}: { meeting: RealtimeKitClient, config: UIConfig,  states: CustomStates, setStates: SetStates}) {
     
     const [size] = useState({ height: '120px', width: '120px' });
 
@@ -191,4 +191,4 @@ function CustomDyteGridScreenshareFocused({
     );
 }
 
-export default CustomDyteGridScreenshareFocused;
+export default CustomRtkGridScreenshareFocused;

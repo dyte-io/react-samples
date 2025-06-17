@@ -1,6 +1,6 @@
 import { RtkChat, RtkParticipants, RtkPlugins, RtkPolls, RtkSidebar, RtkSidebarUi } from '@cloudflare/realtimekit-react-ui';
 import { UIConfig } from '@cloudflare/realtimekit-ui';
-import DyteClient from '@cloudflare/realtimekit';
+import RealtimeKitClient from '@cloudflare/realtimekit';
 import { CustomSideBarTabs, CustomStates, SetStates } from "../types";
 import { useEffect, useState } from "react";
 import { RtkSidebarView } from '@cloudflare/realtimekit-ui/dist/types/components/rtk-sidebar-ui/rtk-sidebar-ui';
@@ -8,7 +8,7 @@ import { RtkSidebarSection } from '@cloudflare/realtimekit-ui/dist/types/compone
 
 function SidebarPreBuilt({
     meeting, states, config, setStates,
-}: { meeting: DyteClient, config: UIConfig, states: CustomStates, setStates: SetStates }
+}: { meeting: RealtimeKitClient, config: UIConfig, states: CustomStates, setStates: SetStates }
 ){
     if(!states.activeSidebar){
         return null;
@@ -18,7 +18,7 @@ function SidebarPreBuilt({
 
 function SidebarWithCustomUI({
     meeting, states, config, setStates,
-}: { meeting: DyteClient, config: UIConfig, states: CustomStates, setStates: SetStates }
+}: { meeting: RealtimeKitClient, config: UIConfig, states: CustomStates, setStates: SetStates }
 ){
     const [tabs, setTabs] = useState([
         { id: 'chat', name: 'chat' },

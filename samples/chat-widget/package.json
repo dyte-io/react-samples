@@ -1,6 +1,6 @@
 {
-	"name": "dyte-chat-widget-demo",
-	"description": "Dyte Chat Widget demo",
+	"name": "realtimekit-chat-widget-demo",
+	"description": "RealtimeKit Chat Widget demo",
 	"version": "0.1.0",
 	"private": true,
 	"scripts": {

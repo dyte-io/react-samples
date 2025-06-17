@@ -35,5 +35,5 @@ function HeaderWithCustomUI() {
   );
 }
 
-export default HeaderPreBuilt; // uncomment if you want the pre built Dyte header
+export default HeaderPreBuilt; // uncomment if you want the pre built RealtimeKit header
 // export default HeaderWithCustomUI; // uncomment if yoi want custom UI

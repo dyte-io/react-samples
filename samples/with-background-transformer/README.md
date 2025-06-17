@@ -1,7 +1,7 @@
 # With Background Transformer UI Sample
 
-This sample showcases how you can modify your background while in a Dyte video call
-with the [`@dytesdk/video-background-transformer`](https://www.npmjs.com/package/@dytesdk/video-background-transformer) package.
+This sample showcases how you can modify your background while in a RealtimeKit video call
+with the [`@cloudflare/realtimekit-virtual-background`](https://www.npmjs.com/package/@cloudflare/realtimekit-virtual-background) package.
 
 ---
 

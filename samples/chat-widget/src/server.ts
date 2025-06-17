@@ -37,7 +37,7 @@ export const createMeeting = async (name: string, email: string) => {
 			authorization: getAuthToken(),
 			'content-type': 'application/json',
 		},
-		body: `{"title":"Dyte <> ${name}"}`,
+		body: `{"title":"RealtimeKit <> ${name}"}`,
 		method: 'POST',
 		mode: 'cors',
 	})

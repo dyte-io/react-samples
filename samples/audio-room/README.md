@@ -1,6 +1,6 @@
 # Audio Room Sample
 
-This sample showcases how you can create an audio room with Dyte's UI Kit.
+This sample showcases how you can create an audio room with RealtimeKit's UI Kit.
 
 ---
 
