@@ -9,10 +9,10 @@ import {
   defaultConfig,
   generateConfig,
 } from '@cloudflare/realtimekit-react-ui';
-import { RtkStateListenersUtils } from './dyte-state-listeners';
+import { RtkStateListenersUtils } from './rtk-state-listeners';
 import { CustomStates } from './types';
 import { setFullScreenToggleTargetElement } from './utils';
-import CustomRtkMeeting from './components/custom-dyte-meeting';
+import CustomRtkMeeting from './components/custom-rtk-meeting';
 
 function Meeting() {
   const { meeting } = useRealtimeKitMeeting();
