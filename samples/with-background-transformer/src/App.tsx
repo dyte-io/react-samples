@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { RtkMeeting } from '@cloudflare/realtimekit-react-ui';
 import { useRealtimeKitClient } from '@cloudflare/realtimekit-react';
-import DyteVideoBackgroundTransformer from '@cloudflare/realtimekit-virtual-background';
+import RealtimeKitVideoBackgroundTransformer from '@cloudflare/realtimekit-virtual-background';
 
 declare global {
   interface Window {
@@ -32,11 +32,11 @@ function App() {
       window.meeting = meeting;
 
       /**
-       * To customise DyteVideoBackgroundTransformer configs, please refer to https://www.npmjs.com/package/@cloudflare/realtimekit-virtual-background?activeTab=readme.
+       * To customise RealtimeKitVideoBackgroundTransformer configs, please refer to https://www.npmjs.com/package/@cloudflare/realtimekit-virtual-background?activeTab=readme.
        * 
       */
       const videoBackgroundTransformer =
-        await DyteVideoBackgroundTransformer.init({
+        await RealtimeKitVideoBackgroundTransformer.init({
           meeting,
           segmentationConfig: {
             pipeline: 'canvas2dCpu', // 'webgl2' | 'canvas2dCpu'

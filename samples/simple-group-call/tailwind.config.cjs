@@ -4,7 +4,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        dyte: {
+        rtk: {
           blue: '#2160FD',
         },
       },

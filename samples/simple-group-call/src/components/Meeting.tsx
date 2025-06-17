@@ -87,7 +87,7 @@ function UI() {
               className={clsx(
                 'absolute transition-all border bg-zinc-100',
                 participant.audioEnabled
-                  ? 'border-dyte-blue shadow-md shadow-dyte-blue/30'
+                  ? 'border-rtk-blue shadow-md shadow-rtk-blue/30'
                   : 'border-zinc-200'
               )}
               style={{

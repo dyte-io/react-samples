@@ -40,7 +40,7 @@ export const useRtkStore = create<RtkStore>(
       },
     }),
     {
-      name: 'dyte-store',
+      name: 'rtk-store',
       getStorage: () => gracefulStorage,
     }
   )

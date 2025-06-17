@@ -29,9 +29,9 @@ function Meeting() {
 
       /**
        * NOTE(ravindra-dyte):
-       * Full screen by default requests dyte-meeting/RtkMeeting element to be in full screen.
+       * Full screen by default requests rtk-meeting/RtkMeeting element to be in full screen.
        * Since RtkMeeting element is not here,
-       *  we need to pass dyte-fullscreen-toggle, an targetElementId through config.
+       *  we need to pass rtk-fullscreen-toggle, an targetElementId through config.
        */
       setFullScreenToggleTargetElement({config, targetElementId: 'root'});
 

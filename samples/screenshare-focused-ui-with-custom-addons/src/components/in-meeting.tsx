@@ -41,7 +41,7 @@ function InMeeting({
         color: '#ffffff',
       }}>
         <RtkStage className='flex w-full flex-1 p-2'>
-          <CustomDyteGrid meeting={meeting} config={config} states={states} setStates={setStates}/>
+          <CustomRtkGrid meeting={meeting} config={config} states={states} setStates={setStates}/>
           <RtkNotifications meeting={meeting} config={config}  states={states}/>
           <MeetingSideBar meeting={meeting} config={config} states={states} setStates={setStates}/>
         </RtkStage>
