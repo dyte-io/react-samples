@@ -4,7 +4,7 @@ import { CustomStates, SetStates } from '../types';
 import { useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
 import { defaultIconPack, RtkAudioVisualizer, RtkAvatar, RtkButton, RtkCameraToggle, RtkControlbarButton, RtkIcon, RtkMicToggle, RtkNameTag, RtkParticipantTile, RtkScreenshareView } from '@cloudflare/realtimekit-react-ui';
 
-import './custom-Rtk-grid.css';
+import './custom-rtk-grid.css';
 import { useEffect, useState } from 'react';
 import { RTKParticipant, RTKSelf } from '@cloudflare/realtimekit';
 import CustomParticipantTile from './custom-participant-tile';
