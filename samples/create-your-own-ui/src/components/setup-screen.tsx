@@ -1,4 +1,4 @@
-import type DyteClient from '@cloudflare/realtimekit';
+import type RealtimeKitClient from '@cloudflare/realtimekit';
 import { UIConfig } from '@cloudflare/realtimekit-ui/dist/types/types/ui-config';
 import { CustomStates, SetStates } from '../types';
 import { RtkDialogManager, RtkSetupScreen } from '@cloudflare/realtimekit-react-ui';

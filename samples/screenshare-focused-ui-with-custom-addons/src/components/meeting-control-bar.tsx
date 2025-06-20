@@ -1,19 +1,19 @@
 import { RtkBreakoutRoomsToggle, RtkCameraToggle, RtkChatToggle, RtkControlbar, RtkControlbarButton, RtkFullscreenToggle, RtkLeaveButton, RtkMicToggle, RtkMoreToggle, RtkMuteAllButton, RtkParticipantsToggle, RtkPipToggle, RtkPluginsToggle, RtkPoll, RtkPollsToggle, RtkRecordingToggle, RtkScreenShareToggle, RtkSettingsToggle, RtkStageToggle } from '@cloudflare/realtimekit-react-ui';
 import { UIConfig, defaultIconPack } from '@cloudflare/realtimekit-ui';
-import DyteClient from '@cloudflare/realtimekit';
+import RealtimeKitClient from '@cloudflare/realtimekit';
 import { CustomStates, SetStates } from "../types";
 import { useEffect, useState } from "react";
 
 function ControlBarPreBuilt({
     meeting, states, config,
-}: { meeting: DyteClient, config: UIConfig, states: CustomStates, setStates: SetStates }
+}: { meeting: RealtimeKitClient, config: UIConfig, states: CustomStates, setStates: SetStates }
 ){
     return <RtkControlbar meeting={meeting} config={config}  states={states} className='flex w-full overflow-visible	justify-between'/>;
 }
 
 function ControlBarWithCustomUI({
     meeting, states, config, setStates, setEffectsDialog, setReactionsDialog,
-}: { meeting: DyteClient, config: UIConfig, states: CustomStates, setStates: SetStates, setEffectsDialog: (openEffectsDialog: boolean) => void, setReactionsDialog:  (openReactionsDialog: boolean) => void}
+}: { meeting: RealtimeKitClient, config: UIConfig, states: CustomStates, setStates: SetStates, setEffectsDialog: (openEffectsDialog: boolean) => void, setReactionsDialog:  (openReactionsDialog: boolean) => void}
 ){
 
     const fullScreenTargetElement = document.querySelector('#root') as HTMLElement;

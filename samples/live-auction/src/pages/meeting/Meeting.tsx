@@ -84,7 +84,7 @@ const Meeting = () => {
     }
     meeting.participants.on('broadcastedMessage', handleBroadcastedMessage);
 
-    const handleDyteStateUpdate = ({detail}: any) => {
+    const handleRtkStateUpdate = ({detail}: any) => {
         if (detail.activeSidebar) {
          setActiveSidebar(true);
         } else {
@@ -92,10 +92,10 @@ const Meeting = () => {
         }
     }
 
-    document.body.addEventListener('rtkStateUpdate', handleDyteStateUpdate);
+    document.body.addEventListener('rtkStateUpdate', handleRtkStateUpdate);
 
     return () => {
-      document.body.removeEventListener('rtkStateUpdate', handleDyteStateUpdate);
+      document.body.removeEventListener('rtkStateUpdate', handleRtkStateUpdate);
       meeting.participants.removeListener('broadcastedMessage', handleBroadcastedMessage);
     };
   }, [meeting])

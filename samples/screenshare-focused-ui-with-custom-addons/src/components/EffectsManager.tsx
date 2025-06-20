@@ -2,9 +2,9 @@
 import { RtkSwitch } from '@cloudflare/realtimekit-react-ui';
 import Dialog from './Dialog';
 import { useEffect, useRef, useState } from 'react';
-import { storeSelector, useDyteStore } from '../lib/store';
-import DyteVideoBackgroundTransformer from '@dytesdk/video-background-transformer';
-import type DyteClient from '@cloudflare/realtimekit';
+import { storeSelector, useRtkStore } from '../lib/store';
+import RealtimeKitVideoBackgroundTransformer from '@cloudflare/realtimekit-virtual-background';
+import type RealtimeKitClient from '@cloudflare/realtimekit';
 import type { VideoMiddleware } from '@cloudflare/realtimekit';
 
 export const getBackgroundImage = (name: string) => `https://assets.dyte.io/backgrounds/${name}`;
@@ -20,7 +20,7 @@ const IMAGE_URLS = [
 
 const MiddlewareHolder: {
   currentVideo?: VideoMiddleware;
-  transformer?: DyteVideoBackgroundTransformer;
+  transformer?: RealtimeKitVideoBackgroundTransformer;
 } = {};
 
 const EffectsManager = ({
@@ -28,12 +28,12 @@ const EffectsManager = ({
   isOpen,
   onClose,
 }: {
-  meeting: DyteClient;
+  meeting: RealtimeKitClient;
   onClose: () => void;
   isOpen: boolean;
 }) => {
   const [selected, setSelected] = useState('video');
-  const { effects, updateStore } = useDyteStore(storeSelector);
+  const { effects, updateStore } = useRtkStore(storeSelector);
   const backgroundTransformerInit = useRef(false);
 
   useEffect(() => {
@@ -49,17 +49,17 @@ const EffectsManager = ({
       }
       if (!MiddlewareHolder.transformer) {
         if (
-          DyteVideoBackgroundTransformer.isSupported() &&
+          RealtimeKitVideoBackgroundTransformer.isSupported() &&
           !isChatSDK &&
           // prevent double init
           backgroundTransformerInit.current !== true
         ) {
           backgroundTransformerInit.current = true;
           /**
-           * To customise DyteVideoBackgroundTransformer configs, please refer to https://www.npmjs.com/package/@dytesdk/video-background-transformer?activeTab=readme.
+           * To customise RealtimeKitVideoBackgroundTransformer configs, please refer to https://www.npmjs.com/package/@cloudflare/realtimekit-virtual-background?activeTab=readme.
            * 
           */
-          const transformer = await DyteVideoBackgroundTransformer.init({
+          const transformer = await RealtimeKitVideoBackgroundTransformer.init({
             meeting,
             segmentationConfig: {
               pipeline: 'canvas2dCpu', // 'webgl2' | 'canvas2dCpu'

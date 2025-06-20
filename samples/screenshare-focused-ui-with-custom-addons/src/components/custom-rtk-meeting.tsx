@@ -1,5 +1,5 @@
 import { UIConfig } from '@cloudflare/realtimekit-ui'
-import DyteClient from '@cloudflare/realtimekit'
+import RealtimeKitClient from '@cloudflare/realtimekit'
 import { CustomStates, SetStates } from "../types"
 import InMeeting from "./in-meeting"
 import MeetingLoading from "./meeting-loading"
@@ -7,12 +7,12 @@ import MeetingOver from "./meeting-over"
 import SetupScreen from "./setup-screen"
 import WaitingRoom from "./waiting-room"
 
-function CustomDyteMeeting({
+function CustomRtkMeeting({
   meeting,
   config,
   states,
   setStates,
-}: { meeting: DyteClient, config: UIConfig,  states: CustomStates, setStates: SetStates}){
+}: { meeting: RealtimeKitClient, config: UIConfig,  states: CustomStates, setStates: SetStates}){
   if (!meeting) {
     <MeetingLoading />
   }
@@ -37,4 +37,4 @@ function CustomDyteMeeting({
   
 }
 
-export default CustomDyteMeeting;
+export default CustomRtkMeeting;

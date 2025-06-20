@@ -2,7 +2,7 @@ import create from 'zustand';
 import { persist } from 'zustand/middleware';
 import gracefulStorage from './graceful-storage';
 
-export interface DyteStore {
+export interface RtkStore {
   displayName: string;
   clientSpecificId: string;
   audioTranscriptions: boolean;
@@ -16,10 +16,10 @@ export interface DyteStore {
       backgroundImage: string;
     };
   };
-  updateStore: <T extends keyof DyteStore>(key: T, value: DyteStore[T]) => void;
+  updateStore: <T extends keyof RtkStore>(key: T, value: RtkStore[T]) => void;
 }
 
-export const useDyteStore = create<DyteStore>(
+export const useRtkStore = create<RtkStore>(
   persist(
     (set, get) => ({
       displayName: '',
@@ -40,13 +40,13 @@ export const useDyteStore = create<DyteStore>(
       },
     }),
     {
-      name: 'dyte-store',
+      name: 'rtk-store',
       getStorage: () => gracefulStorage,
     }
   )
 );
 
-export const storeSelector = (store: DyteStore) => ({
+export const storeSelector = (store: RtkStore) => ({
   clientSpecificId: store.clientSpecificId,
   displayName: store.displayName,
   presets: store.presets,

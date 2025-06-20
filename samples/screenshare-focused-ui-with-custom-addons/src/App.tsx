@@ -9,10 +9,10 @@ import {
   defaultConfig,
   generateConfig,
 } from '@cloudflare/realtimekit-react-ui';
-import { DyteStateListenersUtils } from './dyte-state-listeners';
+import { RtkStateListenersUtils } from './rtk-state-listeners';
 import { CustomStates } from './types';
 import { setFullScreenToggleTargetElement } from './utils';
-import CustomDyteMeeting from './components/custom-dyte-meeting';
+import CustomRtkMeeting from './components/custom-rtk-meeting';
 
 function Meeting() {
   const { meeting } = useRealtimeKitMeeting();
@@ -29,9 +29,9 @@ function Meeting() {
 
       /**
        * NOTE(ravindra-dyte):
-       * Full screen by default requests dyte-meeting/DyteMeeting element to be in full screen.
-       * Since DyteMeeting element is not here,
-       *  we need to pass dyte-fullscreen-toggle, an targetElementId through config.
+       * Full screen by default requests rtk-meeting/RtkMeeting element to be in full screen.
+       * Since RtkMeeting element is not here,
+       *  we need to pass rtk-fullscreen-toggle, an targetElementId through config.
        */
       setFullScreenToggleTargetElement({config, targetElementId: 'root'});
 
@@ -40,10 +40,10 @@ function Meeting() {
     /**
      * NOTE(ravindra-dyte):
      * Add listeners on meeting & self to monitor leave meeting, join meeting and so on.
-     * This work was earlier done by DyteMeeting component internally.
+     * This work was earlier done by RtkMeeting component internally.
      */
-      const stateListenersUtils = new DyteStateListenersUtils(() => meeting, () => states, () => setStates);
-      stateListenersUtils.addDyteEventListeners();
+      const stateListenersUtils = new RtkStateListenersUtils(() => meeting, () => states, () => setStates);
+      stateListenersUtils.addRtkEventListeners();
     }
 
     if(meeting){
@@ -60,7 +60,7 @@ function Meeting() {
 
   }, [meeting]);
 
-  return <CustomDyteMeeting meeting={meeting} config={config} states={states} setStates={setStates} />
+  return <CustomRtkMeeting meeting={meeting} config={config} states={states} setStates={setStates} />
   
 }
 

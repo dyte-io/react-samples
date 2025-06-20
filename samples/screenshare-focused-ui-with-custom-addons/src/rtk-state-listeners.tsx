@@ -1,15 +1,15 @@
-import DyteClient from '@cloudflare/realtimekit';
+import RealtimeKitClient from '@cloudflare/realtimekit';
 import type { PermissionSettings } from '@cloudflare/realtimekit-ui/dist/types/types/props';
 import type { RoomLeftState } from '@cloudflare/realtimekit-ui/dist/types/types/rtk-client';
 import { CustomStates } from './types';
 
-export class DyteStateListenersUtils{
+export class RtkStateListenersUtils{
     
     getStates: () => CustomStates;
 
     getStateSetter: () => (newState: CustomStates) => void;
 
-    getMeeting: () => DyteClient;
+    getMeeting: () => RealtimeKitClient;
 
     get states(){
         return this.getStates();
@@ -23,7 +23,7 @@ export class DyteStateListenersUtils{
         return this.getMeeting();
     }
 
-    constructor(getMeeting: () => DyteClient, getGlobalStates: () => CustomStates, getGlobalStateSetter: () => (newState: CustomStates) => void){
+    constructor(getMeeting: () => RealtimeKitClient, getGlobalStates: () => CustomStates, getGlobalStateSetter: () => (newState: CustomStates) => void){
         this.getMeeting = getMeeting;
         this.getStates = getGlobalStates;
         this.getStateSetter = getGlobalStateSetter;
@@ -86,7 +86,7 @@ export class DyteStateListenersUtils{
         });
     }
     
-    addDyteEventListeners(){
+    addRtkEventListeners(){
         if (this.meeting.meta.viewType === 'LIVESTREAM') {
             this.meeting.self.addListener('roomJoined', this.socketServiceRoomJoinedListener);
           }
@@ -102,7 +102,7 @@ export class DyteStateListenersUtils{
           }
 
     }
-    cleanupDyteEventListeners(){
+    cleanupRtkEventListeners(){
 
     }
 }

@@ -1,14 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
 import { useEffect, useState } from 'react';
 import Dialog from './Dialog';
-import type DyteClient from '@cloudflare/realtimekit';
+import type RealtimeKitClient from '@cloudflare/realtimekit';
 
 const ReactionsManager = ({
   meeting,
   isOpen,
   onClose,
 }: {
-  meeting: DyteClient;
+  meeting: RealtimeKitClient;
   onClose: () => void;
   isOpen: boolean;
 }) => {

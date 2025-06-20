@@ -1,4 +1,4 @@
-import DyteClient from '@cloudflare/realtimekit';
+import RealtimeKitClient from '@cloudflare/realtimekit';
 import { useEffect, useRef, useState } from "react";
 import { RtkAudioVisualizer, RtkButton, RtkIcon, RtkSettingsAudio, RtkSwitch, defaultIconPack } from '@cloudflare/realtimekit-react-ui';
 import { CustomStates, SetStates } from "../types";
@@ -10,14 +10,14 @@ interface CurrentDevices {
 
 function AudioPreviewPreBuilt({
     meeting, states
-}: { meeting: DyteClient, config: UIConfig, states: CustomStates, setStates: SetStates }
+}: { meeting: RealtimeKitClient, config: UIConfig, states: CustomStates, setStates: SetStates }
 ){
     return <RtkSettingsAudio meeting={meeting} states={states}/>;
 }
 
 function AudioPreviewWithCustomUI({
     meeting,
-}: { meeting: DyteClient, config: UIConfig, states: CustomStates, setStates: SetStates }
+}: { meeting: RealtimeKitClient, config: UIConfig, states: CustomStates, setStates: SetStates }
 ) {
     const [audioDevices, setAudioDevices] = useState<MediaDeviceInfo[]>([]);
     const [speakerDevices, setSpeakerDevices] = useState<MediaDeviceInfo[]>([]);

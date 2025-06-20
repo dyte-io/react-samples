@@ -1,10 +1,10 @@
-# Dyte Chat Widget demo
+# RealtimeKit Chat Widget demo
 
-This sample showcases how you can build a Chat widget using Dyte Chat SDK
+This sample showcases how you can build a Chat widget using RealtimeKit Chat SDK
 
 ---
 
-![A screenshot of the DyteChat component](./screenshot.png)
+![A screenshot of the RtkChat component](./screenshot.png)
 
 [See source](./src/components/App.tsx)
 

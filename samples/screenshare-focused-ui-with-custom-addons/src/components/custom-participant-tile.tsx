@@ -1,10 +1,10 @@
 import { RtkParticipantTile, RtkAvatar, RtkNameTag, RtkAudioVisualizer, RtkIcon } from '@cloudflare/realtimekit-react-ui';
-import DyteClient, { RTKParticipant, RTKSelf } from '@cloudflare/realtimekit';
+import RealtimeKitClient, { RTKParticipant, RTKSelf } from '@cloudflare/realtimekit';
 
 function CustomParticipantTile({
     meeting, participant, hasRaisedHand, reaction, onClick, style={}
 }: {
-    meeting: DyteClient,
+    meeting: RealtimeKitClient,
     participant: RTKParticipant | RTKSelf,
     hasRaisedHand: boolean,
     reaction: string,

@@ -8,7 +8,7 @@ import {
 import { useCustomStatesStore, useStatesStore } from '../store';
 import SetupScreen from './setup-screen';
 
-function CustomDyteMeeting() {
+function CustomRtkMeeting() {
   const states = useStatesStore((s) => s.states);
   const customStates = useCustomStatesStore((s) => s.states);
   console.log(states, customStates);
@@ -28,4 +28,4 @@ function CustomDyteMeeting() {
   }
 }
 
-export default CustomDyteMeeting;
+export default CustomRtkMeeting;

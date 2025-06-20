@@ -1,6 +1,6 @@
 # Default Meeting UI Sample
 
-This sample showcases the simplest way to create a Clubhouse clone with Dyte's React UI Kit!
+This sample showcases the simplest way to create a Clubhouse clone with RealtimeKit's React UI Kit!
 
 ### Screenshots
 

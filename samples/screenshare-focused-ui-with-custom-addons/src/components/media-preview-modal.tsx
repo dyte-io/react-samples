@@ -1,6 +1,6 @@
 import { RtkDialog, RtkIcon, defaultIconPack } from '@cloudflare/realtimekit-react-ui';
 import { useState } from "react";
-import DyteClient from '@cloudflare/realtimekit';
+import RealtimeKitClient from '@cloudflare/realtimekit';
 import { UIConfig } from '@cloudflare/realtimekit-ui';
 import AudioPreview from "./audio-preview";
 import VideoPreview from "./video-preview";
@@ -8,7 +8,7 @@ import { CustomStates, SetStates } from "../types";
 
 function MediaPreviewModal({
     open, states, setStates, meeting, config,
-}: { open: boolean, config: UIConfig, states: CustomStates, setStates: SetStates, meeting: DyteClient }) {
+}: { open: boolean, config: UIConfig, states: CustomStates, setStates: SetStates, meeting: RealtimeKitClient }) {
     const [activeTab, setActiveTab] = useState<'audio' | 'video'>('video');
     return (
         <RtkDialog

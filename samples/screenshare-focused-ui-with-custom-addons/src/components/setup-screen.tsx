@@ -1,4 +1,4 @@
-import type DyteClient from '@cloudflare/realtimekit';
+import type RealtimeKitClient from '@cloudflare/realtimekit';
 import { UIConfig }  from '@cloudflare/realtimekit-ui/dist/types/types/ui-config';
 import { CustomStates, SetStates } from '../types';
 import { RtkDialogManager, RtkSetupScreen } from '@cloudflare/realtimekit-react-ui';
@@ -11,7 +11,7 @@ export function SetupScreenPreBuilt({
     config,
     states,
     setStates,
-}: { meeting: DyteClient, config: UIConfig,  states: CustomStates, setStates: SetStates}) {
+}: { meeting: RealtimeKitClient, config: UIConfig,  states: CustomStates, setStates: SetStates}) {
     return (
         <main className='w-full h-full' style={{
             backgroundColor: '#272727',
@@ -19,7 +19,7 @@ export function SetupScreenPreBuilt({
         }} ref={(el) => {
           el?.addEventListener('rtkStateUpdate', (e) => {
             const { detail: newStateUpdate } = e as unknown as { detail: CustomStates };
-            console.log('dyteStateUpdateSetup:: ', newStateUpdate);
+            console.log('rtkStateUpdateSetup:: ', newStateUpdate);
             setStates((oldState: CustomStates) => { return {
               ...oldState,
               ...newStateUpdate,
@@ -37,7 +37,7 @@ export function CustomSetupScreenWithPrebuiltMediaPreviewModal({
   config,
   states,
   setStates,
-}: { meeting: DyteClient, config: UIConfig,  states: CustomStates, setStates: SetStates}){
+}: { meeting: RealtimeKitClient, config: UIConfig,  states: CustomStates, setStates: SetStates}){
     const [participantName, setParticipantName] = useState('');
 
     useEffect(() => {
@@ -51,7 +51,7 @@ export function CustomSetupScreenWithPrebuiltMediaPreviewModal({
         <main ref={(el) => {
             el?.addEventListener('rtkStateUpdate', (e) => {
               const { detail: newStateUpdate } = e as unknown as { detail: CustomStates };
-              console.log('dyteStateUpdateSetup:: ', newStateUpdate);
+              console.log('rtkStateUpdateSetup:: ', newStateUpdate);
               setStates((oldState: CustomStates) => { return {
                 ...oldState,
                 ...newStateUpdate,
@@ -118,7 +118,7 @@ export function CustomSetupScreenWithCustomMediaPreviewModal({
   config,
   states,
   setStates,
-}: { meeting: DyteClient, config: UIConfig,  states: CustomStates, setStates: SetStates}){
+}: { meeting: RealtimeKitClient, config: UIConfig,  states: CustomStates, setStates: SetStates}){
     const [participantName, setParticipantName] = useState('');
 
     useEffect(() => {

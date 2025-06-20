@@ -1,4 +1,4 @@
-# Dyte React UI Kit Samples
+# RealtimeKit React UI Kit Samples
 
 ## Contents
 1. [Introduction](#introduction)
@@ -11,10 +11,10 @@
 6. [License](#license)
 
 ## Introduction
-Dyte is a technology company specializing in real-time communication solutions. Our products are designed to enable seamless and efficient video interactions in various applications, ranging from virtual meetings to interactive live streaming. The offerings are known for their robust performance, scalability, and ease of integration.
+RealtimeKit is a technology company specializing in real-time communication solutions. Our products are designed to enable seamless and efficient video interactions in various applications, ranging from virtual meetings to interactive live streaming. The offerings are known for their robust performance, scalability, and ease of integration.
 
 ## About This Repository
-This repository consists of all the different ways in which you can use Dyte's
+This repository consists of all the different ways in which you can use RealtimeKit's
 React UI Kit and other packages to its full extent to get the best live
 audio/video experience.
 
@@ -35,19 +35,19 @@ To use these samples you would need to do the following steps:
 
 First, you'll need to create a meeting and add a participant to that meeting.
 
-You can do so by going to https://docs.dyte.io/api?v=v2 and run the APIs in the
+You can do so by going to https://docs.realtime.cloudflare.com/api?v=v2 and run the APIs in the
 API runner itself so you can quickly get started.
 
-Make sure you've created your Dyte account at https://dev.dyte.io and have your
+Make sure you've created your RealtimeKit account at https://dev.realtime.cloudflare.com and have your
 `Organization ID` and `API Key` ready to use from the
-[API Keys section](https://dev.dyte.io/apikeys).
+[API Keys section](https://dev.realtime.cloudflare.com/apikeys).
 
 1. Go to
-   [Create Meeting API](https://docs.dyte.io/api/?v=v2#/operations/create_meeting)
+   [Create Meeting API](https://docs.realtime.cloudflare.com/api/?v=v2#/operations/create_meeting)
    and add your credentials and run the API with your request body, note the
    `id` you receive in resonse, this is the meeting id.
 2. Go to
-   [Add Participant API](https://docs.dyte.io/api/?v=v2#/operations/add_participant)
+   [Add Participant API](https://docs.realtime.cloudflare.com/api/?v=v2#/operations/add_participant)
    and add a participant to the meeting with the `meetingId` you received in
    previous API call.
 

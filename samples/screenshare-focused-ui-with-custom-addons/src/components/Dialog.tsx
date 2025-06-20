@@ -10,7 +10,7 @@ type DialogProps = {
 const Dialog: FC<DialogProps> = ({ header, isOpen, children, onClose }) => {
   if (!isOpen) return null;
   return (
-    <div className="DyteDialog" data-open={isOpen}>
+    <div className="RtkDialog" data-open={isOpen}>
       <div id="dialog">
         {/* <header>
           <h2>Effects</h2>

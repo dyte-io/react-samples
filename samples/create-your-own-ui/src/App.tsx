@@ -5,7 +5,7 @@ import {
   useRealtimeKitMeeting,
 } from '@cloudflare/realtimekit-react';
 import { RtkDialogManager, RtkUiProvider } from '@cloudflare/realtimekit-react-ui';
-import CustomDyteMeeting from './components/custom-dyte-meeting';
+import CustomRtkMeeting from './components/custom-rtk-meeting';
 import { useStatesStore } from './store';
 
 function Meeting() {
@@ -24,7 +24,7 @@ function Meeting() {
     }
   }, [meeting]);
 
-  return <CustomDyteMeeting />;
+  return <CustomRtkMeeting />;
 }
 
 function App() {
