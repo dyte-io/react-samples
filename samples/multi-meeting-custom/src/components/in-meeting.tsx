@@ -7,22 +7,23 @@ import {
   RtkControlbar,
   RtkHeader,
 } from '@cloudflare/realtimekit-react-ui';
+import type { CustomRtkMeetingProps } from './custom-rtk-meeting';
 
-function InMeeting() {
+function InMeeting({ states, meetingIdentifier }: CustomRtkMeetingProps) {
   return (
-    <div className="flex flex-col w-full h-full">
-      <header>
+    <div className="flex flex-col w-full h-full overflow-hidden">
+      <header className="flex-shrink-0 w-full">
         <RtkHeader />
       </header>
-      <main className="flex w-full flex-1">
-        <RtkStage className="flex w-full flex-1 p-2">
+      <main className="flex-1 w-full overflow-hidden relative">
+        <RtkStage className="w-full h-full p-2 overflow-hidden relative">
           <RtkGrid />
           <RtkNotifications />
-          <RtkSidebar />
+          { states.activeSidebar && <RtkSidebar/>}
         </RtkStage>
         <RtkParticipantsAudio />
       </main>
-      <footer className="flex w-full overflow-visible">
+      <footer className="flex-shrink-0 w-full">
         <RtkControlbar />
       </footer>
     </div>

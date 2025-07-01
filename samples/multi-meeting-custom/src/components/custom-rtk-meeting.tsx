@@ -7,7 +7,7 @@ import {
 } from '@cloudflare/realtimekit-react-ui';
 import { States } from '@cloudflare/realtimekit-ui';
 
-interface CustomRtkMeetingProps {
+export interface CustomRtkMeetingProps {
   states: States;
   meetingIdentifier: string;
 }
@@ -31,7 +31,7 @@ function CustomRtkMeeting({ states, meetingIdentifier }: CustomRtkMeetingProps) 
     case 'joined':
     default:
       console.log('[CUSTOM-RTK-MEETING] Rendering InMeeting');
-      return <InMeeting />;
+      return <InMeeting states={states} />;
   }
 }
 

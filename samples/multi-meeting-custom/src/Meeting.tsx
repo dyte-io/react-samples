@@ -46,6 +46,10 @@ export function Meeting(
       return;
     }
 
+    provideRtkDesignSystem(document.body, {
+      theme: 'light',
+    });
+
     initMeeting({
       authToken,
       defaults: {
@@ -68,12 +72,12 @@ export function Meeting(
 
   console.log(`CUSTOM-RTK-MEETING Rerendering Meetings.tsx for ${meetingIdentifier}`)
   return (
-    <div className="flex flex-col w-full h-full">
+    <div className="flex flex-col w-full h-full overflow-hidden">
         <RealtimeKitProvider value={meeting}>
             <RtkUiProvider
                 meeting={meeting}
                 showSetupScreen
-                style={{ height: '100%', width: '100%', display: 'block' }}
+                style={{ height: '100%', width: '100%', display: 'block', overflow: 'hidden' }}
                 onRtkStatesUpdate={(e) => {
                     console.log(`[CUSTOM-RTK-MEETING]: ${meetingIdentifier} Got RTK state update event:`, e.detail);
                     setStates(e.detail);
@@ -98,7 +102,7 @@ export function Meeting(
                   }
                 }} >
                 <CustomRtkMeeting meetingIdentifier={meetingIdentifier} states={states} />
-                <RtkDialogManager />
+                <RtkDialogManager/>
             </RtkUiProvider>
         </RealtimeKitProvider>
     </div>
