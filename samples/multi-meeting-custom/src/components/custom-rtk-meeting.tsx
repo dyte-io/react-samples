@@ -13,24 +13,24 @@ export interface CustomRtkMeetingProps {
 }
 
 function CustomRtkMeeting({ states, meetingIdentifier }: CustomRtkMeetingProps) {
-  console.log(`[CUSTOM-RTK-MEETING] ${meetingIdentifier} Rendering with states.meeting:`, states.meeting);
+
   
   switch (states.meeting) {
     case 'idle':
-      console.log('[CUSTOM-RTK-MEETING] Rendering RtkIdleScreen');
+
       return <RtkIdleScreen />;
     case 'setup':
-      console.log('[CUSTOM-RTK-MEETING] Rendering RtkSetupScreen');
+
       return <RtkSetupScreen />;
     case 'waiting':
-      console.log('[CUSTOM-RTK-MEETING] Rendering RtkWaitingScreen');
+
       return <RtkWaitingScreen />;
     case 'ended':
-      console.log('[CUSTOM-RTK-MEETING] Rendering RtkEndedScreen');
+
       return <RtkEndedScreen />;
     case 'joined':
     default:
-      console.log('[CUSTOM-RTK-MEETING] Rendering InMeeting');
+
       return <InMeeting states={states} />;
   }
 }

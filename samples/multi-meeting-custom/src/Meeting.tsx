@@ -8,39 +8,57 @@ import {
   RtkUiProvider,
   provideRtkDesignSystem,
 } from '@cloudflare/realtimekit-react-ui';
+import RealtimeKitVideoBackgroundTransformer from '@cloudflare/realtimekit-virtual-background';
 import CustomRtkMeeting from './components/custom-rtk-meeting';
 import { getStatesStore, cleanupStores } from './store';
 
 export function Meeting(
     { authToken, baseURI, meetingIdentifier }: { authToken: string, baseURI?: string, meetingIdentifier: string }
 ) {
-  console.log(`[${meetingIdentifier}] Meeting component initializing`);
+
   const [meeting, initMeeting] = useRealtimeKitClient();
   
-  // Create isolated store for this meeting instance
+  // Create peer specific store for this meeting peer instance
   const statesStore = useMemo(() => {
-    console.log(`[${meetingIdentifier}] Creating isolated Zustand store`);
     return getStatesStore(meetingIdentifier);
   }, [meetingIdentifier]);
   
   const setStates = statesStore((s) => s.setStates);
   const states = statesStore((s) => s.states);
 
-  useEffect(() => {
-    console.log(`[${meetingIdentifier}] Meeting object updated. PeerId: ${meeting?.self?.peerId}, ID: ${meeting?.self?.id}`);
-  }, [meeting, meetingIdentifier]);
 
   // Cleanup store when component unmounts
   useEffect(() => {
-    console.log(`[${meetingIdentifier}] Setting up cleanup effect`);
     return () => {
-      console.log(`[${meetingIdentifier}] Cleaning up stores`);
       cleanupStores(meetingIdentifier);
     };
   }, [meetingIdentifier]);
 
+
   useEffect(() => {
-    console.log(`[${meetingIdentifier}] Initializing RealtimeKit client`);
+    const setupVirtualBackground = async () => {
+      if (!meeting) return;
+      
+      // Disable per frame rendering for better performance
+      await meeting.self.setVideoMiddlewareGlobalConfig({ disablePerFrameCanvasRendering: true });
+      
+      // Initialize the video background transformer
+      const videoBackgroundTransformer = await RealtimeKitVideoBackgroundTransformer.init({ meeting });
+      
+      // Add background blur middleware (50% blur strength)
+      // const blurMiddleware = await videoBackgroundTransformer.createBackgroundBlurVideoMiddleware(50);
+      // meeting.self.addVideoMiddleware(blurMiddleware);
+
+      meeting.self.addVideoMiddleware(
+        await videoBackgroundTransformer.createStaticBackgroundVideoMiddleware(`https://images.unsplash.com/photo-1487088678257-3a541e6e3922?q=80&w=2874&auto=format&fit=crop&ixlib=rb-4.0.3`)
+      );
+    };
+
+    setupVirtualBackground();
+  }, [meeting]);
+
+  useEffect(() => {
+
     if (!initMeeting || !authToken) {
       console.log(`[${meetingIdentifier}] Missing initMeeting or authToken`);
       return;
@@ -59,18 +77,15 @@ export function Meeting(
       ...(baseURI && { baseURI }),
     })
     .then((m) => {
-      console.log(`[${meetingIdentifier}] RealtimeKit client initialized successfully`, m?.self?.id);
+      console.log(`[${meetingIdentifier}] Meeting initialized`);
     })
     .catch((error) => {
-      console.error(`[${meetingIdentifier}] RealtimeKit client initialization failed:`, error);
+      console.error(`[${meetingIdentifier}] Error initializing meeting:`, error);
     });
   }, [initMeeting, authToken, baseURI, meetingIdentifier]);
 
-  console.log(`[${meetingIdentifier}] Re-rendering Meeting component. Meeting ready: ${!!meeting?.self?.id}`);
-  (window as any).meetings = (window as any).meetings || {};
-  (window as any).meetings[meetingIdentifier] = meeting;
 
-  console.log(`CUSTOM-RTK-MEETING Rerendering Meetings.tsx for ${meetingIdentifier}`)
+
   return (
     <div className="flex flex-col w-full h-full overflow-hidden">
         <RealtimeKitProvider value={meeting}>
@@ -78,31 +93,25 @@ export function Meeting(
                 meeting={meeting}
                 showSetupScreen
                 style={{ height: '100%', width: '100%', display: 'block', overflow: 'hidden' }}
-                onRtkStatesUpdate={(e) => {
-                    console.log(`[CUSTOM-RTK-MEETING]: ${meetingIdentifier} Got RTK state update event:`, e.detail);
-                    setStates(e.detail);
-                    e.stopPropagation();
-                  }}
                 ref={(el) => {
-                  // Listen for scoped state update events to prevent cross-meeting contamination
-                  if (el && meeting?.self?.id) {
-                    const scopedEventName = `rtkStatesUpdate-${meeting.self.id}`;
-                    console.log(`[${meetingIdentifier}] Setting up scoped event listener: ${scopedEventName}`);
-                    
-                    const handleScopedStateUpdate = (e: CustomEvent) => {
-                      console.log(`[CUSTOM-RTK-MEETING]: ${meetingIdentifier} Got SCOPED RTK state update event:`, e.detail);
-                      setStates(e.detail);
-                      e.stopPropagation();
-                    };
-                    
-                    // Remove existing listener if any
-                    el.removeEventListener(scopedEventName, handleScopedStateUpdate as any);
-                    // Add new scoped listener
-                    el.addEventListener(scopedEventName, handleScopedStateUpdate as any);
-                  }
+                  if (!el) return;
+                  
+                  const handleStateUpdate = (e: CustomEvent) => {
+                    // Only update states if this event is for our meeting
+                    if (!meeting?.self?.id || e.detail?.peerId !== meeting?.self?.id) return;
+                    setStates(e.detail);
+                  };
+                  
+                  // Add new listener
+                  el.addEventListener('rtkStatesUpdate', handleStateUpdate);
+                  
+                  // Cleanup listener on unmount
+                  return () => {
+                    el.removeEventListener('rtkStatesUpdate', handleStateUpdate);
+                  };
                 }} >
-                <CustomRtkMeeting meetingIdentifier={meetingIdentifier} states={states} />
-                <RtkDialogManager/>
+                      <CustomRtkMeeting meetingIdentifier={meetingIdentifier} states={states} />
+                      <RtkDialogManager/>
             </RtkUiProvider>
         </RealtimeKitProvider>
     </div>
