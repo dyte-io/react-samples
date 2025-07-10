@@ -1,17 +1,17 @@
 import {
-  RtkDialogManager,
-  RtkParticipantTile,
-  RtkRecordingToggle,
-  RtkSettingsToggle,
-  RtkSpinner,
-  provideRtkDesignSystem,
-} from '@cloudflare/realtimekit-react-ui';
+  DyteDialogManager,
+  DyteParticipantTile,
+  DyteRecordingToggle,
+  DyteSettingsToggle,
+  DyteSpinner,
+  provideDyteDesignSystem,
+} from '@dytesdk/react-ui-kit';
 import {
-  RealtimeKitProvider,
-  useRealtimeKitClient,
-  useRealtimeKitMeeting,
-  useRealtimeKitSelector,
-} from '@cloudflare/realtimekit-react';
+  DyteProvider,
+  useDyteClient,
+  useDyteMeeting,
+  useDyteSelector,
+} from '@dytesdk/react-web-core';
 import { Dispatch, useEffect, useReducer, useState } from 'react';
 import { getBrightness, getElapsedDuration } from './utils';
 import Duration from './components/Duration';
@@ -19,8 +19,8 @@ import Duration from './components/Duration';
 function LoadingUI() {
   return (
     <div className="w-full h-full flex flex-col gap-4 place-items-center justify-center">
-      <RtkSpinner className="w-14 h-14 text-blue-500" />
-      <p className="text-xl font-semibold">Starting RealtimeKit Video Survey</p>
+      <DyteSpinner className="w-14 h-14 text-blue-500" />
+      <p className="text-xl font-semibold">Starting Dyte Video Survey</p>
     </div>
   );
 }
@@ -28,9 +28,9 @@ function LoadingUI() {
 function useBrightnessAndSilenceDetector(
   dispatchError: Dispatch<Parameters<typeof errorReducer>[1]>,
 ) {
-  const { meeting } = useRealtimeKitMeeting();
-  const videoEnabled = useRealtimeKitSelector((m) => m.self.videoEnabled);
-  const audioEnabled = useRealtimeKitSelector((m) => m.self.audioEnabled);
+  const { meeting } = useDyteMeeting();
+  const videoEnabled = useDyteSelector((m) => m.self.videoEnabled);
+  const audioEnabled = useDyteSelector((m) => m.self.audioEnabled);
 
   useEffect(() => {
     const { audioTrack } = meeting.self;
@@ -158,8 +158,8 @@ const messages = {
 };
 
 function Recorder() {
-  const { meeting } = useRealtimeKitMeeting();
-  const roomJoined = useRealtimeKitSelector((m) => m.self.roomJoined);
+  const { meeting } = useDyteMeeting();
+  const roomJoined = useDyteSelector((m) => m.self.roomJoined);
 
   const [timestamp, setTimestamp] = useState<Date>();
   const [recordingDisabled, setRecordingDisabled] = useState(false);
@@ -235,7 +235,7 @@ function Recorder() {
       </div>
       <div className="flex flex-col w-full max-w-lg border rounded-xl overflow-clip">
         <div className="relative">
-          <RtkParticipantTile
+          <DyteParticipantTile
             participant={meeting.self}
             meeting={meeting}
             className="w-full h-auto rounded-none aspect-[3/2] bg-zinc-300"
@@ -256,29 +256,33 @@ function Recorder() {
         <Duration duration={duration} />
 
         <div className="flex items-center justify-center p-2">
-          <RtkRecordingToggle
+          <DyteRecordingToggle
             meeting={meeting}
             disabled={(timestamp && duration <= 15) || recordingDisabled}
           />
-          <RtkSettingsToggle
-            onRtkStateUpdate={(e) => setUIStates(e.detail)}
+          <DyteSettingsToggle
+            onDyteStateUpdate={(e) =>
+              setUIStates(() => ({ ...UIStates, ...e.detail }))
+            }
           />
         </div>
       </div>
-      <RtkDialogManager
+      <DyteDialogManager
         states={UIStates}
         meeting={meeting}
-        onRtkStateUpdate={(e) => setUIStates(e.detail)}
+        onDyteStateUpdate={(e) =>
+          setUIStates(() => ({ ...UIStates, ...e.detail }))
+        }
       />
     </div>
   );
 }
 
 export default function App() {
-  const [meeting, initMeeting] = useRealtimeKitClient();
+  const [meeting, initMeeting] = useDyteClient();
 
   useEffect(() => {
-    provideRtkDesignSystem(document.body, {
+    provideDyteDesignSystem(document.body, {
       theme: 'light',
     });
 
@@ -307,8 +311,8 @@ export default function App() {
   }, []);
 
   return (
-    <RealtimeKitProvider value={meeting} fallback={<LoadingUI />}>
+    <DyteProvider value={meeting} fallback={<LoadingUI />}>
       <Recorder />
-    </RealtimeKitProvider>
+    </DyteProvider>
   );
 }

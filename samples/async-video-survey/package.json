@@ -9,8 +9,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@cloudflare/realtimekit-react": "1.0.2",
-    "@cloudflare/realtimekit-react-ui": "1.0.1",
+    "@dytesdk/web-core": "2.4.5",
+    "@dytesdk/ui-kit": "2.5.0",
+    "@dytesdk/react-web-core": "2.4.5",
+    "@dytesdk/react-ui-kit": "2.5.0",
     "autoprefixer": "^10.4.15",
     "postcss": "^8.4.29",
     "react": "^18.2.0",
