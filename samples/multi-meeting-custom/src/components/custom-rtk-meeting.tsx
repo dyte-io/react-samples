@@ -31,7 +31,7 @@ function CustomRtkMeeting({ states, meetingIdentifier }: CustomRtkMeetingProps) 
     case 'joined':
     default:
 
-      return <InMeeting states={states} />;
+      return <InMeeting states={states} meetingIdentifier={meetingIdentifier} />;
   }
 }
 
