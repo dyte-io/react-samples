@@ -18,6 +18,7 @@ import ChatHostControl from '@cloudflare/realtimekit-ui-addons/chat-host-control
 import MicHostControl from '@cloudflare/realtimekit-ui-addons/mic-host-control';
 import CameraHostControl from '@cloudflare/realtimekit-ui-addons/camera-host-control';
 import { getStatesStore, cleanupStores } from './store';
+import { useContainerSize } from './hooks/useContainerSize';
 
 export function Meeting(
     { authToken, baseURI, meetingIdentifier }: { authToken: string, baseURI?: string, meetingIdentifier: string }
@@ -33,6 +34,7 @@ export function Meeting(
   const setStates = statesStore((s: any) => s.setStates);
   const states = statesStore((s: any) => s.states);
   const [customConfig, setCustomConfig] = useState<UIConfig | null>(createDefaultConfig());
+  const size = useContainerSize(meetingIdentifier);
     
   // Cleanup store when component unmounts
     useEffect(() => {
@@ -62,7 +64,7 @@ export function Meeting(
           meeting,
           canRaiseHand: true,
           canManageRaisedHand: true,
-          handRaiseIcon: '<svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M4 12.02c0 1.06.2 2.1.6 3.08l.6 1.42c.22.55.64 1.01 1.17 1.29.27.14.56.21.86.21h2.55c.77 0 1.49-.41 1.87-1.08.5-.87 1.02-1.7 1.72-2.43l1.32-1.39c.44-.46.97-.84 1.49-1.23l.59-.45a.6.6 0 0 0 .23-.47c0-.75-.54-1.57-1.22-1.79a3.34 3.34 0 0 0-2.78.29V4.5a1.5 1.5 0 0 0-2.05-1.4 1.5 1.5 0 0 0-2.9 0A1.5 1.5 0 0 0 6 4.5v.09A1.5 1.5 0 0 0 4 6v6.02ZM8 4.5v4a.5.5 0 0 0 1 0v-5a.5.5 0 0 1 1 0v5a.5.5 0 0 0 1 0v-4a.5.5 0 0 1 1 0v6a.5.5 0 0 0 .85.37h.01c.22-.22.44-.44.72-.58.7-.35 2.22-.57 2.4.5l-.53.4c-.52.4-1.04.78-1.48 1.24l-1.33 1.38c-.75.79-1.31 1.7-1.85 2.63-.21.36-.6.58-1.01.58H7.23a.87.87 0 0 1-.4-.1 1.55 1.55 0 0 1-.71-.78l-.59-1.42a7.09 7.09 0 0 1-.53-2.7V6a.5.5 0 0 1 1 0v3.5a.5.5 0 0 0 1 0v-5a.5.5 0 0 1 1 0Z" fill="#ff0000"></path></svg>'
+          handRaiseIcon: '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"><path d="M10 4.25C10 3.69772 9.55228 3.25 9 3.25C8.44772 3.25 8 3.69772 8 4.25V10.9982C8 11.2743 7.77614 11.4982 7.5 11.4982C7.22386 11.4982 7 11.2743 7 10.9982V5.99683C7 5.44454 6.55228 4.99683 6 4.99683C5.44772 4.99683 5 5.44454 5 5.99683V14.7536C5 16.933 6.16842 19.263 6.91404 20.5425C7.47017 21.4969 8.49409 22.0013 9.53657 22.0013H11.7046C12.9358 22.0013 14.0613 21.3056 14.6118 20.2043L14.7451 19.9374C15.1658 19.0957 15.6904 18.31 16.3067 17.5989L18.5186 15.0468L20.7105 13.342C20.8931 13.1999 21 12.9814 21 12.75C21 12.2651 20.7409 11.9051 20.4084 11.6903C20.1123 11.499 19.7584 11.4172 19.4464 11.3802C18.8102 11.3047 18.0364 11.3818 17.3571 11.5137C16.8436 11.6134 16.3829 11.8077 16 12.0182V4.25C16 3.69772 15.5523 3.25 15 3.25C14.4477 3.25 14 3.69772 14 4.25V10.5C14 10.7761 13.7761 11 13.5 11C13.2239 11 13 10.7761 13 10.5V2.99683C13 2.44454 12.5523 1.99683 12 1.99683C11.4477 1.99683 11 2.44454 11 2.99683V10.5C11 10.7761 10.7761 11 10.5 11C10.2239 11 10 10.7761 10 10.5V4.25Z" fill="#F4C534"/></svg>'
       });
       
       const chatHostControl = await ChatHostControl.init({
@@ -131,6 +133,11 @@ export function Meeting(
         video: false,
       },
       ...(baseURI && { baseURI }),
+      modules: {
+        devTools: {
+          logs: false,
+        }
+      }
     })
     .then((m) => {
       console.log(`[${meetingIdentifier}] Meeting initialized`);
@@ -143,7 +150,7 @@ export function Meeting(
 
 
   return (
-    <div className="flex flex-col w-full h-full overflow-hidden">
+    <div className="flex flex-col w-full h-full overflow-hidden" data-meeting-id={meetingIdentifier}>
         <RealtimeKitProvider value={meeting}>
             <RtkUiProvider
                 meeting={meeting}
@@ -168,7 +175,7 @@ export function Meeting(
                   };
                 }} >
                       <CustomRtkMeeting meetingIdentifier={meetingIdentifier} states={states} />
-                      <RtkDialogManager/>
+                      <RtkDialogManager size={size}/>
             </RtkUiProvider>
         </RealtimeKitProvider>
     </div>

@@ -6,6 +6,7 @@ import {
   RtkWaitingScreen,
 } from '@cloudflare/realtimekit-react-ui';
 import { States } from '@cloudflare/realtimekit-ui';
+import { useContainerSize } from '../hooks/useContainerSize';
 
 export interface CustomRtkMeetingProps {
   states: States;
@@ -13,7 +14,7 @@ export interface CustomRtkMeetingProps {
 }
 
 function CustomRtkMeeting({ states, meetingIdentifier }: CustomRtkMeetingProps) {
-
+  const size = useContainerSize(meetingIdentifier);
   
   switch (states.meeting) {
     case 'idle':
@@ -21,7 +22,7 @@ function CustomRtkMeeting({ states, meetingIdentifier }: CustomRtkMeetingProps) 
       return <RtkIdleScreen />;
     case 'setup':
 
-      return <RtkSetupScreen />;
+      return <RtkSetupScreen size={size} />;
     case 'waiting':
 
       return <RtkWaitingScreen />;
