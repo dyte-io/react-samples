@@ -99,7 +99,7 @@ function App() {
           </button>
         </div>
       ) : (
-        <Meeting baseURI={baseURI} showSetupScreen={showSetupScreen1} authToken={authToken1} meetingIdentifier="meeting1" />
+        <Meeting baseURI={baseURI} authToken={authToken1} meetingIdentifier="meeting1" />
       )}
       </div>
       
@@ -140,7 +140,7 @@ function App() {
           </button>
         </div>
       ) : (
-        <Meeting baseURI={baseURI} showSetupScreen={showSetupScreen2} authToken={authToken2} meetingIdentifier='meeting2' />
+        <Meeting baseURI={baseURI} authToken={authToken2} meetingIdentifier='meeting2' />
       )}
       </div>
     </div>
