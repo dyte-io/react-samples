@@ -80,7 +80,7 @@ function App() {
                   </div>
                   <div className="flex items-start space-x-3">
                     <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">2</span>
-                    <p><strong>To switch to Meeting 2:</strong> Use the "Leave Meeting" button in the control bar</p>
+                    <p><strong>To switch to Meeting 2:</strong> Use the "Leave" button in the bottom control bar</p>
                   </div>
                   <div className="flex items-start space-x-3">
                     <span className="flex-shrink-0 w-6 h-6 bg-blue-600 text-white rounded-full flex items-center justify-center text-sm font-medium">3</span>
