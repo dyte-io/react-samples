@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { RealtimeKitProvider, useRealtimeKitClient } from '@cloudflare/realtimekit-react';
 import Meeting from './components/Meeting';
-import { RtkDialogManager } from '@cloudflare/realtimekit-react-ui';
+import { RtkDialogManager, RtkUiProvider } from '@cloudflare/realtimekit-react-ui';
 
 function App() {
   const [meeting, initMeeting] = useRealtimeKitClient();
@@ -32,8 +32,10 @@ function App() {
   // `mode="fill"` to the component.
   return (
     <RealtimeKitProvider value={meeting} fallback={<></>}>
-      <RtkDialogManager meeting={meeting} />
-      <Meeting />
+      <RtkUiProvider meeting={meeting} showSetupScreen>
+        <RtkDialogManager meeting={meeting} />
+        <Meeting />
+      </RtkUiProvider>
     </RealtimeKitProvider>
   );
 }

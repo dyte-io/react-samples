@@ -8,6 +8,10 @@ This sample showcases how you can build a Chat widget using RealtimeKit Chat SDK
 
 [See source](./src/components/App.tsx)
 
+## Prerequisites
+
+1. Make sure to have a preset named `chat`, that has Chat permissions enabled.
+
 ## Getting started
 
 1. rename `.env.sample` to `.env` and update the variables with your organization details

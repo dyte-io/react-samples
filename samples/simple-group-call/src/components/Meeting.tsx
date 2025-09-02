@@ -11,6 +11,8 @@ import {
   RtkParticipantCount,
   RtkParticipantsAudio,
   RtkSetupScreen,
+  RtkLeaveButton,
+  RtkEndedScreen,
 } from '@cloudflare/realtimekit-react-ui';
 import { useMemo, useRef } from 'react';
 import { createGrid } from 'good-grid';
@@ -55,7 +57,7 @@ function UI() {
       <header className="h-12 flex items-center justify-between px-4 border-b">
         <div className="flex items-center gap-1 md:gap-2">
           <img
-            src="https://assets.dyte.io/logo-outlined.png"
+            src="https://docs.realtime.cloudflare.com/logo/cf.svg"
             className="h-6 md:h-7"
           />
           <div className="w-px h-7 mx-1 rotate-[18deg] bg-zinc-200"></div>
@@ -108,6 +110,7 @@ function UI() {
       <footer className="py-2 flex items-center justify-center">
         <RtkMicToggle meeting={meeting} />
         <RtkCameraToggle meeting={meeting} />
+        <RtkLeaveButton />
       </footer>
     </div>
   );
@@ -117,10 +120,16 @@ export default function Meeting() {
   const { meeting } = useRealtimeKitMeeting();
 
   const roomJoined = useRealtimeKitSelector((meeting) => meeting.self.roomJoined);
+  const roomState = useRealtimeKitSelector((meeting) => meeting.self.roomState);
 
-  if (!roomJoined) {
-    return <RtkSetupScreen meeting={meeting} />;
+  if(roomState === 'ended' || roomState === 'left') {
+    return <RtkEndedScreen meeting={meeting} />;
   }
 
-  return <UI />;
+  if (roomState === 'joined') {
+    return <UI />;
+  }
+
+  return <RtkSetupScreen meeting={meeting} />;
+  
 }

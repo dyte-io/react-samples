@@ -44,6 +44,26 @@ function SidebarWithCustomUI() {
       currentTab={currentTab}
       view={view}
       className="w-96 max-w-full rounded-xl"
+      onSidebarClose={() => {
+        // 1. Get a reference to your component's host element
+        const rtkSidebarElement = document.querySelector('rtk-sidebar-ui') as HTMLElement;
+
+        // 2. Define the data payload for the event
+        const eventPayload = {
+          activeSidebar: false,
+          sidebar: 'chat' // Assuming 'this.defaultSection' holds a value like 'chat'
+        };
+
+        // 3. Create the custom event
+        const stateUpdateEvent = new CustomEvent('rtkStateUpdate', {
+          detail: eventPayload,
+          bubbles: true,  // Allows the event to bubble up through the DOM
+          composed: true // Allows the event to cross Shadow DOM boundaries
+        });
+
+        // 4. Dispatch the event from the element
+        rtkSidebarElement.dispatchEvent(stateUpdateEvent);
+      }}
     >
       {currentTab === 'chat' && <RtkChat slot="chat" />}
       {currentTab === 'polls' && <RtkPolls slot="polls" />}

@@ -8,15 +8,18 @@ import {
 import {
   RtkCameraToggle,
   RtkChatToggle,
+  RtkDialogManager,
   RtkGrid,
   RtkLogo,
   RtkMeetingTitle,
   RtkMicToggle,
+  RtkParticipantsAudio,
   RtkPollsToggle,
   RtkScreenShareToggle,
   RtkSetupScreen,
   RtkSidebar,
   RtkSpinner,
+  RtkUiProvider,
   defaultConfig,
   provideRtkDesignSystem,
 } from '@cloudflare/realtimekit-react-ui';
@@ -102,7 +105,7 @@ function App() {
         audio: false,
         video: false,
       },
-    }).then((m) => m?.joinRoom());
+    })
   }, []);
 
   // By default this component will cover the entire viewport.
@@ -110,7 +113,11 @@ function App() {
   // `mode="fill"` to the component.
   return (
     <RealtimeKitProvider value={meeting}>
-      <Meeting />
+      <RtkUiProvider meeting={meeting} showSetupScreen>
+        <Meeting />
+        <RtkDialogManager />
+        <RtkParticipantsAudio />
+      </RtkUiProvider>
     </RealtimeKitProvider>
   );
 }
