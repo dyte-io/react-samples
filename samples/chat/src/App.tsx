@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useRealtimeKitClient } from '@cloudflare/realtimekit-react';
 import {
   RtkChat,
+  RtkDialogManager,
   RtkUiProvider,
   provideRtkDesignSystem,
 } from '@cloudflare/realtimekit-react-ui';
@@ -42,6 +43,7 @@ function App() {
   return (
     <RtkUiProvider meeting={meeting}>
       <RtkChat />
+      <RtkDialogManager />
     </RtkUiProvider>
   );
 }

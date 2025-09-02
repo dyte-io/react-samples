@@ -103,6 +103,7 @@ export default function Controlbar() {
           && <RtkControlbarButton
               icon={isDarkMode ? iconPack.dark : iconPack.light}
               label= {isDarkMode ? 'Dark' : 'Light'}
+              title='Toggles theme for the active plugin for now'
               onClick={() => {
                 toggleDarkMode(!isDarkMode);
               }}

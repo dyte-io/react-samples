@@ -6,6 +6,7 @@ import {
   RtkPluginMain,
   RtkSimpleGrid,
   RtkButton,
+  RtkSpotlightGrid,
 } from '@cloudflare/realtimekit-react-ui';
 import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
 import type { RTKParticipant, RTKPlugin, RTKSelf } from '@cloudflare/realtimekit';
@@ -269,8 +270,12 @@ export default function MainArea() {
     m.participants.active.toArray()
   );
 
+  const isPinned = useRealtimeKitSelector((m) => m.self.isPinned);
+
+  const pinned = useRealtimeKitSelector((m) => m.participants.pinned.toArray());
+
   const participants =
-    stageStatus === 'ON_STAGE'
+    stageStatus === 'ON_STAGE' && !meeting.self.hidden
       ? [...activeParticipants, meeting.self]
       : activeParticipants;
 
@@ -279,6 +284,9 @@ export default function MainArea() {
   const joinedParticipants = useRealtimeKitSelector((m) =>
     m.participants.joined.toArray()
   );
+
+  const pinnedParticipants =
+    isPinned && stageStatus === 'ON_STAGE' ? [...pinned, meeting.self] : pinned;
 
   const activeScreenShares = joinedParticipants.filter(
     (p) => p.screenShareEnabled
@@ -310,7 +318,7 @@ export default function MainArea() {
                     The stage is empty
                   </p>
                   <span className="text-text-md my-4">
-                    You are off stage.
+                    { meeting.self.hidden ? 'You\'ve hidden your video tile. Unhide it to see yourself.': 'You are off stage.' }
                   </span>
                 </div>
               )}
@@ -328,9 +336,13 @@ export default function MainArea() {
           screenshares={screenshares}
           plugins={activePlugins}
         />
-      ) : (
-        <RtkSimpleGrid participants={participants} meeting={meeting} />
-      )}
+      ) : (pinnedParticipants.length > 0 ? (
+        <RtkSpotlightGrid
+          participants={participants}
+          pinnedParticipants={pinnedParticipants}
+          meeting={meeting}
+        />
+      ): <RtkSimpleGrid participants={participants} meeting={meeting} />)}
       {isMobile && (
         <ActiveSpeaker
           className="absolute bottom-3 left-3 w-24 z-50 h-auto aspect-square"

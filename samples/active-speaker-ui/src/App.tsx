@@ -1,5 +1,5 @@
 import Meeting from './components/Meeting';
-import { RtkSpinner } from '@cloudflare/realtimekit-react-ui';
+import { RtkSpinner, RtkUiProvider } from '@cloudflare/realtimekit-react-ui';
 import { RealtimeKitProvider, useRealtimeKitClient } from '@cloudflare/realtimekit-react';
 import { useEffect } from 'react';
 
@@ -42,7 +42,9 @@ function App() {
         </div>
       }
     >
-      <Meeting />
+      <RtkUiProvider meeting={meeting} showSetupScreen>
+        <Meeting />
+      </RtkUiProvider>
     </RealtimeKitProvider>
   );
 }

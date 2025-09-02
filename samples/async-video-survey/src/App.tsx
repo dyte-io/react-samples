@@ -4,6 +4,8 @@ import {
   RtkRecordingToggle,
   RtkSettingsToggle,
   RtkSpinner,
+  RtkUiProvider,
+  States,
   provideRtkDesignSystem,
 } from '@cloudflare/realtimekit-react-ui';
 import {
@@ -15,6 +17,7 @@ import {
 import { Dispatch, useEffect, useReducer, useState } from 'react';
 import { getBrightness, getElapsedDuration } from './utils';
 import Duration from './components/Duration';
+import { useStatesStore } from './store';
 
 function LoadingUI() {
   return (
@@ -157,13 +160,12 @@ const messages = {
   not_loud: 'Your voice is not loud enough. Please speak loud and clearly.',
 };
 
-function Recorder() {
+function Recorder({states}: {states: States;}) {
   const { meeting } = useRealtimeKitMeeting();
-  const roomJoined = useRealtimeKitSelector((m) => m.self.roomJoined);
 
   const [timestamp, setTimestamp] = useState<Date>();
   const [recordingDisabled, setRecordingDisabled] = useState(false);
-  const [UIStates, setUIStates] = useState<any>({});
+  
 
   const [duration, setDuration] = useState(0);
   const [errors, dispatchError] = useReducer(errorReducer, []);
@@ -209,7 +211,7 @@ function Recorder() {
     }
   }, [duration]);
 
-  if (!roomJoined) {
+  if (states.meeting != 'joined') {
     return <LoadingUI />;
   }
 
@@ -260,22 +262,19 @@ function Recorder() {
             meeting={meeting}
             disabled={(timestamp && duration <= 15) || recordingDisabled}
           />
-          <RtkSettingsToggle
-            onRtkStateUpdate={(e) => setUIStates(e.detail)}
-          />
+          <RtkSettingsToggle/>
         </div>
       </div>
-      <RtkDialogManager
-        states={UIStates}
-        meeting={meeting}
-        onRtkStateUpdate={(e) => setUIStates(e.detail)}
-      />
+      <RtkDialogManager />
     </div>
   );
 }
 
 export default function App() {
   const [meeting, initMeeting] = useRealtimeKitClient();
+  const states = useStatesStore((s) => s.states);
+  const setStates = useStatesStore((s) => s.setStates);
+  
 
   useEffect(() => {
     provideRtkDesignSystem(document.body, {
@@ -302,13 +301,17 @@ export default function App() {
     }).then((meeting) => {
       Object.assign(window, { meeting });
       // automatically join room
-      meeting?.joinRoom();
+      // meeting?.joinRoom();
     });
   }, []);
 
   return (
     <RealtimeKitProvider value={meeting} fallback={<LoadingUI />}>
-      <Recorder />
+      <RtkUiProvider meeting={meeting} onRtkStatesUpdate={(e) => {
+        setStates(e.detail);
+      }}>
+        <Recorder states={states} />
+      </RtkUiProvider>
     </RealtimeKitProvider>
   );
 }
