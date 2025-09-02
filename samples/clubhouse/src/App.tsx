@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { RealtimeKitProvider, useRealtimeKitClient } from '@cloudflare/realtimekit-react';
 import Meeting from './components/Meeting';
-import { provideRtkDesignSystem } from '@cloudflare/realtimekit-react-ui';
+import { provideRtkDesignSystem, RtkUiProvider } from '@cloudflare/realtimekit-react-ui';
 
 function App() {
   const [meeting, initMeeting] = useRealtimeKitClient();
@@ -30,17 +30,15 @@ function App() {
       },
     }).then((m) => {
       Object.assign(window, { meeting: m });
-
-      if (!window.location.search.includes('showSetupScreen')) {
-        m?.joinRoom();
-      }
     });
   }, []);
 
   return (
     <div className="w-full max-w-lg mx-auto h-full bg-gray-100">
       <RealtimeKitProvider value={meeting} fallback={<div>loading...</div>}>
-        <Meeting />
+        <RtkUiProvider meeting={meeting} showSetupScreen={window.location.search.includes('showSetupScreen')}>
+          <Meeting />
+        </RtkUiProvider>
       </RealtimeKitProvider>
     </div>
   );

@@ -35,7 +35,7 @@ export default function Requests() {
               </button>
               <button
                 className="icon-btn text-green-700"
-                onClick={() => meeting.stage.grantAccess([p.id])}
+                onClick={() => meeting.stage.grantAccess([p.userId])}
               >
                 <Check />
               </button>
