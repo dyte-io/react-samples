@@ -1,10 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useState } from 'react'
-import './meeting.css'
 import {
   RtkCameraToggle,
   RtkChatToggle,
+  RtkDialogManager,
   RtkGrid,
   RtkHeader,
   RtkLeaveButton,
@@ -17,6 +17,7 @@ import {
 import { useRealtimeKitMeeting } from '@cloudflare/realtimekit-react';
 import { AuctionControlBar, Icon } from '../../components';
 import { bidItems } from '../../constants';
+import './meeting.css'
 
 interface Bid {
   bid: number;
@@ -133,7 +134,19 @@ const Meeting = () => {
     <div className='meeting-container'>
       <RtkParticipantsAudio meeting={meeting} />
       <RtkNotifications meeting={meeting} />
-      <RtkHeader meeting={meeting} size='lg'>
+      <RtkDialogManager meeting={meeting}/>
+      <RtkHeader
+        meeting={meeting}
+        size='lg'
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          alignSelf: 'center',
+          justifyContent: 'space-between',
+          gap: 'var(--rtk-space-2, 8px)',
+          '--header-section-gap': 'var(--rtk-space-2, 8px)',
+        }}
+      >
         <div className="meeting-header">
           {
             auctionStarted && (

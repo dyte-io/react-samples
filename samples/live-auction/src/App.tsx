@@ -1,14 +1,16 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useEffect, useRef, useState } from 'react';
-import { RealtimeKitProvider, useRealtimeKitClient } from '@cloudflare/realtimekit-react';
-import { provideRtkDesignSystem } from '@cloudflare/realtimekit-react-ui';
+import { RealtimeKitProvider, useRealtimeKitClient, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
+import { provideRtkDesignSystem, RtkEndedScreen, RtkLeaveMeeting, RtkUiProvider } from '@cloudflare/realtimekit-react-ui';
 import { LoadingScreen } from './pages';
 import { Meeting, SetupScreen } from './pages';
+import './App.css';
 
 function App() {
   const meetingEl = useRef<HTMLDivElement>(null);
   const [meeting, initMeeting] = useRealtimeKitClient();
   const [roomJoined, setRoomJoined] = useState<boolean>(false);
+  const [roomLeft, setRoomLeft] = useState<boolean>(false);
 
   useEffect(() => {
     const searchParams = new URL(window.location.href).searchParams;
@@ -59,7 +61,7 @@ function App() {
       setRoomJoined(true);
     };
     const roomLeftListener = () => {
-      setRoomJoined(false);
+      setRoomLeft(true);
     };
     meeting.self.on('roomJoined', roomJoinedListener);
     meeting.self.on('roomLeft', roomLeftListener);
@@ -74,9 +76,11 @@ function App() {
   return (
     <div ref={meetingEl} >
       <RealtimeKitProvider value={meeting} fallback={<LoadingScreen />}>
-        {
-          !roomJoined ? <SetupScreen /> : <Meeting />
-        }
+        <RtkUiProvider meeting={meeting} showSetupScreen>
+          {
+            !roomJoined ? <SetupScreen /> : !roomLeft ? <Meeting /> : <RtkEndedScreen />
+          }
+        </RtkUiProvider>
       </RealtimeKitProvider>
     </div>
   );
