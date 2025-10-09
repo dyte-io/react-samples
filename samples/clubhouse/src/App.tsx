@@ -21,6 +21,7 @@ function App() {
       );
       return;
     }
+    const baseURI = searchParams.get("baseURI") ?? "realtime.cloudflare.com";
 
     initMeeting({
       authToken,
@@ -28,6 +29,7 @@ function App() {
         video: false,
         audio: false,
       },
+      baseURI,
     }).then((m) => {
       Object.assign(window, { meeting: m });
     });
