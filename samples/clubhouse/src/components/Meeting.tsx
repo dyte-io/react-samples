@@ -1,11 +1,17 @@
-import { RtkParticipantsAudio, RtkSetupScreen } from '@cloudflare/realtimekit-react-ui';
-import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
-import User from './User';
 import Requests from './Requests';
+import User from './User';
+import { HandIcon } from './icons';
+import {
+  useRealtimeKitMeeting,
+  useRealtimeKitSelector,
+} from '@cloudflare/realtimekit-react';
+import {
+  RtkParticipantsAudio,
+  RtkSetupScreen,
+} from '@cloudflare/realtimekit-react-ui';
+import clsx from 'clsx';
 import { useEffect, useState } from 'react';
 import { Clipboard, Mic, MicOff, XSquare } from 'react-feather';
-import { HandIcon } from './icons';
-import clsx from 'clsx';
 
 export default function Meeting() {
   const [showRequests, setShowRequests] = useState(true);
@@ -19,15 +25,11 @@ export default function Meeting() {
   const status = useRealtimeKitSelector((m) => m.stage.status);
 
   const onStageParticipants = useRealtimeKitSelector((m) =>
-    m.participants.joined
-      .toArray()
-      .filter((p) => p.stageStatus=== 'ON_STAGE')
+    m.participants.joined.toArray().filter((p) => p.stageStatus === 'ON_STAGE')
   );
 
   const listeners = useRealtimeKitSelector((m) =>
-    m.participants.joined
-      .toArray()
-      .filter((p) => p.stageStatus !== 'ON_STAGE')
+    m.participants.joined.toArray().filter((p) => p.stageStatus !== 'ON_STAGE')
   );
 
   const isSelfListener = meeting.stage.status !== 'ON_STAGE';
@@ -81,7 +83,7 @@ export default function Meeting() {
           <div className="flex items-center gap-2">
             <button
               className="icon-btn text-red-500"
-              onClick={() => meeting.leaveRoom()}
+              onClick={() => meeting.stage.leave()}
             >
               <XSquare />
               Leave

@@ -1,4 +1,8 @@
 import {
+  useRealtimeKitMeeting,
+  useRealtimeKitSelector,
+} from '@cloudflare/realtimekit-react';
+import {
   RtkAudioVisualizer,
   RtkAvatar,
   RtkNameTag,
@@ -7,7 +11,6 @@ import {
   RtkSimpleGrid,
   provideRtkDesignSystem,
 } from '@cloudflare/realtimekit-react-ui';
-import { useRealtimeKitMeeting, useRealtimeKitSelector } from '@cloudflare/realtimekit-react';
 import clsx from 'clsx';
 import { useEffect } from 'react';
 import Draggable from 'react-draggable';
@@ -108,6 +111,8 @@ export default function Facetime() {
   const { meeting } = useRealtimeKitMeeting();
 
   const roomJoined = useRealtimeKitSelector((m) => m.self.roomJoined);
+  const waitlisted =
+    useRealtimeKitSelector((m) => m.self.waitlistStatus) === 'waiting';
 
   useEffect(() => {
     provideRtkDesignSystem(document.body, {
@@ -117,6 +122,13 @@ export default function Facetime() {
     });
   }, []);
 
+  if (waitlisted) {
+    return (
+      <div className="bg-black text-white w-full h-full flex place-items-center justify-center">
+        <p className="text-2xl">You are in the waiting room.</p>
+      </div>
+    );
+  }
   if (!roomJoined) {
     return (
       <div className="bg-black text-white w-full h-full flex place-items-center justify-center">
