@@ -1,14 +1,20 @@
-import { useEffect } from 'react';
-import { RealtimeKitProvider, useRealtimeKitClient } from '@cloudflare/realtimekit-react';
 import Meeting from './components/Meeting';
-import { provideRtkDesignSystem, RtkUiProvider } from '@cloudflare/realtimekit-react-ui';
+import {
+  RealtimeKitProvider,
+  useRealtimeKitClient,
+} from '@cloudflare/realtimekit-react';
+import {
+  provideRtkDesignSystem,
+  RtkUiProvider,
+} from '@cloudflare/realtimekit-react-ui';
+import { useEffect } from 'react';
 
 function App() {
   const [meeting, initMeeting] = useRealtimeKitClient();
 
   useEffect(() => {
     provideRtkDesignSystem(document.body, {
-      theme: 'light'
+      theme: 'light',
     });
 
     const searchParams = new URL(window.location.href).searchParams;
@@ -21,7 +27,7 @@ function App() {
       );
       return;
     }
-    const baseURI = searchParams.get("baseURI") ?? "realtime.cloudflare.com";
+    const baseURI = searchParams.get('baseURI') ?? 'realtime.cloudflare.com';
 
     initMeeting({
       authToken,
@@ -37,8 +43,18 @@ function App() {
 
   return (
     <div className="w-full max-w-lg mx-auto h-full bg-gray-100">
-      <RealtimeKitProvider value={meeting} fallback={<div>loading...</div>}>
-        <RtkUiProvider meeting={meeting} showSetupScreen={window.location.search.includes('showSetupScreen')}>
+      <RealtimeKitProvider
+        value={meeting}
+        fallback={
+          <div className="w-full h-full flex  items-center justify-center">
+            Loading...
+          </div>
+        }
+      >
+        <RtkUiProvider
+          meeting={meeting}
+          showSetupScreen={window.location.search.includes('showSetupScreen')}
+        >
           <Meeting />
         </RtkUiProvider>
       </RealtimeKitProvider>
