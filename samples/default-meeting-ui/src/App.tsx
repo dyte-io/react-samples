@@ -1,31 +1,38 @@
-import { useEffect } from 'react';
+
+import React from "react";
+import { BrowserRouter, Routes, Route, useParams, useNavigate } from "react-router-dom";
+import HomePage from "./HomePage";
+import CreateMeetingPage from "./CreateMeetingPage";
 import { RtkMeeting } from '@cloudflare/realtimekit-react-ui';
 import { useRealtimeKitClient } from '@cloudflare/realtimekit-react';
 
-function App() {
+function MeetingRoute() {
+  const { authToken } = useParams();
+  const navigate = useNavigate();
   const [meeting, initMeeting] = useRealtimeKitClient();
 
-  useEffect(() => {
-    const searchParams = new URL(window.location.href).searchParams;
-
-    const authToken = searchParams.get('authToken');
-
+  React.useEffect(() => {
     if (!authToken) {
-      alert(
-        "An authToken wasn't passed, please pass an authToken in the URL query to join a meeting."
-      );
+      alert("No authToken provided in URL. Redirecting to home page.");
+      navigate("/");
       return;
     }
+    initMeeting({ authToken });
+  }, [authToken, initMeeting, navigate]);
 
-    initMeeting({
-      authToken,
-    });
-  }, []);
-
-  // By default this component will cover the entire viewport.
-  // To avoid that and to make it fill a parent container, pass the prop:
-  // `mode="fill"` to the component.
   return <RtkMeeting meeting={meeting!} />;
+}
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/create-meeting" element={<CreateMeetingPage />} />
+        <Route path="/meeting/:authToken" element={<MeetingRoute />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
