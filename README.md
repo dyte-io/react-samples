@@ -1,5 +1,7 @@
 # RealtimeKit React UI Kit Samples
 
+> The contents of this repository have been moved to [cloudflare/realtimekit-web-examples](https://github.com/cloudflare/realtimekit-web-examples). Future updates and maintenance will continue there.
+
 ## Contents
 1. [Introduction](#introduction)
 2. [About This Repository](#about-this-repository)
